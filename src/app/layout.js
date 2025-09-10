@@ -1,15 +1,19 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Anek_Latin, Inria_Sans } from 'next/font/google'
 import "./globals.css";
+import Topo from "./components/Topo";
+import Footer from './components/Footer';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const anek = Anek_Latin({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800'],
+})
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inria = Inria_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['300', '400', '700'],
+})
 
 export const metadata = {
   title: "Create Next App",
@@ -18,9 +22,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="pt-br" className={anek.className}>
+      <body className={inria.className}>
+        <Topo />
         {children}
+        <Footer />
       </body>
     </html>
   );
