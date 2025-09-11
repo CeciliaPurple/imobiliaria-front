@@ -9,6 +9,7 @@ export default function Imovel() {
         <div className={styles.container_home}>
             <div className={styles.image_home}></div>
 
+
             <div className={styles.info_home}>
                 <div className={styles.info_group}>
                     <div className={styles.info}>
@@ -40,11 +41,10 @@ export default function Imovel() {
                         <p>Ilhabela- SP</p>
                     </div>
                 </div>
-                <div >
-                    <h3 className={styles.price}>R$2.596.000</h3>
-                    <p>Ver mais</p>
+                <div className={styles.price}>
+                    <h3>R$2.596.000</h3>
+                    <p className={styles.more}>Ver mais</p>
                 </div>
-
             </div>
         </div>
     )

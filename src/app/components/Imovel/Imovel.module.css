@@ -1,0 +1,34 @@
+.container_home {
+    width: 400px;
+    height: 375px;
+    background-color: lightgrey;
+    filter: var(--sombra-caixa);
+    border-radius: var(--curve);
+}
+
+.image_home {
+    width: 100%;
+    height: 225px;
+    background-color: grey;
+    border-top-left-radius: var(--curve);
+    border-top-right-radius: var(--curve);
+}
+
+.info_home {
+    background-color: bisque;
+    padding: 10px 20px;
+    border-bottom-left-radius: var(--curve);
+    border-bottom-right-radius: var(--curve);
+}
+
+.info_group {
+    display: flex;
+    background-color: brown;
+    gap: 20px;
+}
+
+.info {
+    display: flex;
+    align-items: end;
+    gap: 10px;
+}
