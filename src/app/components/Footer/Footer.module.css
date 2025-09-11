@@ -58,12 +58,6 @@
     gap: 10px;
 }
 
-.icon {
-    width: 30px;
-    height: 30px;
-    background-color: var(--vibrante);
-}
-
 .copy {
     width: 80%;
     border-top: 4px solid var(--background);
