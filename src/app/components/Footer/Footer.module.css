@@ -65,7 +65,7 @@
 }
 
 .copy {
-    width: 100%;
+    width: 80%;
     border-top: 4px solid var(--background);
     text-align: center;
     padding: 15px;

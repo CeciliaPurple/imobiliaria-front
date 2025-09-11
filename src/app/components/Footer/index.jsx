@@ -1,5 +1,9 @@
 import styles from './Footer.module.css';
 import Logo from '../../../../public/villa-logo-nome.png';
+import Insta from '../../../../public/instagram.svg';
+import Twitter from '../../../../public/twitter.svg';
+import Whatsapp from '../../../../public/whatsapp.svg';
+import Facebook from '../../../../public/facebook.svg';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -34,21 +38,21 @@ export default function Footer() {
                     <p className={styles.title_social}>Redes Sociais</p>
                     <div className={styles.list_social}>
                         <div className={styles.icon_group}>
-                            <div className={styles.icon}></div>
+                            <Link href="/"><Image src={Insta} alt='instagram' /></Link>
                             <p>Instagram</p>
                         </div>
                         <div className={styles.icon_group}>
-                            <div className={styles.icon}></div>
+                            <Link href="/"><Image src={Twitter} alt='twitter' /></Link>
                             <p>Twitter</p>
                         </div>
 
                         <div className={styles.icon_group}>
-                            <div className={styles.icon}></div>
+                            <Link href="/"><Image src={Whatsapp} alt='whatsapp' /></Link>
                             <p>Whatsapp</p>
                         </div>
 
                         <div className={styles.icon_group}>
-                            <div className={styles.icon}></div>
+                            <Link href="/"><Image src={Facebook} alt='facebook' /></Link>
                             <p>Facebook</p>
                         </div>
                     </div>

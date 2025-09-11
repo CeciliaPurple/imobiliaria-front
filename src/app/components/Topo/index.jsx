@@ -1,5 +1,7 @@
 import styles from './Topo.module.css';
 import Logo from '../../../../public/villa-logo-nome.png';
+import Heart from '../../../../public/heart-outline.svg';
+import User from '../../../../public/person-circle-outline.svg';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -14,8 +16,8 @@ export default function Topo() {
                 <Link href="/" className={styles.nav_link}>Minhas Visitas</Link>
             </div>
             <div className={styles.container_icons}>
-                <div className={styles.icon}></div>
-                <div className={styles.icon}></div>
+                <Link href="/"><Image src={Heart} alt='favoritos'/></Link>
+                <Link href="/"><Image src={User} alt='perfil'/></Link>
             </div>
         </div>
     )
