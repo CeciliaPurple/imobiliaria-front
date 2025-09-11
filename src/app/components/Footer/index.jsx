@@ -5,28 +5,59 @@ import Image from 'next/image';
 
 export default function Footer() {
     return (
-        <footer className={styles.container_footer}>
-            <Image src={Logo} alt='logo' className={styles.logo}></Image>
-            <div className={styles.list}>
-                <p className={styles.title_list}>Navegação</p>
-                <p className={styles.text_list}>Imóveis</p>
-                <p className={styles.text_list}>Sobre</p>
-                <p className={styles.text_list}>Contatos</p>
+        <footer className={styles.footer}>
+            <div className={styles.container_contact}>
+                <Image src={Logo} alt='logo' className={styles.logo}></Image>
+                <div className={styles.list}>
+                    <p className={styles.title_list}>Navegação</p>
+                    <p className={styles.text_list}>Imóveis</p>
+                    <p className={styles.text_list}>Sobre</p>
+                    <p className={styles.text_list}>Contatos</p>
+                </div>
+
+                <div className={styles.list}>
+                    <p className={styles.title_list}>Imóveis</p>
+                    <p className={styles.text_list}>Apartamentos</p>
+                    <p className={styles.text_list}>Casas</p>
+                    <p className={styles.text_list}>Sobrados</p>
+                </div>
+
+                <div className={styles.list}>
+                    <p className={styles.title_list}>Contatos</p>
+                    <p className={styles.text_list}>(12) 99000-0000</p>
+                    <p className={styles.text_list}>(12) 98000-0000</p>
+                    <p className={styles.text_list}>@villa_indaia</p>
+                </div>
+
+                {/*Redes Sociais*/}
+                <div className={styles.list}>
+                    <p className={styles.title_social}>Redes Sociais</p>
+                    <div className={styles.list_social}>
+                        <div className={styles.icon_group}>
+                            <div className={styles.icon}></div>
+                            <p>Instagram</p>
+                        </div>
+                        <div className={styles.icon_group}>
+                            <div className={styles.icon}></div>
+                            <p>Twitter</p>
+                        </div>
+
+                        <div className={styles.icon_group}>
+                            <div className={styles.icon}></div>
+                            <p>Whatsapp</p>
+                        </div>
+
+                        <div className={styles.icon_group}>
+                            <div className={styles.icon}></div>
+                            <p>Facebook</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div className={styles.list}>
-                <p className={styles.title_list}>Imóveis</p>
-                <p className={styles.text_list}>Apartamentos</p>
-                <p className={styles.text_list}>Casas</p>
-                <p className={styles.text_list}>Sobrados</p>
-            </div>
-
-            <div className={styles.list}>
-                <p className={styles.title_list}>Contatos</p>
-                <p className={styles.text_list}>(12) 99000-0000</p>
-                <p className={styles.text_list}>(12) 98000-0000</p>
-                <p className={styles.text_list}>@villa_indaia</p>
-            </div>
+            {/*Copyright*/}
+            <p className={styles.copy}>&copy;2025 Vila Indaiá. Todos os direitos reservados. | Política de Privacidade | Termos de Uso</p>
         </footer>
+
     )
 }
