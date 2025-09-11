@@ -1,7 +1,7 @@
 import styles from './Topo.module.css';
 import Logo from '../../../../public/villa-logo-nome.png';
-import Heart from '../../../../public/heart-outline.svg';
-import User from '../../../../public/person-circle-outline.svg';
+import Heart from '../../../../public/icons/heart-outline.svg';
+import User from '../../../../public/icons/person-circle-outline.svg';
 import Link from 'next/link';
 import Image from 'next/image';
 

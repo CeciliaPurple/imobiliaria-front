@@ -1,9 +1,9 @@
 import styles from './Footer.module.css';
 import Logo from '../../../../public/villa-logo-nome.png';
-import Insta from '../../../../public/instagram.svg';
-import Twitter from '../../../../public/twitter.svg';
-import Whatsapp from '../../../../public/whatsapp.svg';
-import Facebook from '../../../../public/facebook.svg';
+import Insta from '../../../../public/icons/instagram.svg';
+import Twitter from '../../../../public/icons/twitter.svg';
+import Whatsapp from '../../../../public/icons/whatsapp.svg';
+import Facebook from '../../../../public/icons/facebook.svg';
 import Link from 'next/link';
 import Image from 'next/image';
 
