@@ -67,3 +67,52 @@
     align-items: center;
     gap: 2%;
 }
+
+/*Sobre a Villa Indaiá*/
+.about {
+    width: 100%;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--escuro);
+    gap: 20px;
+}
+
+.about h2 {
+    width: 500px;
+    text-align: center;
+}
+
+.container_about {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.container_text_about h1 {
+    color: var(--escuro);
+    font-weight: bold;
+    font-size: var(--h1);
+}
+
+.container_title_about {
+    margin-left: 40px;
+    margin-bottom: 20px;
+}
+
+.title_about {
+    margin-left: 60px;
+}
+
+.container_text_about {
+    color: var(--escuro);
+    width: 30%;
+}
+
+.image {
+    width: 25%;
+    height: 25%;
+}
