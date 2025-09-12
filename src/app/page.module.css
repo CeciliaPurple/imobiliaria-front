@@ -28,7 +28,42 @@
     gap: 5px;
 }
 
-.icon_info{
+.info_group h3 {
+    font-size: var(--h3);
+    font-weight: bold;
+}
+
+.icon_info {
     width: 35px;
     height: 35px;
+}
+
+.container_box {
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    border-bottom: 3px solid var(--azulClaro);
+}
+
+.container_imovel {
+    width: fit-content;
+    padding: 50px 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.container_imovel h2 {
+    color: var(--escuro);
+    font-weight: bold;
+}
+
+.carrossel {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    gap: 2%;
 }
