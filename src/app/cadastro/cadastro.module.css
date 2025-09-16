@@ -1,0 +1,87 @@
+.back {
+    background-image: image-set(url(../../../public/img/gradient2.png));
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 500px;
+    border: 4px solid var(--vibrante);
+    border-radius: var(--curve);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 50px;
+    padding-right: 50px;
+ 
+}
+
+.logo {
+    width: 200px;
+    height: 200px;
+}
+
+.input_conatiner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 30px;
+    padding-bottom: 50px;
+    gap: 40px;
+}
+
+.input_conatiner input {
+    width: 400px;
+    border: none;
+    border-bottom: 3px solid var(--vibrante);
+    border-bottom-left-radius: var(--curve);
+    border-bottom-right-radius: var(--curve);
+    background-color: transparent;
+    padding: 10px;
+    font-size: var(--h4);
+}
+
+.input_conatiner input::placeholder {
+    color: var(--clean);
+    font-size: var(--h4);
+}
+
+.input_conatiner input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.container button {
+    background-color: var(--vibrante);
+    color: var(--background);
+    border: none;
+    border-radius: var(--curve);
+    padding: 15px 30px;
+    font-size: var(--h4);
+    font-weight: bold;
+    margin-bottom: 50px;
+    filter: var(--sombra-caixa);
+}
+
+.container p {
+    font-size: var(--h5);
+    color: var(--vibrante);
+    margin-bottom: 60px;
+}
+
+.link {
+    color: var(--vibrante);
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
