@@ -7,7 +7,8 @@ import Cash from '../../public/icons/cash-outline.svg';
 import Construct from '../../public/icons/construct.svg';
 import SetaD from '../../public/icons/chevron-forward.svg';
 import SetaE from '../../public/icons/chevron-back-outline.svg';
-import Gallery from '../../public/img/imageGroup.png'
+
+
 
 export default function Home() {
   return (
@@ -88,7 +89,8 @@ export default function Home() {
             </p>
           </div>
 
-          <Image src={Gallery} alt="conjunto de imagens" className={styles.image}/>
+          
+          {/* <Image src={Gallery} alt="conjunto de imagens" className={styles.image}/> */}
         </div>
 
         <h2>Villa Indaiá – O lugar certo para o seu próximo capítulo.</h2>

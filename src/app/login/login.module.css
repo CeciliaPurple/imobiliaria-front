@@ -35,7 +35,7 @@
     align-items: center;
     padding-top: 30px;
     padding-bottom: 50px;
-    gap: 40px;
+    gap: 50px;
 }
 
 .input_conatiner input {
@@ -67,7 +67,7 @@
     padding: 15px 30px;
     font-size: var(--h4);
     font-weight: bold;
-    margin-bottom: 50px;
+    margin-top: 50px;
     filter: var(--sombra-caixa);
     transition: transform 0.7s 
 }
