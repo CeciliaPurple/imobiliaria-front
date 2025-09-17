@@ -1,0 +1,72 @@
+.container_filter {
+    background-color:bisque;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 40px;
+    color: var(--escuro);
+    padding: 40px;
+}
+
+.container_filter h2 {
+    font-size: var(--h2);
+    font-weight: bold;
+}
+
+.container_filter h3{
+    font-size: var(--h3);
+}
+
+.container_filter input {
+    border: none;
+    border-radius: var(--curve);
+    height: 50px;
+}
+
+/*Texto filtros*/
+.icon_group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/*Localização*/
+.container_group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.location_group {
+    background-color: cadetblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+}
+
+.location_group input {
+    width: 400px;
+    filter: var(--sombra-caixa);
+    font-size: var(--h3);
+    padding: 20px;
+
+}
+
+.location_group input::placeholder {
+    color: var(--escuro);
+    font-size: var(--h3);
+}
+
+.location_group input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/*Tipos de imóveis*/
