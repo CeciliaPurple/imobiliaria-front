@@ -1,0 +1,77 @@
+.agenda{
+    justify-self: center;
+    margin-top: 25px;
+    background-color: var(--clean);
+    width: 100%;
+    text-align: center;
+    height: 3rem;
+}
+
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 30px;
+    padding-bottom: 50px;
+    gap: 30px;
+}
+
+.form input {
+    border: 3px solid var(--clean);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: var(--h4);
+}
+
+.form input::placeholder {
+    justify-self: start;
+    color: var(--black);
+    font-size: var(--h4);
+}
+
+.form input:focus {
+    outline: var(--escuro);
+    box-shadow: var(--escuro);
+}
+
+.tamanho1 {
+    width: 1000px;
+}
+
+.hora {
+    width: 300px;
+    margin-right: 700px;
+}
+
+.ajuste {
+    margin-right: 730px;
+}
+
+
+.form textarea {
+    width: 1000px;
+    border: 3px solid var(--clean);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: var(--h4);
+    resize: vertical;
+    /* permite redimensionar */
+    min-height: 150px;
+    /* altura inicial */
+}
+
+.form textarea::placeholder {
+    color: var(--black);
+    font-size: var(--h4);
+}
+
+.form textarea:focus {
+    outline: var(--escuro);
+    box-shadow: var(--escuro);
+}
+
+.hora {
+    width: 300px;
+}

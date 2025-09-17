@@ -5,7 +5,7 @@ import styles from './login.module.css'
 import { useRouter } from 'next/navigation';
 import Image from 'next/image'
 import Link from 'next/link'
-import Logo from '../../../public/villa-logo-nome.PNG';
+import Logo from '../../../public/villa-logo-nome.png';
 import { useState } from "react";
 
 export default function Login() {
@@ -18,7 +18,7 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:3000/usuario/login", {
+        const response = await fetch("http://localhost:3001/usuario/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, senha }),

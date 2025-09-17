@@ -5,7 +5,7 @@ import styles from './cadastro.module.css'
 import { useRouter } from 'next/navigation';
 import Image from 'next/image'
 import Link from 'next/link'
-import Logo from '../../../public/villa-logo-nome.PNG';
+import Logo from '../../../public/villa-logo-nome.png';
 import { useState } from "react";
 
 export default function Cadastro() {
@@ -19,7 +19,7 @@ export default function Cadastro() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:3000/usuario", {
+        const response = await fetch("http://localhost:3001/usuario", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ nome, email, senha }),
