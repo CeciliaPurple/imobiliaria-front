@@ -1,16 +1,15 @@
 "use client"; // necessário para usar useState
 
 
-import styles from './cadastro.module.css'
+import styles from './login.module.css'
 import { useRouter } from 'next/navigation';
 import Image from 'next/image'
 import Link from 'next/link'
 import Logo from '../../../public/villa-logo-nome.PNG';
 import { useState } from "react";
 
-export default function Cadastro() {
+export default function Login() {
 
-    const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
 
@@ -19,37 +18,30 @@ export default function Cadastro() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:3000/usuario", {
+        const response = await fetch("http://localhost:3000/usuario/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nome, email, senha }),
+            body: JSON.stringify({ email, senha }),
         });
 
         const data = await response.json();
 
         if (response.ok) {
-            alert("Cadastro realizado com sucesso!");
-            router.push("/login"); // ✅ redireciona para a página de login
+            alert("Login realizado com sucesso!");
+            localStorage.setItem("token", data.token);
+            router.push("/"); // ✅ redireciona para a página Home
 
         } else {
-            alert(data.error || "Erro ao cadastrar");
+            alert(data.error || "Email ou Senha incorreto ");
         }
     };
 
     return (
         <div className={styles.back}>
             <div className={styles.container}>
-                <Link href="/" >
-                    <Image src={Logo} alt='logo' className={styles.logo} />
-                </Link>
+                <Link href="/"><Image src={Logo} alt='logo' className={styles.logo}/></Link>
 
                 <form className={styles.input_conatiner} onSubmit={handleSubmit}>
-                    <input
-                        type='text'
-                        placeholder='Nome de usuário'
-                        value={nome}
-                        onChange={(e) => setNome(e.target.value)}
-                        required />
 
                     <input
                         type='email'
@@ -65,12 +57,12 @@ export default function Cadastro() {
                         onChange={(e) => setSenha(e.target.value)}
                         required />
 
-                    <button type='submit'>Cadastrar</button>
+                    <button type='submit'>Entrar</button>
                 </form>
 
 
 
-                <p>Já possui uma conta? <Link href="/login" className={styles.link}><b>Entre aqui!</b></Link></p>
+                <p>Nâo possui uma conta? <Link href="/cadastro" className={styles.link}><b>Clique aqui!</b></Link></p>
             </div>
         </div>
     )

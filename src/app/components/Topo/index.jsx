@@ -17,7 +17,7 @@ export default function Topo() {
             </div>
             <div className={styles.container_icons}>
                 <Link href="/"><Image src={Heart} alt='favoritos'/></Link>
-                <Link href="/"><Image src={User} alt='perfil'/></Link>
+                <Link href="/cadastro"><Image src={User} alt='perfil'/></Link>
             </div>
         </div>
     )
