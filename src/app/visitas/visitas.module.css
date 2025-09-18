@@ -1,12 +1,15 @@
-.agenda{
+.agenda {
     justify-self: center;
     margin-top: 25px;
-    background-color: var(--clean);
+    background-color: var(--azulClaro);
     width: 100%;
     text-align: center;
-    height: 3rem;
+    align-self: center;
+    padding: 20px;
+    font-size: var(--h3);
+    color: var(--escuro);
+    border-radius: 10px;
 }
-
 
 .form {
     display: flex;
@@ -14,7 +17,7 @@
     justify-content: center;
     align-items: center;
     padding-top: 30px;
-    padding-bottom: 50px;
+    
     gap: 30px;
 }
 
@@ -74,4 +77,22 @@
 
 .hora {
     width: 300px;
+}
+
+.container button {
+    background-color: var(--vibrante);
+    color: var(--background);
+    border: none;
+    border-radius: var(--curve);
+    padding: 15px 30px;
+    font-size: var(--h4);
+    font-weight: bold;
+    margin-top: 50px;
+    filter: var(--sombra-caixa);
+    transition: transform 0.7s 
+}
+
+.container button:hover{
+    transform: scale(1.1) ;
+    transition: transform 0.7s 
 }

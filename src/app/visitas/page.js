@@ -25,11 +25,8 @@ export default function Visitas() {
   return (
     <div className={styles.visita}>
       <div className={styles.container}>
-        
-        <div className={styles.agenda}>
-            <text>Agendar Visita</text>
-        </div>
 
+        <p className={styles.agenda}>Agendar Visita</p>
 
         <form className={styles.form}>
           {/* Nome */}
@@ -78,6 +75,8 @@ export default function Visitas() {
             placeholder="Observações"
             required
           ></textarea>
+
+          <button type='submit'>Entrar</button>
         </form>
       </div>
     </div>
