@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import styles from "./visitas.module.css";
+import styles from "./agenda.module.css";
 
 export default function Visitas() {
   const [telefone, setTelefone] = useState("");

@@ -16,7 +16,8 @@
   --vermelho: #DE302A;
 
   /*Sombra*/
-  --sombra-caixa: drop-shadow(0 5px 5px rgba(160, 160, 204, 0.5)) drop-shadow(0 -10px 20px #FFF);;
+  --sombra-caixa: drop-shadow(0 5px 5px rgba(160, 160, 204, 0.5)) drop-shadow(0 -10px 20px #FFF);
+  --caixa: drop-shadow(0 5px 5px rgba(160, 160, 204, 0.5));
 
   /*Borda*/
   --borda: 1px solid #E4E4E4;
