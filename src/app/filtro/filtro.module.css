@@ -1,0 +1,251 @@
+.container {
+    background-color: var(--background);
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 40px 100px;
+}
+
+.container_filter {
+    width: fit-content;
+    max-height: 85vh;
+    background-color: var(--background);
+    color: var(--escuro);
+    border-radius: var(--curve);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 40px 60px;
+    filter: var(--sombra-caixa);
+    overflow-y: auto;
+}
+
+.container_filter::-webkit-scrollbar{
+    display: none;
+}
+
+.container_filter h2 {
+    font-size: var(--h2);
+    font-weight: bold;
+}
+
+.container_filter h3 {
+    font-size: var(--h3);
+}
+
+.container_filter input {
+    border: none;
+    border-radius: var(--curve);
+    height: 50px;
+}
+
+/*Texto filtros*/
+.icon_group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.icon_group h2 {
+    justify-self: center;
+    align-self: center;
+    text-align: center;
+}
+/*Localização*/
+.container_group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.location_group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+}
+
+.location_group input {
+    width: 350px;
+    filter: var(--sombra-caixa);
+    font-size: var(--h3);
+    padding: 20px;
+
+}
+
+
+.location_group input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/*Tipos de imóveis*/
+.container_grid {
+    width: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: var(--azulClaro);
+    padding: 20px;
+    border-radius: var(--curve);
+}
+
+.container_grid input {
+    width: 25px;
+    height: 25px;
+    border-radius: var(--curve);
+}
+
+.select {
+    font-size: var(--h3);
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--cinza);
+    border-radius: var(--curve);
+    border: 2px solid var(--background);
+    padding: 8px 8px;
+    filter: var(--sombra-caixa);
+}
+
+
+/*Preço*/
+.container_price {
+    width: 400px;
+    background-color: var(--cinza);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: var(--curve);
+    filter: var(--sombra-caixa);
+    gap: 30px;
+}
+
+.container_price input {
+    width: 100%;
+    font-size: var(--h4);
+    padding: 20px 10px;
+}
+
+/*Quantidade de quartos*/
+.container_number {
+    display: flex;
+    justify-content: center;
+    align-self: self-start;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: var(--azulClaro);
+    border-radius: var(--curve);
+    border: 2px solid var(--background);
+    filter: var(--sombra-caixa);
+}
+
+.select_number {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.select_number input {
+    width: 40px;
+    height: 40px;
+    background: transparent;
+}
+
+.select_number label {
+    font-size: var(--h4);
+    font-weight: bold;
+    position: absolute;
+}
+
+/*Visualização dos imóveis*/
+.container_house {
+    width: fit-content;
+    max-height: 85vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    padding:10px;
+}
+
+.container_house::-webkit-scrollbar {
+    display: none;
+}
+
+.container_home {
+    background-color: var(--cinza);
+    border-radius: var(--curve);
+    filter: var(--sombra-caixa);
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    gap: 40px;
+    padding: 15px 20px;
+}
+
+.heart {
+    display: flex;
+    justify-self: end;
+}
+
+.image {
+    width: 400px;
+    height: 250px;
+    border-radius: var(--curve);
+}
+
+.info_group {
+    width: 450px;
+    color: var(--escuro);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info_group h4 {
+    font-weight: 400;
+}
+
+.info_icon {
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.info {
+    display: flex;
+    gap: 10px;
+    align-items: end;
+}
+
+.home_price {
+    display: flex;
+    justify-content: space-between;
+}
+
+.home_price button {
+    background-color: var(--vibrante);
+    color: var(--background);
+    border: none;
+    border-radius: var(--curve);
+    padding: 10px 18px;
+    cursor: pointer;
+    filter: var(--sombra-caixa);
+}

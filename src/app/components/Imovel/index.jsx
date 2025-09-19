@@ -7,10 +7,9 @@ import Bedroom from '../../../../public/icons/bed-outline.svg';
 import Bathroom from '../../../../public/icons/water-outline.svg';
 import Car from '../../../../public/icons/car-outline.svg';
 import Location from '../../../../public/icons/location-outline.svg';
-import Home from '../../../../public/img/sobrado1.jpg';
 
 export default function Imovel() {
-    return (
+    return (  
         <div className={styles.container_home}>
             <div className={styles.image_container}>
                 <h3>Sinta-se em um resort</h3>
@@ -51,7 +50,7 @@ export default function Imovel() {
                 {/*Preço e Ver mais*/}
                 <div className={styles.price}>
                     <h3>R$2.596.000</h3>
-                    <button className={styles.more}>Ver mais</button>
+                    <Link href="/"><button className={styles.more}>Ver mais</button></Link>
                 </div>
             </div>
         </div>

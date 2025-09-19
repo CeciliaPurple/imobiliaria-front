@@ -7,6 +7,7 @@ import Cash from '../../public/icons/cash-outline.svg';
 import Construct from '../../public/icons/construct.svg';
 import SetaD from '../../public/icons/chevron-forward.svg';
 import SetaE from '../../public/icons/chevron-back-outline.svg';
+import Gallery from '../../public/img/groupImage.png'
 
 
 
@@ -76,7 +77,7 @@ export default function Home() {
               <h1 className={styles.title_about}>Villa Indaiá</h1>
             </div>
 
-            <p>
+            <p className={styles.text}>
               Na Villa Indaiá, acreditamos que cada imóvel conta uma história — e estamos aqui para ajudar você a escrever a sua.
               Localizada no coração da nossa comunidade, somos especializados em venda de imóveis residenciais e comerciais,
               sempre com foco em oferecer segurança, transparência e atendimento personalizado.<br /><br />
@@ -86,11 +87,10 @@ export default function Home() {
               experiente, apaixonada pelo que faz, e sempre atualizada com as tendências do mercado imobiliário.<br /><br />
 
               Na Villa Indaiá, você encontra mais do que imóveis: encontra parceiros de confiança para realizar seu projeto de vida.
-            </p>
-          </div>
+            </p> 
+          </div>       
 
-          
-          {/* <Image src={Gallery} alt="conjunto de imagens" className={styles.image}/> */}
+          <Image src={Gallery} alt="conjunto de imagens" className={styles.image} />
         </div>
 
         <h2>Villa Indaiá – O lugar certo para o seu próximo capítulo.</h2>
