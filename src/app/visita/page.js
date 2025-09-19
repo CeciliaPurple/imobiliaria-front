@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ImovelP from "../components/ImovelP";
 import styles from "./visita.module.css";
 
@@ -8,7 +9,7 @@ const visita = {
     data: "25/08/2025",
     tel: "(12)9852376455",
     status: "Confirmado",
-    obs: "lalallalllalal",
+    obs: "Maria Celi",
 };
 
 export default function Visita() {
@@ -32,7 +33,7 @@ export default function Visita() {
                         <p><b>Tel:</b> {visita.tel}</p>
 
                         <div className={styles.btns}>
-                            <button type="button">Editar</button>
+                          <Link href='/agenda'><button type="button">Editar</button></Link>
                             <button type="button">Cancelar</button>
                             <p className={styles.status}>
                                 Status: <span>{visita.status}</span>

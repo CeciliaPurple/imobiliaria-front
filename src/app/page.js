@@ -68,7 +68,7 @@ export default function Home() {
       </section>
 
       {/*Sobre nós*/}
-      <section className={styles.about}>
+      <section   className={styles.about}>
         <div className={styles.container_about}>
           <div className={styles.container_text_about}>
             <div className={styles.container_title_about}>
