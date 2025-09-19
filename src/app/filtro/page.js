@@ -1,5 +1,6 @@
 import styles from './filtro.module.css'
 import Image from 'next/image'
+import Link from 'next/link'
 import Local from '../../../public/icons/location-sharp.svg'
 import Filter from '../../../public/icons/Vector.svg'
 import Home from '../../../public/img/luxo.jpg'
@@ -292,7 +293,7 @@ export default function Filtro() {
                                     <h2>R$2.500.000,00</h2>
                                     <h5>IPTU: R$ 1,350</h5>
                                 </div>
-                                <button className={styles.more}>Ver mais</button>
+                                <Link href="/"><button className={styles.more}>Ver mais</button></Link>
                             </div>
                         </div>
                     </div>
@@ -344,7 +345,7 @@ export default function Filtro() {
                                     <h2>R$2.500.000,00</h2>
                                     <h5>IPTU: R$ 1,350</h5>
                                 </div>
-                                <button className={styles.more}>Ver mais</button>
+                                <Link href="/"><button className={styles.more}>Ver mais</button></Link>
                             </div>
                         </div>
                     </div>
@@ -396,7 +397,7 @@ export default function Filtro() {
                                     <h2>R$2.500.000,00</h2>
                                     <h5>IPTU: R$ 1,350</h5>
                                 </div>
-                                <button className={styles.more}>Ver mais</button>
+                                <Link href="/"><button className={styles.more}>Ver mais</button></Link>
                             </div>
                         </div>
                     </div>
@@ -448,7 +449,7 @@ export default function Filtro() {
                                     <h2>R$2.500.000,00</h2>
                                     <h5>IPTU: R$ 1,350</h5>
                                 </div>
-                                <button className={styles.more}>Ver mais</button>
+                                <Link href="/"><button className={styles.more}>Ver mais</button></Link>
                             </div>
                         </div>
                     </div>

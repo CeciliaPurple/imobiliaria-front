@@ -8,15 +8,15 @@ import Image from 'next/image';
 export default function Topo() {
     return (
         <div className={styles.container}>
-            <Image className={styles.logo} src={Logo} alt='logo'/>
-
+            <Link href="/"><Image className={styles.logo} src={Logo} alt='logo'/></Link>
+            
             <div className={styles.nav}>
-                <Link href="/" className={styles.nav_link}>Imóveis</Link>
-                <Link href="/" className={styles.nav_link}>Sobre</Link>
+                <Link href="/filtro" className={styles.nav_link}>Imóveis</Link>
+                <Link href="/#about" className={styles.nav_link}>Sobre</Link>
                 <Link href="/" className={styles.nav_link}>Minhas Visitas</Link>
             </div>
             <div className={styles.container_icons}>
-                <Link href="/"><Image src={Heart} alt='favoritos'/></Link>
+                <Link href="/favoritos"><Image src={Heart} alt='favoritos'/></Link>
                 <Link href="/cadastro"><Image src={User} alt='perfil'/></Link>
             </div>
         </div>
