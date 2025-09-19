@@ -1,0 +1,24 @@
+.container_fave {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.container_fave h2 {
+    width: 100%;
+    font-size: var(--h2);
+    background-color: var(--azulClaro);
+    color: var(--escuro);
+    padding: 20px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.container_imoveis {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px 100px;
+}
