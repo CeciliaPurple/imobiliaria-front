@@ -350,6 +350,110 @@ export default function Filtro() {
                     </div>
 
                 </div>
+
+                <div className={styles.container_home}>
+                    <Image src={Home} alt='foto casa' className={styles.image} />
+                    <div>
+                        <Image src={Heart} alt='favoritar' className={styles.heart} />
+
+                        {/*Informações sobre o imóvel*/}
+                        <div className={styles.info_group}>
+                            {/*Nome*/}
+                            <h2>Sobrado beira mar</h2>
+
+                            {/*Localização*/}
+                            <div>
+                                <h3>Rua Doutor Arthur da Costa Filho</h3>
+                                <h4>Martin de Sá, Caraguatatuba / SP</h4>
+                            </div>
+
+                            {/*Faixa de ícones*/}
+                            <div className={styles.info_icon}>
+                                <div className={styles.info}>
+                                    <Image src={Area} alt='área m²' />
+                                    <p><b>178</b>m²</p>
+                                </div>
+
+                                <div className={styles.info}>
+                                    <Image src={Bedroom} alt='quartos' />
+                                    <p><b>4</b></p>
+                                </div>
+
+                                <div className={styles.info}>
+                                    <Image src={Bathroom} alt='banheiros' />
+                                    <p><b>2</b></p>
+                                </div>
+
+                                <div className={styles.info}>
+                                    <Image src={Car} alt='vagas' />
+                                    <p><b>2</b></p>
+                                </div>
+                            </div>
+
+                            {/*Preço e Ver mais*/}
+                            <div className={styles.home_price}>
+                                <div>
+                                    <h2>R$2.500.000,00</h2>
+                                    <h5>IPTU: R$ 1,350</h5>
+                                </div>
+                                <button className={styles.more}>Ver mais</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div className={styles.container_home}>
+                    <Image src={Home} alt='foto casa' className={styles.image} />
+                    <div>
+                        <Image src={Heart} alt='favoritar' className={styles.heart} />
+
+                        {/*Informações sobre o imóvel*/}
+                        <div className={styles.info_group}>
+                            {/*Nome*/}
+                            <h2>Sobrado beira mar</h2>
+
+                            {/*Localização*/}
+                            <div>
+                                <h3>Rua Doutor Arthur da Costa Filho</h3>
+                                <h4>Martin de Sá, Caraguatatuba / SP</h4>
+                            </div>
+
+                            {/*Faixa de ícones*/}
+                            <div className={styles.info_icon}>
+                                <div className={styles.info}>
+                                    <Image src={Area} alt='área m²' />
+                                    <p><b>178</b>m²</p>
+                                </div>
+
+                                <div className={styles.info}>
+                                    <Image src={Bedroom} alt='quartos' />
+                                    <p><b>4</b></p>
+                                </div>
+
+                                <div className={styles.info}>
+                                    <Image src={Bathroom} alt='banheiros' />
+                                    <p><b>2</b></p>
+                                </div>
+
+                                <div className={styles.info}>
+                                    <Image src={Car} alt='vagas' />
+                                    <p><b>2</b></p>
+                                </div>
+                            </div>
+
+                            {/*Preço e Ver mais*/}
+                            <div className={styles.home_price}>
+                                <div>
+                                    <h2>R$2.500.000,00</h2>
+                                    <h5>IPTU: R$ 1,350</h5>
+                                </div>
+                                <button className={styles.more}>Ver mais</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </section>
         </div>
     )
