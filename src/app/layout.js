@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
   const pathname = usePathname();
 
   // Páginas que NÃO vão ter topo e footer
-  const noLayoutPages = ['/cadastro', '/login'];
+  const noLayoutPages = ['/cadastro', '/login', '/perfil'];
 
   const showLayout = !noLayoutPages.includes(pathname);
 
