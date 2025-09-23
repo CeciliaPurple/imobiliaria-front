@@ -14,12 +14,33 @@
 .form {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-self: center;
+    margin-top: 40px;
     align-items: center;
     padding-top: 30px;
-    border: 2px solid var(--clean);
+    border: 5px solid var(--clean);
+    width: fit-content;
+    padding: 36px;
+    align-items: start;
     gap: 30px;
 }
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    color: var(--escuro);
+    font-size: var(--h4);
+}
+
+
+.campo label {
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--escuro);
+}
+
 
 .form input {
     border: 3px solid var(--azulClaro);
@@ -31,7 +52,7 @@
 
 .form input::placeholder {
     justify-self: start;
-    color: var(--black);
+    color: var(--escuro);
     font-size: var(--h4);
 }
 
@@ -44,14 +65,12 @@
 
 .form textarea {
     width: 700px;
-    border: 3px solid var(--clean);
+    border: 3px solid var(--azulClaro);
     border-radius: 10px;
     padding: 10px;
     font-size: var(--h4);
     resize: vertical;
-    /* permite redimensionar */
     min-height: 150px;
-    /* altura inicial */
 }
 
 .form textarea::placeholder {
@@ -64,9 +83,12 @@
     box-shadow: var(--escuro);
 }
 
-.hora {
-    width: 300px;
+.campo Select{ 
+    color:var(--escuro);
+    border:1px solid var(--azulClaro);
 }
+
+
 
 .container button {
     background-color: var(--vibrante);
@@ -78,10 +100,10 @@
     font-weight: bold;
     margin-top: 50px;
     filter: var(--sombra-caixa);
-    transition: transform 0.7s 
+    transition: transform 0.7s
 }
 
-.container button:hover{
-    transform: scale(1.1) ;
-    transition: transform 0.7s 
+.container button:hover {
+    transform: scale(1.1);
+    transition: transform 0.7s
 }
