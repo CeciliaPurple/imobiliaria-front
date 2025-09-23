@@ -34,7 +34,7 @@ export default function Topo() {
             </div>
 
             <div className={styles.container_icons}>
-                <Link href="/"><Image src={Heart} alt="favoritos" /></Link>
+                <Link href="/favoritos"><Image src={Heart} alt="favoritos" /></Link>
 
                 {isLoggedIn ? (
                     <Link href="/perfil">

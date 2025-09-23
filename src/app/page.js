@@ -77,7 +77,7 @@ export default function Home() {
               <h1 className={styles.title_about}>Villa Indaiá</h1>
             </div>
 
-            <p className={styles.text}>
+            <p id="sobre"className={styles.text}>
               Na Villa Indaiá, acreditamos que cada imóvel conta uma história — e estamos aqui para ajudar você a escrever a sua.
               Localizada no coração da nossa comunidade, somos especializados em venda de imóveis residenciais e comerciais,
               sempre com foco em oferecer segurança, transparência e atendimento personalizado.<br /><br />
