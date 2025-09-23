@@ -3,10 +3,12 @@
     import { useState } from "react";
     import styles from "./adm.module.css";
     import Select from "react-select";
-    import { number } from "framer-motion";
+    import dynamic from "next/dynamic"; 
+   
 
-    export default function Visitas() {
+    export default function CriarIMovelAdm() {
       const [telefone, setTelefone] = useState("");
+      const Select = dynamic(() => import("react-select"), { ssr: false });
 
       {/*Telefone*/ }
       const handleTelefoneChange = (e) => {
@@ -46,9 +48,11 @@
         <div className={styles.visita}>
           <div className={styles.container}>
 
-            <p className={styles.agenda}>Agendar Visita</p>
+            <p className={styles.agenda}>Criar Imóvel</p>
 
             <form className={styles.form}>
+
+            <p className={styles.perfil}>Criar Imóvel</p>
 
               {/* Foto */}
               <div className={styles.campo}>
@@ -104,7 +108,6 @@
                   type="number"
                   className={styles.ajuste}
                   placeholder="R$ 0,00"
-                  value={number}
                   onChange={handleTelefoneChange}
                   required
                 />
@@ -118,7 +121,6 @@
                   type="number"
                   className={styles.ajuste}
                   placeholder="M²"
-                  value={number}
                   onChange={handleTelefoneChange}
                   required
                 />
@@ -132,7 +134,6 @@
                   type="number"
                   className={styles.ajuste}
                   placeholder="03"
-                  value={number}
                   onChange={handleTelefoneChange}
                   required
                 />
@@ -146,8 +147,7 @@
                   id="Quantidade de banheiros"
                   type="number"
                   className={styles.ajuste}
-                  placeholder="02"
-                  value={number}
+                  placeholder="02"          
                   onChange={handleTelefoneChange}
                   required
                 />
@@ -162,7 +162,6 @@
                   type="number"
                   className={styles.ajuste}
                   placeholder="02"
-                  value={number}
                   onChange={handleTelefoneChange}
                   required
                 />
@@ -172,12 +171,24 @@
               <div className={styles.campo}>
                 <label>Ambiente:</label>
                 <Select
-                className={styles.ambiente}
+                  className={styles.ambiente}
+                  classNamePrefix="ambiente" 
                   isMulti
                   options={ambienteOptions}
                   value={ambientes}
                   onChange={setAmbientes}
                   placeholder="Selecione os ambientes"
+                  styles={{
+                    control: (base, state) => ({
+                      ...base,
+                      border: "3px solid var(--azulClaro)", // aqui você define a borda
+                      borderRadius: "8px",          // opcional: arredondar
+                      boxShadow: state.isFocused ? "0 0 0 1px var(--vibrante)" : "none",
+                      "&:hover": {
+                        border: "3px solid var(--clean)"
+                      }
+                    })
+                  }}
                 />
               </div>
 
@@ -185,12 +196,24 @@
               <div className={styles.campo}>
                 <label>Conveniências:</label>
                 <Select
-                   className={styles.conveniencias}
+                  className={styles.conveniencias}
+                  classNamePrefix="rs" 
                   isMulti
                   options={convenienciaOptions}
                   value={conveniencias}
                   onChange={setConveniencias}
                   placeholder="Selecione as conveniências"
+                  styles={{
+                    control: (base, state) => ({
+                      ...base,
+                      border: "3px solid var(--azulClaro)", // aqui você define a borda
+                      borderRadius: "8px",          // opcional: arredondar
+                      boxShadow: state.isFocused ? "0 0 0 1px var(--vibrante)" : "none",
+                      "&:hover": {
+                        border: "3px solid var(--clean)"
+                      }
+                    })
+                  }}
                 />
               </div>
 
@@ -206,7 +229,7 @@
                 ></textarea>
               </div>
 
-              <button type="submit">Entrar</button>
+              <button type="submit">Enviar</button>
             </form>
 
           </div>
