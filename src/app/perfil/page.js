@@ -69,7 +69,7 @@ export default function Perfil() {
         if (!confirm("Tem certeza que deseja excluir sua conta?")) return;
 
         try {
-            const res = await fetch(`http://localhost:3001/usuario/${userId}`, {
+            const res = await fetch(`http://localhost:3100/usuario/${userId}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,

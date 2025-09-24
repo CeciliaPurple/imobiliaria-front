@@ -2,11 +2,15 @@
 
 import { useState } from "react";
 import styles from "./adm.module.css";
-import Select from "react-select";
 import dynamic from "next/dynamic";
 
+// Dynamic import do Select
+const Select = dynamic(() => import("react-select"), { 
+  ssr: false,
+  loading: () => <p>Carregando...</p>
+});
+
 export default function CriarIMovelAdm() {
-  const Select = dynamic(() => import("react-select"), { ssr: false });
 
   const [formData, setFormData] = useState({
     foto: '',
@@ -28,20 +32,26 @@ export default function CriarIMovelAdm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Corrigindo os nomes dos campos para corresponder ao que o backend espera
     const dadosParaEnviar = {
-      ...formData,
-      ambiente: ambientes.map(a => a.value).join(','),
-      conveniencias: conveniencias.map(c => c.value).join(','),
+      foto: formData.foto,
+      titulo: formData.titulo,
+      localizacao: formData.localizacao,
       valor: parseFloat(formData.valor),
       iptu: parseFloat(formData.iptu),
-      metros_quadrados: parseFloat(formData.metros_quadrados),
+      metrosQuadrados: parseFloat(formData.metros_quadrados),
       quartos: parseInt(formData.quartos),
       banheiros: parseInt(formData.banheiros),
-      garagens: parseInt(formData.garagens)
+      garagens: parseInt(formData.garagens),
+      ambiente: ambientes.map(a => a.value).join(','),
+      conveniencias: conveniencias.map(c => c.value).join(','),
+      descricao: formData.descricao
     };
 
     try {
-      const response = await fetch('http://localhost:3001/imovel', {
+      console.log('Dados sendo enviados:', dadosParaEnviar); // Para debug
+      
+      const response = await fetch('http://localhost:3100/imovel', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -49,8 +59,14 @@ export default function CriarIMovelAdm() {
         body: JSON.stringify(dadosParaEnviar)
       });
 
+      console.log('Status da resposta:', response.status);
+      console.log('Headers da resposta:', response.headers);
+
       if (response.ok) {
+        const result = await response.json();
+        console.log('Resposta do servidor:', result);
         alert('Imóvel criado com sucesso!');
+        
         // Limpar formulário
         setFormData({
           foto: '', titulo: '', localizacao: '', valor: '',
@@ -60,11 +76,28 @@ export default function CriarIMovelAdm() {
         setAmbientes([]);
         setConveniencias([]);
       } else {
-        alert('Erro ao criar imóvel');
+        // Primeiro, vamos ver o texto bruto da resposta
+        const responseText = await response.text();
+        console.log('Resposta bruta do servidor:', responseText);
+        console.log('Status:', response.status, response.statusText);
+        
+        // Tentar fazer parse do JSON apenas se houver conteúdo
+        let errorData = {};
+        if (responseText) {
+          try {
+            errorData = JSON.parse(responseText);
+          } catch (parseError) {
+            console.error('Erro ao fazer parse da resposta:', parseError);
+            errorData = { message: responseText };
+          }
+        }
+        
+        console.error('Erro do servidor:', errorData);
+        alert(`Erro ao criar imóvel (${response.status}): ${errorData.message || responseText || 'Erro desconhecido'}`);
       }
     } catch (error) {
-      console.error('Erro:', error);
-      alert('Erro de conexão');
+      console.error('Erro de rede/conexão:', error);
+      alert('Erro de conexão: ' + error.message);
     }
   };
 
@@ -72,11 +105,17 @@ export default function CriarIMovelAdm() {
     { value: "piscina", label: "Piscina" },
     { value: "escritorio", label: "Escritório" },
     { value: "closet", label: "Closet" },
+    { value: "amplo-arejado", label: "Amplo e arejado" },
+    { value: "sala-integrada", label: "Sala integrada" },
   ];
 
   const convenienciaOptions = [
     { value: "ar-condicionado", label: "Ar-Condicionado" },
     { value: "mobilhada", label: "Mobilhada" },
+    { value: "academia", label: "Academia" },
+    { value: "piscina", label: "Piscina" },
+    { value: "area-gourmet", label: "Área Gourmet" },
+    { value: "seguranca-24h", label: "Segurança 24h" },
   ];
 
   return (
@@ -134,6 +173,7 @@ export default function CriarIMovelAdm() {
               id="valor"
               className={styles.hora}
               type="number"
+              step="0.01"
               value={formData.valor}
               onChange={(e) => setFormData({...formData, valor: e.target.value})}
               placeholder="R$ 0,00"
@@ -147,6 +187,7 @@ export default function CriarIMovelAdm() {
             <input
               id="Iptu"
               type="number"
+              step="0.01"
               className={styles.ajuste}
               value={formData.iptu}
               onChange={(e) => setFormData({...formData, iptu: e.target.value})}
@@ -161,6 +202,7 @@ export default function CriarIMovelAdm() {
             <input
               id="metros"
               type="number"
+              step="0.01"
               className={styles.ajuste}
               value={formData.metros_quadrados}
               onChange={(e) => setFormData({...formData, metros_quadrados: e.target.value})}

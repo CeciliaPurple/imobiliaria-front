@@ -11,21 +11,21 @@
     font-weight: bold;
 }
 
-/*.container{
-    max-height: 85vh;
+.form{
+    max-height: 75vh;
      overflow-y: auto;
 }
 
-.container_filter::-webkit-scrollbar{
+.form::-webkit-scrollbar{
     display: none;
-}*/
+}
 
 .perfil{
     font-size: 34px;
     color: var(--escuro);
 }
 
-.form {
+.form { 
     display: flex;
     flex-direction: column;
     justify-self: center;
