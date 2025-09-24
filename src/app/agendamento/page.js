@@ -32,7 +32,7 @@ export default function Visita() {
                         <p><b>Tel:</b> {visita.tel}</p>
 
                         <div className={styles.btns}>
-                          <Link href='/agenda'><button type="button">Aceitar</button></Link>
+                          <Link href='/'><button type="button">Aceitar</button></Link>
                             <button type="button">Cancelar</button>
                         </div>
                     </div>

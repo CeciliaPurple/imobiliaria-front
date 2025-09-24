@@ -1,158 +1,170 @@
 .agenda {
-    justify-self: center;
-    margin-top: 25px;
-    background-color: var(--azulClaro);
-    width: 100%;
-    text-align: center;
-    align-self: center;
-    padding: 20px;
-    font-size: var(--h2);
-    color: var(--escuro);
-    font-weight: bold;
+  justify-self: center;
+  margin-top: 25px;
+  background-color: var(--azulClaro);
+  width: 100%;
+  text-align: center;
+  align-self: center;
+  padding: 20px;
+  font-size: var(--h2);
+  color: var(--escuro);
+  font-weight: bold;
 }
 
-.container{
-    display: flex;
-    flex-direction: column;
-    justify-self: center;
-    margin-top: 40px;
-    align-items: center;
-    padding-top: 30px;
-   
-    width: fit-content;
-    padding: 36px;
-    align-items: start;
-    gap: 30px;
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  margin-top: 40px;
+  align-items: center;
+  padding-top: 30px;
+
+  width: fit-content;
+  padding: 36px;
+  align-items: start;
+  gap: 30px;
 }
 
 .botao {
-    display: flex;
-    align-items: center;
-    justify-self: center;
-    gap: 8px; /* Espaço entre o texto e o ícone */
-    padding: 15px 25px;
-    background-color: #fff; /* branco, igual à imagem */
-    border: 3px solid var(--azulClaro);
-    color: var(--escuro);
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: bold;
-    transition: background-color 0.2s, box-shadow 0.2s;
-    flex-direction: row-reverse; 
-  }
-  
-  .botao:hover {
-    border-color: var(--clean);
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
-  }
-  
-  .texto {
-    display: inline-block;
-  }
-  
-.titulo1{
-    font-size: 40px;
-    color: var(--escuro);
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  gap: 8px;
+  /* Espaço entre o texto e o ícone */
+  padding: 15px 25px;
+  background-color: #fff;
+  /* branco, igual à imagem */
+  border: 3px solid var(--azulClaro);
+  color: var(--escuro);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  flex-direction: row-reverse;
 }
 
-.listagem{
-    font-size: 25px;
-    color: var(--escuro);
-    font-weight: bold;
+.botao:hover {
+  border-color: var(--clean);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.texto {
+  display: inline-block;
+}
+
+.titulo1 {
+  font-size: 40px;
+  color: var(--escuro);
+}
+
+.listagem {
+  font-size: 25px;
+  color: var(--escuro);
+  font-weight: bold;
 }
 
 .container input {
-    border: 3px solid var(--azulClaro);
-    border-radius: 10px;
-    padding: 10px;
-    font-size: var(--h4);
-    width: 500px;
+  border: 3px solid var(--azulClaro);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: var(--h4);
+  width: 500px;
 }
 
 .container input::placeholder {
-    justify-self: start;
-    color: var(--escuro);
-    font-size: var(--h4);
+  justify-self: start;
+  color: var(--escuro);
+  font-size: var(--h4);
 }
 
 .container input:focus {
-    outline: var(--escuro);
-    box-shadow: var(--escuro);
+  outline: var(--escuro);
+  box-shadow: var(--escuro);
 }
+
 .container input:hover {
-    border-color: var(--clean);
+  border-color: var(--clean);
 }
 
 .card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #f5f5f5; /* cor de fundo do card */
-    border-radius: 10px;
-    padding: 35px;
-    width: 800px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    gap: 15px;
-  }
-  
-  .imageWrapper {
-    flex-shrink: 0;
-  }
-  
-  .imagem {
-    width: 180px;
-    height: 90px;
-    border-radius: 10px;
-    object-fit: cover;
-  }
-  
-  .info {
-    flex-grow: 1;
-    position: relative;
-    left:30px;
-  }
-  
-  .titulo {
-    font-weight: 600;
-    font-size: 20px;
-    margin-bottom: 5px;
-  }
-  
-  .endereco {
-    font-size: 18px;
-    color: #555;
-  }
-  
-  .icons {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .icons img.heart {
-    width: 28px;
-    height: 28px;
-    cursor: pointer;
-    position: relative;
-    bottom: 40px;
-    left: 65px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f5f5f5;
+  /* cor de fundo do card */
+  border-radius: 10px;
+  padding: 35px;
+  width: 800px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  gap: 15px;
+}
 
-  .lixeira{
-    width: 18px;
-    height: 18px;
-    position: relative;
-    top: 30px;
-    left: 10px;
-  }
-  .editar{
-    width: 18px;
-    height: 19px;
-    position: relative;
-    top: 30px;
-    left: 15px;
-  }
+.imageWrapper {
+  flex-shrink: 0;
+}
 
-  
-  
+.imagem {
+  width: 180px;
+  height: 90px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.info {
+  flex-grow: 1;
+  position: relative;
+  left: 30px;
+}
+
+.titulo {
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: var(--escuro);
+}
+
+.endereco {
+  font-size: 18px;
+  color: #555;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icons img.heart {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  position: relative;
+  bottom: 55px;
+  left: 85px;
+}
+
+.lixeira {
+  position: relative;
+  top:20px;
+  border: 3px solid var(--clean);
+  cursor: pointer;
+}
+
+
+.lixeira button {
+  width: 18px;
+  height: 19px;
+}
+
+.editar {
+  position: relative;
+  top: 20px;
+  border: 3px solid var(--clean);
+  cursor: pointer;
+}
+
+.editar button {
+  width: 18px;
+  height: 19px;
+}

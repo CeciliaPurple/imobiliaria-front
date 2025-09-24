@@ -11,6 +11,15 @@
     font-weight: bold;
 }
 
+/*.container{
+    max-height: 85vh;
+     overflow-y: auto;
+}
+
+.container_filter::-webkit-scrollbar{
+    display: none;
+}*/
+
 .perfil{
     font-size: 34px;
     color: var(--escuro);

@@ -5,9 +5,7 @@ import styles from "./pefil.module.css";
 import heart from '../../../public/icons/heart-outline.svg';
 import Image from 'next/image';
 import casa from "../../../public/img/casaModerna.jpg"
-import { Edit2 } from "@deemlol/next-icons";
-import { Trash } from "@deemlol/next-icons";
-import { Plus } from "@deemlol/next-icons";
+import { Edit2, Trash2, Plus } from "lucide-react";
 
 export default function PerfilAdm() {
 
@@ -18,8 +16,8 @@ export default function PerfilAdm() {
       <div className={styles.container}>
 
         <button className={styles.botao}>
-            <span className={styles.texto}>Novo Imóvel</span>
-            <Plus size={24} color="#000" />
+          <span className={styles.texto}>Novo Imóvel</span>
+          <Plus size={24} color="#000" />
         </button>
 
 
@@ -44,8 +42,8 @@ export default function PerfilAdm() {
           </div>
           <div className={styles.icons}>
             <Image src={heart} alt="Favoritos" className={styles.heart} />
-            <Edit2 size={24} color="#375A76" className={styles.editar} />
-            <Trash size={24} color="#375A76" className={styles.lixeira} />
+            <button className={styles.editar}><Edit2 size={24} color="#375A76" /></button>
+            <button className={styles.lixeira}><Trash2 size={24} color="#375A76" /></button>
           </div>
         </div>
 
@@ -59,8 +57,8 @@ export default function PerfilAdm() {
           </div>
           <div className={styles.icons}>
             <Image src={heart} alt="Favoritos" className={styles.heart} />
-            <Edit2 size={24} color="#375A76" className={styles.editar} />
-            <Trash size={24} color="#375A76" className={styles.lixeira} />
+            <button className={styles.editar}><Edit2 size={24} color="#375A76" /></button>
+            <button className={styles.lixeira}><Trash2 size={24} color="#375A76" /></button>
           </div>
         </div>
 
@@ -74,8 +72,8 @@ export default function PerfilAdm() {
           </div>
           <div className={styles.icons}>
             <Image src={heart} alt="Favoritos" className={styles.heart} />
-            <Edit2 size={24} color="#375A76" className={styles.editar} />
-            <Trash size={24} color="#375A76" className={styles.lixeira} />
+            <button className={styles.editar}><Edit2 size={24} color="#375A76" /></button>
+            <button className={styles.lixeira}><Trash2 size={24} color="#375A76" /></button>
           </div>
         </div>
       </div>
