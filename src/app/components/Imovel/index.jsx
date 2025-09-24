@@ -2,7 +2,7 @@ import styles from './Imovel.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
 import Heart from '../../../../public/icons/white-heart-outline.svg';
-import Area from '../../../../public//icons/home-outline.svg';
+import Area from '../../../../public/icons/home-outline.svg';
 import Bedroom from '../../../../public/icons/bed-outline.svg';
 import Bathroom from '../../../../public/icons/water-outline.svg';
 import Car from '../../../../public/icons/car-outline.svg';
