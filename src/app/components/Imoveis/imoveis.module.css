@@ -23,6 +23,7 @@
     margin-left: 10px;
     /* desloca 10px para a direita */
     border-radius: 10px;
+    transition: transform 0.3s ease;
     border: 1px solid var(--background);
     transition: transform 0.2s;
     object-fit: cover;
@@ -148,7 +149,8 @@
     width: 400px;
     border-radius: 10px;
     height: 214px;
-    margin-bottom: -800px;
+    margin-bottom: -200px;
+    margin-top: 100px;
   
   }
   
@@ -156,13 +158,14 @@
     padding: 10px;
     gap: 10px;
     border-radius: 6px;
+    margin-top: 100px;
   }
   
   .vendalista {
     color: #375A76;
     display: flex;
-    margin-left: 230px;
-    margin-top: 26px;
+    margin-left: 190px;
+    margin-top: -66px;
     font-size: 27px;
     font-family: 'Anek Latin', sans-serif;
   }
@@ -200,7 +203,7 @@
     font-family: 'Anek Latin', sans-serif;
     font-size: 20px;
     margin-left: 65px;
-    margin-bottom: 440px;
+    margin-bottom: 410px;
   }
   
   .ambientelista {
@@ -216,7 +219,7 @@
     border-radius: 10px;
     background-color: var(--cinza);
     margin-left: 60px;
-    top: -430px;
+    top: -400px;
     border: #ddd;
     align-items: center;
     text-align: center;
@@ -233,7 +236,7 @@
     font-weight: bold;
     margin-left: 445px;
     position: relative;
-    top: -575px;
+    top: -540px;
   }
   
   .listaConveniencias {
@@ -246,7 +249,7 @@
     font-weight: bold;
     margin-left: 440px;
     position: relative;
-    top:-610px;
+    top:-580px;
     display: grid;
     grid-template-columns: repeat(2, 2fr);
     border: #555;
@@ -259,10 +262,13 @@
   
   .objdescrição {
     color: #375A76;
+    border-top: solid 2px #146FBA;
+    padding-top: 10px;
+    width: 800px; 
     font-size: 20px;
     font-family: anek latin;
     position: relative;
-    margin-top: -500px;
+    margin-top: -510px;
     margin-left: 60px;
     font-weight: bold;
   

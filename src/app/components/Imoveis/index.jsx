@@ -14,24 +14,24 @@ export default function Imoveis() {
 
                 <div className={styles.imageGallery}>
                     <div className={styles.leftImage}>
-                        <img src="/img/casaModerna.jpg" alt="casa" className={styles.largeImage} />
+                        <img src="/img/casa de praia.jpg" alt="casa" className={styles.largeImage} />
                     </div>
                     <div className={styles.rightImages}>
                         <img src="/img/cozinha.jpg" alt="cozinha" className={styles.smallImage1} />
-                        <img src="/img/banheiro.jpg" alt="banheiro" className={styles.smallImage2} />
+                        <img src="/img/quarto-ilhabela.jpg" alt="quarto" className={styles.smallImage2} />
                     </div>
                 </div>
             </div>
 
             <div className={styles.propriedadeInfo}>
                 <div className={styles.bloco1}>
-                    <h2 className={styles.title}>Espaço, conforto e localização privilegiada: Sobrado com 3 dormitórios e 120m² a poucos passos da Martin de Sá — viva o melhor do litoral!
+                    <h2 className={styles.title}>Espaço, conforto e localização privilegiada: Sobrado com 4 dormitórios e 120m² a poucos passos da ilhabela — viva o melhor do litoral!
                         <div className={styles.Hearticon}>
                         <Image src="/icons/heart.svg" alt="favorito" width={50} height={50} />
                         </div>
                     </h2>
 
-                    <h3 className={styles.subtitle}>avenida Doutor. Arthur da Costa Filho.martir de sá.caraguatatuba/sp
+                    <h3 className={styles.subtitle}>Avenida Dom João V, Ilhabela - SP.
                         <div className={styles.locationicon} >
                         <Image src="/icons/location.svg" alt="location" width={30} height={30} />
                         </div>
@@ -59,20 +59,20 @@ export default function Imoveis() {
                 </div>
 
                 <div className={styles.venda}>
-                    <p className={styles.infovenda}>
-                        <p className={styles.vendalista} >
-                            <p>R$850.000</p>
-                        </p>
+                    <div className={styles.infovenda}>
+                        <div className={styles.vendalista} >
+                            <p>R$1.250.000.00</p>
+                        </div>
                         <p className={styles.vendalista2}>
                             <p>Venda</p>
                         </p>
-                        <p className={styles.iptu}>
+                        <div className={styles.iptu}>
                             <p>IPTU</p>
-                        </p>
-                        <p className={styles.numero}>
-                            <p>R$ 1.200/ano</p>
-                        </p>
-                    </p>
+                        </div>
+                        <div className={styles.numero}>
+                            <p>R$ 1.530/ano</p>
+                        </div>
+                    </div>
                     <button className={styles.agendarButton}>
                         Agendar Visita
                     </button>
@@ -80,8 +80,6 @@ export default function Imoveis() {
                     <button className={styles.contactButton}>
                         Entrar em Contato
                     </button>
-
-                   
                 </div>
             </div>
 
