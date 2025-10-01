@@ -1,18 +1,17 @@
 import Image from 'next/image';
-import styles from './imoveis.module.css'
-
-// caminhos diretos para os ícones da pasta public/icons
-const Heart = "/icons/heart.svg";
-const Home = "/icons/home.svg";
-const Location = "/icons/location.svg";
-const Bed = "/icons/bed.svg";
-const Car = "/icons/car.svg";
-const Water = "/icons/water.svg";
+import Heart from '../../../../public/icons/Heart.svg'
+import Home from '../../../../public/icons/Home.svg'
+import Location from '../../../../public/icons/Location.svg'
+import Bed from "/public/icons/bed.svg";
+import Car from "/public/icons/car.svg";
+import Water from '../../../../public/icons/water.svg'
+import styles from '../Imoveis/imoveis.module.css'
 
 export default function Imoveis() {
     return (
         <div>
             <div className={styles.imageGallery}>
+
                 <div className={styles.imageGallery}>
                     <div className={styles.leftImage}>
                         <img src="/img/casa de praia.jpg" alt="casa" className={styles.largeImage} />
@@ -26,44 +25,46 @@ export default function Imoveis() {
 
             <div className={styles.propriedadeInfo}>
                 <div className={styles.bloco1}>
-                    <h2 className={styles.title}>
-                        Espaço, conforto e localização privilegiada: Sobrado com 4 dormitórios e 120m² a poucos passos da ilhabela — viva o melhor do litoral
+                    <h2 className={styles.title}>Espaço, conforto e localização privilegiada: Sobrado com 4 dormitórios e 120m² a poucos passos da ilhabela — viva o melhor do litoral!
+                        <div className={styles.Hearticon}>
+                        <Image src="/icons/heart.svg" alt="favorito" width={50} height={50} />
+                        </div>
                     </h2>
 
-                    <h3 className={styles.subtitle}>
-                        Avenida Dom João V, Ilhabela - SP.
-                        <div className={styles.locationicon}>
-                            <Image src={Location} alt="location" width={30} height={30} />
+                    <h3 className={styles.subtitle}>Avenida Dom João V, Ilhabela - SP.
+                        <div className={styles.locationicon} >
+                        <Image src="/icons/location.svg" alt="location" width={30} height={30} />
                         </div>
                     </h3>
 
                     <div className={styles.caracteristicas}>
                         <div className={styles.item}>
-                            <Image src={Bed} alt="quartos" width={30} height={30} />
+                            <Image src="/icons/bed.svg" alt="quartos" width={30} height={30} />
                             <span>4 Quartos</span>
                         </div>
                         <div className={styles.item}>
-                            <Image src={Water} alt="banheiros" width={30} height={30} />
+                            <Image src="/icons/Water.svg" alt="banheiros" width={30} height={30} />
                             <span>2 Banheiros</span>
                         </div>
                         <div className={styles.item}>
-                            <Image src={Car} alt="vagas" width={30} height={30} />
+                            <Image src="/icons/car.svg" alt="vagas" width={30} height={30} />
                             <span>3 Vagas</span>
                         </div>
                         <div className={styles.item}>
-                            <Image src={Home} alt="metragem" width={30} height={30} />
+                            <Image src="/icons/Home.svg" alt="metragem" width={30} height={30} />
                             <span>120 m²</span>
                         </div>
                     </div>
+
                 </div>
 
                 <div className={styles.venda}>
                     <div className={styles.infovenda}>
-                        <div className={styles.vendalista}>
-                            <p>R$1.250.000,00</p>
+                        <div className={styles.vendalista} >
+                            <p>R$1.250.000.00</p>
                         </div>
                         <p className={styles.vendalista2}>
-                            <span>Venda</span>
+                            <p>Venda</p>
                         </p>
                         <div className={styles.iptu}>
                             <p>IPTU</p>
@@ -82,24 +83,27 @@ export default function Imoveis() {
                 </div>
             </div>
 
-            <div className={styles.objambiente}>
-                <p>ambiente</p>
-            </div>
-            <div className={styles.ambientelista}>
-                <p>Área de Serviços</p>
-                <p>Quintal</p>
-                <p>Closet</p>
-                <p>Piscina</p>
-                <p>Escritório</p>
-            </div>
+
+           
+                <div className={styles.objambiente}>
+                    <p>ambiente</p>
+                </div>
+                <div className={styles.ambientelista}>
+                    <p>Área de Serviços</p>
+                    <p>quintal</p>
+                    <p>Closet</p>
+                    <p>Piscina</p>
+                    <p>Escritório</p>
+                </div>
 
             <div className={styles.Conveniencias}>
-                <p className={styles.objConveniencias}>Conveniências</p>
-                <div className={styles.listaConveniencias}>
+                <p className={styles.objConveniencias}>Conveniencias</p>
+                <p className={styles.listaConveniencias}>
                     <p>Mobiliado</p>
                     <p>Ar-condicionado</p>
-                </div>
+                </p>
             </div>
+
 
             <div className={styles.descriçao}>
                 <p className={styles.objdescrição}>Descrição</p>
@@ -118,5 +122,6 @@ export default function Imoveis() {
                 </div>
             </div>
         </div>
+
     );
 }
