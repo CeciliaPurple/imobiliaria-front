@@ -1,5 +1,5 @@
 import Topo from "./components/Topo";
-import Imoveis from "./components/Imoveis/index";
+import Imoveis from "./imovelCasa/page";
 export default function Home() {
   return (
     <div>

@@ -18,7 +18,7 @@
   
   .largeImage {
     width: 110vh;
-    height: 64vh;
+    height: 58vh;
     /* mantém a altura que você colocou */
     margin-left: 10px;
     /* desloca 10px para a direita */
@@ -118,7 +118,9 @@
     display: flex;
     gap: 40px;
     flex-wrap: wrap;
-    margin-top: 30px;
+    position: relative;
+    bottom: 40px;
+    margin-top: 80px;
     margin-left: 60px;
     color: #375A76;
     font-weight: bold;
@@ -219,10 +221,14 @@
     border-radius: 10px;
     background-color: var(--cinza);
     margin-left: 60px;
-    top: -400px;
+    top: -390px;
     border: #ddd;
     align-items: center;
     text-align: center;
+  }
+
+  .descriçao{
+    margin-top: 82px;
   }
   
   
@@ -249,7 +255,7 @@
     font-weight: bold;
     margin-left: 440px;
     position: relative;
-    top:-580px;
+    top:-570px;
     display: grid;
     grid-template-columns: repeat(2, 2fr);
     border: #555;
@@ -268,7 +274,9 @@
     font-size: 20px;
     font-family: anek latin;
     position: relative;
-    margin-top: -510px;
+    margin-top: -530px;
+    position: relative;
+    bottom: 30px;
     margin-left: 60px;
     font-weight: bold;
   
