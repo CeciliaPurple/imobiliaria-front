@@ -8,10 +8,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "@deemlol/next-icons": "^0.1.9",
     "framer-motion": "^12.23.16",
+    "lucide-react": "^0.544.0",
     "next": "^15.5.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-input-mask": "^2.0.4"
+    "react-input-mask": "^2.0.4",
+    "react-select": "^5.10.2"
   }
 }

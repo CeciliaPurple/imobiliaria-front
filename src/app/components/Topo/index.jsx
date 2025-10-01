@@ -28,13 +28,13 @@ export default function Topo() {
             </Link>
 
             <div className={styles.nav}>
-                <Link href="/" className={styles.nav_link}>Imóveis</Link>
-                <Link href="#sobre" className={styles.nav_link}>Sobre</Link>
-                <Link href="/agenda" className={styles.nav_link}>Minhas Visitas</Link>
+                <Link href="/filtro" className={styles.nav_link}>Imóveis</Link>
+                <Link href="/#sobre" className={styles.nav_link}>Sobre</Link>
+                <Link href="/visita" className={styles.nav_link}>Minhas Visitas</Link>
             </div>
 
             <div className={styles.container_icons}>
-                <Link href="/"><Image src={Heart} alt="favoritos" /></Link>
+                <Link href="/favoritos"><Image src={Heart} alt="favoritos" /></Link>
 
                 {isLoggedIn ? (
                     <Link href="/perfil">
