@@ -50,7 +50,7 @@ export default function Imovel() {
                 {/*Preço e Ver mais*/}
                 <div className={styles.price}>
                     <h3>R$2.596.000</h3>
-                    <Link href="/"><button className={styles.more}>Ver mais</button></Link>
+                    <Link href="/imovelCasa"><button className={styles.more}>Ver mais</button></Link>
                 </div>
             </div>
         </div>
