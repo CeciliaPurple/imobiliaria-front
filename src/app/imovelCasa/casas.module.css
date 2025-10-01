@@ -1,0 +1,353 @@
+.propriedadeCard {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 20px auto;
+    box-shadow: 0 2px 8px var(--background);
+    background-color: var(--cinza);
+  }
+  
+  
+  .imageGallery {
+    display: flex;
+    gap: 30px;
+    right: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  
+  .largeImage {
+    width: 110vh;
+    height: 58vh;
+    /* mantém a altura que você colocou */
+    margin-left: 10px;
+    /* desloca 10px para a direita */
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    border: 1px solid var(--background);
+    transition: transform 0.2s;
+    object-fit: cover;
+  }
+  
+  .leftImage {
+    flex: 10px;
+    width: 110vh;
+    height: 100px;
+    right: 900px;
+    border-radius: 10px;
+    border: 1px var(--background);
+    transition: transform 0.2s;
+    object-fit: cover;
+  }
+  
+  .leftImage:hover {
+    transform: scale(1.03);
+  }
+  
+  .rightImages {
+    display: flex;
+    top: 200px;
+    flex-direction: column;
+    gap: 10px;
+    /* Espaço igual entre as duas imagens pequenas */
+    flex: 0.7;
+    max-width: 700px;
+  }
+  
+  .smallImage1,
+  .smallImage2 {
+    width: 85vh;
+    /* Ocupa toda largura do container da direita */
+    height: 300px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: transform 0.2s;
+  }
+  
+  .smallImage1:hover,
+  .smallImage2:hover {
+    transform: scale(1.03);
+  }
+  
+  .title {
+    font-size: 22px;
+    margin-bottom: 8px;
+    bottom: 100px;
+    margin-left: 60px;
+    color: #375A76;
+  }
+  
+  .subtitle {
+    font-size: 16px;
+    margin-bottom: 6px;
+    margin-top: 50px;
+    margin-left: 90px;
+    color: #375A76;
+  }
+  
+.locationicon{
+  margin-left: -33px;  
+  margin-top: -29px;    
+}
+
+.preco {
+    font-size: 24px;
+    font-weight: bold;
+    color: #375A76;
+    font-family: 'Anek Latin', sans-serif;
+  }
+  
+  .propriedadeInfo {
+    padding: 8px 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .bloco1 {
+    width: 65%;
+  }
+  
+  
+  .location {
+    color: #555;
+    margin-bottom: 12px;
+  }
+  
+  .caracteristicas {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    position: relative;
+    bottom: 40px;
+    margin-top: 80px;
+    margin-left: 60px;
+    color: #375A76;
+    font-weight: bold;
+    align-items: center;
+  }
+  
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+  }
+  
+.Hearticon{
+    width: 40px;
+    height: 40px;
+    display: flex;
+    margin-left: 1190px;
+    margin-top: -60px;
+    font-size: 27px;
+  }
+  
+  .venda {
+    color: #375A76;
+    background-color: #E3F2FF;
+    font-weight: bold;
+    margin-right: 150px;
+    width: 400px;
+    border-radius: 10px;
+    height: 214px;
+    margin-bottom: -200px;
+    margin-top: 100px;
+  
+  }
+  
+  .infovenda {
+    padding: 10px;
+    gap: 10px;
+    border-radius: 6px;
+    margin-top: 100px;
+  }
+  
+  .vendalista {
+    color: #375A76;
+    display: flex;
+    margin-left: 190px;
+    margin-top: -66px;
+    font-size: 27px;
+    font-family: 'Anek Latin', sans-serif;
+  }
+  
+  
+  
+  .vendalista2 {
+    color: #375A76;
+    display: flex;
+    margin-right: 70px;
+    margin-left: 30px;
+    margin-top: -30px;
+    font-size: 30px;
+    font-family: 'Anek Latin', sans-serif;
+  }
+  
+  .iptu {
+    color: #375A76;
+    margin-right: 70px;
+    margin-left: 40px;
+    margin-top: 5px;
+  }
+  
+  .numero {
+    margin-left: 250px;
+    margin-top: -20px;
+  }
+  
+ 
+
+
+  .objambiente {
+    color: #375A76;
+    font-weight: bold;
+    font-family: 'Anek Latin', sans-serif;
+    font-size: 20px;
+    margin-left: 65px;
+    margin-bottom: 410px;
+  }
+  
+  .ambientelista {
+    width: 300px;
+    height: 118px;
+    display: grid;
+    filter: var(--sombra-caixa);
+    grid-template-columns: repeat(3, 2fr);
+    color: #146FBA;
+    font-weight: bold;
+    position: relative;
+    align-items: flex-start;
+    border-radius: 10px;
+    background-color: var(--cinza);
+    margin-left: 60px;
+    top: -390px;
+    border: #ddd;
+    align-items: center;
+    text-align: center;
+  }
+
+  .descriçao{
+    margin-top: 82px;
+  }
+  
+  
+  .objConveniencias {
+    width: 300px;
+    height: 64px;
+    font-size: 18px;
+    font-family: anek-latin, sans-serif;
+    color: #375A76;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-left: 445px;
+    position: relative;
+    top: -540px;
+  }
+  
+  .listaConveniencias {
+    width: 300px;
+    height: 64px;
+    filter: var(--sombra-caixa);
+    color: #146FBA;
+    background-color: var(--cinza);
+    border-radius: 10px;
+    font-weight: bold;
+    margin-left: 440px;
+    position: relative;
+    top:-570px;
+    display: grid;
+    grid-template-columns: repeat(2, 2fr);
+    border: #555;
+    align-items: center;
+    text-align: center;
+  
+  }
+  
+
+  
+  .objdescrição {
+    color: #375A76;
+    border-top: solid 2px #146FBA;
+    padding-top: 10px;
+    width: 800px; 
+    font-size: 20px;
+    font-family: anek latin;
+    position: relative;
+    margin-top: -530px;
+    position: relative;
+    bottom: 30px;
+    margin-left: 60px;
+    font-weight: bold;
+  
+  }
+  
+  .descricaolista {
+    color: #375A76;
+    display: flex;
+    margin-left: 60px;
+    gap: 30px;
+    color: #375A76;
+    flex-direction: column;
+  }
+  
+  .textodescrição {
+    font-size: medium;
+    margin-left: 60px;
+    color: #375A76;
+  
+  }
+  
+  
+  .titulo {
+    font-weight: bold;
+    margin-left: 20px;
+    color: #375A76;
+    font-family: anek-latin, sans-serif;
+  }
+  
+  
+  .contactButton {
+    padding: 10px 20px;
+    background-color: var(--cinza);
+    color: #146FBA;
+    border: none;
+    filter: var(--sombra-caixa);
+    margin-left: 40px;
+    border-radius: 10px;
+    width: 154px;
+    height: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    transform: translateY(30px);
+  
+  }
+  
+  
+  .agendarButton {
+    padding: 10px 20px;
+    background-color: var(--vibrante);
+    color: var(--cinza);
+    border: none;
+    bottom: 40px;
+    margin-left: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 154px;
+    filter: var(--sombra-caixa);
+    height: 50px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    transform: translateY(23px);
+  
+  }
+  
+  .contactButton:hover {
+    background-color: #fff;
+  }
+  
+  .agendarButton:hover {
+    background-color: #375A76;
+  }
+  

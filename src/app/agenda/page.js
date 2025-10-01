@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import styles from "./agenda.module.css";
+import Link from "next/link";
 
 export default function Visitas() {
   const [telefone, setTelefone] = useState("");
@@ -76,7 +77,7 @@ export default function Visitas() {
             required
           ></textarea>
 
-          <button type='submit'>Entrar</button>
+          <Link href={'/visita'}><button type='submit'>Enviar</button></Link>
         </form>
       </div>
     </div>
