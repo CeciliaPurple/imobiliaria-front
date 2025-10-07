@@ -1,23 +1,16 @@
 "use client"; // se estiver em /app do Next.js
-
-import { useState, useEffect } from "react";
 import styles from './Topo.module.css';
 import Logo from '../../../../public/villa-logo-nome.png';
 import Heart from '../../../../public/icons/heart-outline.svg';
+import Settings from '../../../../public/icons/settings.png';
 import User from '../../../../public/icons/person-circle-outline.svg';
 import Link from 'next/link';
+import { useAuthStore } from "@/stores/userStore";
 import Image from 'next/image';
 
 export default function Topo() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    useEffect(() => {
-        // Checa no localStorage se o usuário está logado
-        const token = localStorage.getItem("token"); // ou outro nome que você use
-        if (token) {
-            setIsLoggedIn(true);
-        }
-    }, []);
+    const { user ,isLoggedIn } = useAuthStore();
 
     return (
         <div
@@ -30,13 +23,14 @@ export default function Topo() {
             <div className={styles.nav}>
                 <Link href="/filtro" className={styles.nav_link}>Imóveis</Link>
                 <Link href="/#sobre" className={styles.nav_link}>Sobre</Link>
-                <Link href="/visita" className={styles.nav_link}>Minhas Visitas</Link>
+               {user?.tipo === 'adm' ? <Link href="/agendamento" className={styles.nav_link}>Visitas Agendadas</Link> : <Link href="/agendar" className={styles.nav_link}>Agendar Visita</Link>}
             </div>
 
             <div className={styles.container_icons}>
-                <Link href="/favoritos"><Image src={Heart} alt="favoritos" /></Link>
+                
+                { user?.tipo === 'adm' ? <Link href="/perfiladm"><Image className={styles.setting} src={Settings} alt="Setting" /></Link> : <Link href="/favoritos"><Image src={Heart} alt="favoritos" /></Link>}
 
-                {isLoggedIn ? (
+                {isLoggedIn ?(
                     <Link href="/perfil">
                         <Image src={User} alt="perfil" />
                     </Link>

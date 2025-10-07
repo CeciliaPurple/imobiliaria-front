@@ -30,7 +30,7 @@
   align-items: center;
   justify-self: center;
   gap: 8px;
-  /* Espaço entre o texto e o ícone */
+ text-decoration: none;
   padding: 15px 25px;
   background-color: #fff;
   /* branco, igual à imagem */

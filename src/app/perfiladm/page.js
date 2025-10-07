@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import styles from "./pefil.module.css";
 import heart from '../../../public/icons/heart-outline.svg';
 import Image from 'next/image';
@@ -15,10 +15,10 @@ export default function PerfilAdm() {
 
       <div className={styles.container}>
 
-        <button className={styles.botao}>
+      <Link href="/criarimovel" className={styles.botao}>
           <span className={styles.texto}>Novo Imóvel</span>
           <Plus size={24} color="#000" />
-        </button>
+      </Link>
 
 
         <p className={styles.listagem}>Listagem Imóveis</p>

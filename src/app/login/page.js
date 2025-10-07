@@ -5,6 +5,7 @@ import styles from './login.module.css'
 import { useRouter } from 'next/navigation';
 import Image from 'next/image'
 import Link from 'next/link'
+import { useAuthStore } from '../../stores/userStore';
 import Logo from '../../../public/villa-logo-nome.png';
 import { useState } from "react";
 
@@ -14,6 +15,8 @@ export default function Login() {
     const [senha, setSenha] = useState("");
 
     const router = useRouter();
+
+    const { login } = useAuthStore();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,8 +31,8 @@ export default function Login() {
 
         if (response.ok) {
             alert("Login realizado com sucesso!");
-            localStorage.setItem("token", data.token);
-            router.push("/"); // ✅ redireciona para a página Home
+            login({id: data.id, email:data.email, tipo:data.tipo}, data.token); // salva no Zustand
+            router.push("/");
 
         } else {
             alert(data.error || "Email ou Senha incorreto ");
