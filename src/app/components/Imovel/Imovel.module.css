@@ -3,29 +3,49 @@
     filter: var(--sombra-caixa);
     border-radius: var(--curve);
     color: var(--escuro);
+    transition: all 0.3s ease-in-out;
+}
+
+.container_home:hover {
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .image_container {
     width: 100%;
     height: 225px;
     position: relative;
-    background-image: 
-        linear-gradient(to top, rgba(0, 0, 0, 1), transparent 35%),
-        image-set(url('../../../../public/img/sobrado1.jpg'));
-    background-size: cover;
-    background-position: center;
     border-top-left-radius: var(--curve);
     border-top-right-radius: var(--curve);
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    padding: 15px 20px;
+    overflow: hidden;
 }
 
-.image_container h3 {
-    color: var(--background);
-    font-size: var(--h3);
-    font-weight: normal;
+.background_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+}
+
+.image_content {
+    position: absolute;
+    bottom: 15px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    z-index: 1;
 }
 
 .heart {
