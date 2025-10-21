@@ -76,7 +76,7 @@ export default function Visitas() {
             required
           ></textarea>
 
-          <button type='submit'>Entrar</button>
+          <button type='submit'>Agendar Visita</button>
         </form>
       </div>
     </div>
