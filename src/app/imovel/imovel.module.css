@@ -1,17 +1,21 @@
 .gallery_container {
     background-color: yellowgreen;
     width: 100%;
-    height: 700px;
+    min-height: 700px; /* melhor que height fixa */
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 40px 150px;
     gap: 40px;
+    flex-wrap: wrap; /* evita quebra feia em telas menores */
+    box-sizing: border-box; /* garante alinhamento consistente */
 }
 
 .imgG {
     width: 60%;
     height: 100%;
+    object-fit: cover; /* mantém proporção sem distorcer */
+    border-radius: 8px; /* opcional: deixa mais bonito */
 }
 
 .images_group {
@@ -20,12 +24,17 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* compatível e previsível */
     align-items: center;
     gap: 20px;
+    box-sizing: border-box;
+    padding: 10px; /* adiciona um respiro interno */
+    border-radius: 8px; /* opcional */
 }
 
 .imgP {
     width: 100%;
     height: 300px;
+    object-fit: cover; /* evita distorção da imagem */
+    border-radius: 6px; /* opcional */
 }
