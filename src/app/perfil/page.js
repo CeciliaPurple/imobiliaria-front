@@ -141,9 +141,7 @@ export default function Perfil() {
 
                     <button className={styles.atualizar} type='submit'>Atualizar</button>
                     <button className={styles.excluir} type='button' onClick={handleDelete}>Excluir</button>
-                    <Link href="/" >
-                        <button className={styles.logout} type='button' onClick={handleLogout}>Sair</button>
-                    </Link>
+                    <button className={styles.logout} type='button' onClick={handleLogout}>Sair</button>
                 </form>
             </div>
         </div>
