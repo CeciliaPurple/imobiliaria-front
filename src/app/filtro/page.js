@@ -293,7 +293,7 @@ export default function Filtro() {
                                     <h2>R$2.500.000,00</h2>
                                     <h5>IPTU: R$ 1,350</h5>
                                 </div>
-                                <Link href="/"><button className={styles.more}>Ver mais</button></Link>
+                                <Link href="/imovelCasa"><button className={styles.more}>Ver mais</button></Link>
                             </div>
                         </div>
                     </div>

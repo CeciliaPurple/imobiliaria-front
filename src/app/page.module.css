@@ -47,11 +47,9 @@
 }
 
 .container_imovel {
-    width: fit-content;
     padding: 50px 5%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
 }
 
 .container_imovel h2 {
@@ -60,12 +58,19 @@
 }
 
 .carrossel {
-    width: fit-content;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-items: center;
-    gap: 2%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.carrossel_content {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+  transition: transform 0.5s ease-in-out;
+  width: max-content;
+  padding: 20px;
 }
 
 /*Sobre a Villa Indaiá*/
@@ -101,6 +106,7 @@
 .text {
     font-size: var(--h4);
 }
+
 .container_title_about {
     margin-left: 40px;
     margin-bottom: 20px;

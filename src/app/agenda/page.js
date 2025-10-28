@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import styles from "./agenda.module.css";
+import Link from "next/link";
 
 export default function Visitas() {
   const [telefone, setTelefone] = useState("");
