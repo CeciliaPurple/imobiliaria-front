@@ -7,6 +7,7 @@ import Bedroom from '../../../../public/icons/bed-outline.svg';
 import Bathroom from '../../../../public/icons/water-outline.svg';
 import Car from '../../../../public/icons/car-outline.svg';
 import Location from '../../../../public/icons/location-outline.svg';
+import Casa1 from "/public/img/casaModerna.jpg";
 
 export default function Imovel({ imagemSrc, titulo, area, bed, bath, car, location, city, price }) {
     return (  
