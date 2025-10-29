@@ -51,7 +51,7 @@ export default function CriarIMovelAdm() {
     try {
       console.log('Dados sendo enviados:', dadosParaEnviar); // Para debug
       
-      const response = await fetch('http://localhost:3100/imovel', {
+      const response = await fetch('http://localhost:3100/imoveis', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
