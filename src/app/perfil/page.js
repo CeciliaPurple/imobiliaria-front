@@ -6,24 +6,26 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Logo from '../../../public/villa-logo-nome.png';
 import { useState, useEffect } from "react";
+import { useAuthStore } from "@/stores/userStore"; // ✅ IMPORTADO
 
 export default function Perfil() {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
-    const [userId, setUserId] = useState(null); // ✅ ADICIONE ESTA LINHA
+    const [userId, setUserId] = useState(null);
 
     const router = useRouter();
+    const { logout } = useAuthStore(); // ✅ PEGANDO FUNÇÃO LOGOUT DA STORE
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
     // Pegar dados do usuário ao carregar a página
     useEffect(() => {
         if (!token) return;
 
-        const id = localStorage.getItem("userId"); // Mudei o nome da variável para evitar confusão
+        const id = localStorage.getItem("userId");
         if (!id) return;
 
-        setUserId(id); // ✅ DEFINE O ESTADO
+        setUserId(id);
 
         fetch(`http://localhost:3100/usuario/${id}`, {
             method: "GET",
@@ -37,7 +39,7 @@ export default function Perfil() {
                 console.log("Dados do usuário:", data);
                 setNome(data.nome || "");
                 setEmail(data.email || "");
-                setSenha(data.senha || ""); // ✅ CORRIGIDO: estava setNome, deveria ser setSenha
+                setSenha(data.senha || "");
             })
             .catch(err => console.error(err));
     }, [token]);
@@ -46,7 +48,7 @@ export default function Perfil() {
     const handleUpdate = async (e) => {
         e.preventDefault();
 
-        if (!userId) { // ✅ ADICIONA VERIFICAÇÃO DE SEGURANÇA
+        if (!userId) {
             alert("Erro: usuário não identificado");
             return;
         }
@@ -64,7 +66,7 @@ export default function Perfil() {
             if (!res.ok) throw new Error("Erro ao atualizar");
 
             alert("Dados atualizados com sucesso!");
-            setSenha(""); // limpa campo senha
+            setSenha("");
         } catch (err) {
             console.error(err);
             alert("Erro ao atualizar usuário");
@@ -75,13 +77,13 @@ export default function Perfil() {
     const handleDelete = async () => {
         if (!confirm("Tem certeza que deseja excluir sua conta?")) return;
 
-        if (!userId) { // ✅ ADICIONA VERIFICAÇÃO DE SEGURANÇA
+        if (!userId) {
             alert("Erro: usuário não identificado");
             return;
         }
 
         try {
-            const res = await fetch(`http://localhost:3100/usuario/${userId}`, { // ✅ CORRIGIDO: estava 3100, deveria ser 3001
+            const res = await fetch(`http://localhost:3100/usuario/${userId}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -91,20 +93,18 @@ export default function Perfil() {
 
             if (!res.ok) throw new Error("Erro ao excluir usuário");
 
-            localStorage.removeItem("token");
-            localStorage.removeItem("userId"); // ✅ BOA PRÁTICA: remove userId também
+            logout(); // ✅ USA LOGOUT DA STORE
             alert("Conta excluída com sucesso!");
-            router.push("/"); // redireciona
+            router.push("/");
         } catch (err) {
             console.error(err);
             alert("Erro ao excluir usuário");
         }
     };
 
-    // Logout
+    // ✅ LOGOUT ATUALIZADO - USA A FUNÇÃO DA STORE
     const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId"); // ✅ BOA PRÁTICA: remove userId também
+        logout(); // Limpa tudo: localStorage + Zustand
         router.push("/login");
     };
 
@@ -141,6 +141,7 @@ export default function Perfil() {
 
                     <button className={styles.atualizar} type='submit'>Atualizar</button>
                     <button className={styles.excluir} type='button' onClick={handleDelete}>Excluir</button>
+                    {/* ✅ REMOVIDO O <Link> - BOTÃO FUNCIONA SOZINHO */}
                     <button className={styles.logout} type='button' onClick={handleLogout}>Sair</button>
                 </form>
             </div>
