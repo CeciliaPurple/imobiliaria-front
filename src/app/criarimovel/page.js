@@ -5,7 +5,7 @@ import styles from "./adm.module.css";
 import dynamic from "next/dynamic";
 
 // Dynamic import do Select
-const Select = dynamic(() => import("react-select"), { 
+const Select = dynamic(() => import("react-select"), {
   ssr: false,
   loading: () => <p>Carregando...</p>
 });
@@ -22,11 +22,12 @@ export default function CriarIMovelAdm() {
     quartos: '',
     banheiros: '',
     garagens: '',
+    ambiente: [],
+    conveniencias: [],
+    destaque: false,
+    lancamento: false,
     descricao: ''
   });
-
-  const [ambientes, setAmbientes] = useState([]);
-  const [conveniencias, setConveniencias] = useState([]);
 
   // Enviar form pro back
   const handleSubmit = async (e) => {
@@ -43,14 +44,16 @@ export default function CriarIMovelAdm() {
       quartos: parseInt(formData.quartos),
       banheiros: parseInt(formData.banheiros),
       garagens: parseInt(formData.garagens),
-      ambiente: ambientes.map(a => a.value).join(','),
-      conveniencias: conveniencias.map(c => c.value).join(','),
+      ambiente: formData.ambiente.map(a => a.value).join(','),        
+      conveniencias: formData.conveniencias.map(c => c.value).join(','), 
+      destaque: formData.destaque,
+      lancamento: formData.lancamento,
       descricao: formData.descricao
     };
 
     try {
-      console.log('Dados sendo enviados:', dadosParaEnviar); // Para debug
-      
+      console.log('Dados sendo enviados:', dadosParaEnviar);
+
       const response = await fetch('http://localhost:3100/imoveis', {
         method: 'POST',
         headers: {
@@ -60,44 +63,62 @@ export default function CriarIMovelAdm() {
       });
 
       console.log('Status da resposta:', response.status);
-      console.log('Headers da resposta:', response.headers);
 
       if (response.ok) {
         const result = await response.json();
         console.log('Resposta do servidor:', result);
         alert('Imóvel criado com sucesso!');
-        
-        // Limpar formulário
+
+        // Limpar formulário - CORRIGIDO
         setFormData({
-          foto: '', titulo: '', localizacao: '', valor: '',
-          iptu: '', metros_quadrados: '', quartos: '',
-          banheiros: '', garagens: '', descricao: ''
+          foto: '',
+          titulo: '',
+          localizacao: '',
+          valor: '',
+          iptu: '',
+          metros_quadrados: '',
+          quartos: '',
+          banheiros: '',
+          garagens: '',
+          ambiente: [],           // ⬅️ CORRIGIDO
+          conveniencias: [],      // ⬅️ CORRIGIDO
+          destaque: false,        // ⬅️ CORRIGIDO (era "detaque")
+          lancamento: false,
+          descricao: ''
         });
-        setAmbientes([]);
-        setConveniencias([]);
       } else {
-        // Primeiro, vamos ver o texto bruto da resposta
-        const responseText = await response.text();
-        console.log('Resposta bruta do servidor:', responseText);
-        console.log('Status:', response.status, response.statusText);
-        
-        // Tentar fazer parse do JSON apenas se houver conteúdo
+        // Verificar o Content-Type da resposta
+        const contentType = response.headers.get('content-type');
         let errorData = {};
-        if (responseText) {
-          try {
-            errorData = JSON.parse(responseText);
-          } catch (parseError) {
-            console.error('Erro ao fazer parse da resposta:', parseError);
-            errorData = { message: responseText };
+
+        try {
+          if (contentType && contentType.includes('application/json')) {
+            errorData = await response.json();
+          } else {
+            const responseText = await response.text();
+            console.log('Resposta não-JSON do servidor:', responseText);
+            errorData = {
+              message: 'Erro no servidor. Verifique se a API está rodando corretamente.'
+            };
           }
+        } catch (parseError) {
+          console.error('Erro ao processar resposta:', parseError);
+          errorData = {
+            message: 'Erro ao processar resposta do servidor'
+          };
         }
-        
+
         console.error('Erro do servidor:', errorData);
-        alert(`Erro ao criar imóvel (${response.status}): ${errorData.message || responseText || 'Erro desconhecido'}`);
+        alert(`Erro ao criar imóvel (${response.status}): ${errorData.message || 'Erro desconhecido'}`);
       }
     } catch (error) {
       console.error('Erro de rede/conexão:', error);
-      alert('Erro de conexão: ' + error.message);
+
+      if (error.message.includes('fetch')) {
+        alert('Erro de conexão: Verifique se o servidor backend está rodando em http://localhost:3100');
+      } else {
+        alert('Erro de conexão: ' + error.message);
+      }
     }
   };
 
@@ -134,7 +155,7 @@ export default function CriarIMovelAdm() {
               aria-label="Foto"
               type="url"
               value={formData.foto}
-              onChange={(e) => setFormData({...formData, foto: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, foto: e.target.value })}
               placeholder="Cole o link da imagem"
               required
             />
@@ -147,7 +168,7 @@ export default function CriarIMovelAdm() {
               id="titulo"
               type="text"
               value={formData.titulo}
-              onChange={(e) => setFormData({...formData, titulo: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
               placeholder="Digite o título"
               required
             />
@@ -160,7 +181,7 @@ export default function CriarIMovelAdm() {
               id="localizacao"
               type="text"
               value={formData.localizacao}
-              onChange={(e) => setFormData({...formData, localizacao: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, localizacao: e.target.value })}
               placeholder="Digite a localização"
               required
             />
@@ -175,7 +196,7 @@ export default function CriarIMovelAdm() {
               type="number"
               step="0.01"
               value={formData.valor}
-              onChange={(e) => setFormData({...formData, valor: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, valor: e.target.value })}
               placeholder="R$ 0,00"
               required
             />
@@ -190,7 +211,7 @@ export default function CriarIMovelAdm() {
               step="0.01"
               className={styles.ajuste}
               value={formData.iptu}
-              onChange={(e) => setFormData({...formData, iptu: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, iptu: e.target.value })}
               placeholder="R$ 0,00"
               required
             />
@@ -205,7 +226,7 @@ export default function CriarIMovelAdm() {
               step="0.01"
               className={styles.ajuste}
               value={formData.metros_quadrados}
-              onChange={(e) => setFormData({...formData, metros_quadrados: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, metros_quadrados: e.target.value })}
               placeholder="M²"
               required
             />
@@ -219,7 +240,7 @@ export default function CriarIMovelAdm() {
               type="number"
               className={styles.ajuste}
               value={formData.quartos}
-              onChange={(e) => setFormData({...formData, quartos: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, quartos: e.target.value })}
               placeholder="03"
               required
             />
@@ -233,7 +254,7 @@ export default function CriarIMovelAdm() {
               type="number"
               className={styles.ajuste}
               value={formData.banheiros}
-              onChange={(e) => setFormData({...formData, banheiros: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, banheiros: e.target.value })}
               placeholder="02"
               required
             />
@@ -247,13 +268,13 @@ export default function CriarIMovelAdm() {
               type="number"
               className={styles.ajuste}
               value={formData.garagens}
-              onChange={(e) => setFormData({...formData, garagens: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, garagens: e.target.value })}
               placeholder="02"
               required
             />
           </div>
 
-          {/* Ambiente */}
+          {/* Ambiente - CORRIGIDO */}
           <div className={styles.campo}>
             <label>Ambiente:</label>
             <Select
@@ -261,8 +282,8 @@ export default function CriarIMovelAdm() {
               classNamePrefix="ambiente"
               isMulti
               options={ambienteOptions}
-              value={ambientes}
-              onChange={setAmbientes}
+              value={formData.ambiente}
+              onChange={(selected) => setFormData({ ...formData, ambiente: selected || [] })} // ⬅️ CORRIGIDO
               placeholder="Selecione os ambientes"
               styles={{
                 control: (base, state) => ({
@@ -278,7 +299,7 @@ export default function CriarIMovelAdm() {
             />
           </div>
 
-          {/* Conveniências */}
+          {/* Conveniências - CORRIGIDO */}
           <div className={styles.campo}>
             <label>Conveniências:</label>
             <Select
@@ -286,8 +307,8 @@ export default function CriarIMovelAdm() {
               classNamePrefix="rs"
               isMulti
               options={convenienciaOptions}
-              value={conveniencias}
-              onChange={setConveniencias}
+              value={formData.conveniencias}
+              onChange={(selected) => setFormData({ ...formData, conveniencias: selected || [] })} // ⬅️ CORRIGIDO
               placeholder="Selecione as conveniências"
               styles={{
                 control: (base, state) => ({
@@ -303,6 +324,30 @@ export default function CriarIMovelAdm() {
             />
           </div>
 
+          {/* Destaque */}
+          <div className={styles.campo}>
+            <label htmlFor="Destaque?">Deseja Colocar imóvel em destaque?</label>
+            <input
+              id="destaque"
+              type="checkbox"
+              className={styles.ajuste}
+              checked={formData.destaque}
+              onChange={(e) => setFormData({ ...formData, destaque: e.target.checked })}
+            />
+          </div>
+
+          {/* Lançamento */}
+          <div className={styles.campo}>
+            <label htmlFor="Lancamento?">Deseja Colocar imóvel em lançamento?</label>
+            <input
+              id="lancamento"
+              type="checkbox"
+              className={styles.ajuste}
+              checked={formData.lancamento}
+              onChange={(e) => setFormData({ ...formData, lancamento: e.target.checked })}
+            />
+          </div>
+
           {/* Descrição */}
           <div className={styles.campo}>
             <label htmlFor="observacoes">Descrição</label>
@@ -310,7 +355,7 @@ export default function CriarIMovelAdm() {
               id="observacoes"
               className={styles.obs}
               value={formData.descricao}
-              onChange={(e) => setFormData({...formData, descricao: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
               placeholder="Digite a descrição do imóvel"
               required
             ></textarea>

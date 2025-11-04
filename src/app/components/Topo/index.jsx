@@ -23,7 +23,7 @@ export default function Topo() {
             <div className={styles.nav}>
                 <Link href="/filtro" className={styles.nav_link}>Imóveis</Link>
                 <Link href="/#sobre" className={styles.nav_link}>Sobre</Link>
-               {user?.tipo === 'adm' ? <Link href="/agendamento" className={styles.nav_link}>Visitas Agendadas</Link> : <Link href="/agenda" className={styles.nav_link}>Agendar Visita</Link>}
+               {user?.tipo === 'adm' ? <Link href="/agendamento" className={styles.nav_link}>Visitas Agendadas</Link> : <Link href="/agendamento" className={styles.nav_link}>Agenda de Visitas</Link>}
             </div>
 
             <div className={styles.container_icons}>

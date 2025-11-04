@@ -6,45 +6,60 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Logo from '../../../public/villa-logo-nome.png';
 import { useState, useEffect } from "react";
-import { useAuthStore } from "@/stores/userStore"; // ✅ IMPORTADO
+import { useAuthStore } from "@/stores/userStore";
 
 export default function Perfil() {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [userId, setUserId] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const router = useRouter();
-    const { logout } = useAuthStore(); // ✅ PEGANDO FUNÇÃO LOGOUT DA STORE
-    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const { logout, token, user, isLoggedIn } = useAuthStore();
 
-    // Pegar dados do usuário ao carregar a página
+    // ✅ Pegar dados do usuário ao carregar a página
     useEffect(() => {
-        if (!token) return;
+       
 
-        const id = localStorage.getItem("userId");
-        if (!id) return;
+        if (!isLoggedIn || !token || !user?.id) {
+            console.log("❌ Usuário não autenticado - redirecionando para login");
+            router.push("/login");
+            return;
+        }
 
-        setUserId(id);
-
-        fetch(`http://localhost:3100/usuario/${id}`, {
+        fetch(`http://localhost:3100/usuario/${user.id}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
         })
-            .then(res => res.json())
-            .then(data => {
-                console.log("Dados do usuário:", data);
-                setNome(data.nome || "");
-                setEmail(data.email || "");
-                setSenha(data.senha || "");
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`Erro HTTP: ${res.status}`);
+                }
+                return res.json();
             })
-            .catch(err => console.error(err));
-    }, [token]);
+            .then(data => {
+                console.log("✅ Resposta completa da API:", data);
+                
+           
+                const usuario = data.profile || data.usuario || data.data || data;
+                
+                
+                setNome(usuario.nome || "");
+                setEmail(usuario.email || "");
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("❌ Erro ao buscar usuário:", err);
+                alert("Erro ao carregar dados do perfil. Verifique o console.");
+                setLoading(false);
+            });
+    }, [token, user, isLoggedIn, router]);
 
-    // Atualizar usuário
+
     const handleUpdate = async (e) => {
         e.preventDefault();
 
@@ -54,13 +69,20 @@ export default function Perfil() {
         }
 
         try {
+            const bodyData = { nome, email };
+            
+            // Só envia senha se foi preenchida
+            if (senha && senha.trim() !== "") {
+                bodyData.senha = senha;
+            }
+
             const res = await fetch(`http://localhost:3100/usuario/${userId}`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ nome, email, senha }),
+                body: JSON.stringify(bodyData),
             });
 
             if (!res.ok) throw new Error("Erro ao atualizar");
@@ -73,7 +95,7 @@ export default function Perfil() {
         }
     };
 
-    // Excluir usuário
+    // ✅ Excluir usuário
     const handleDelete = async () => {
         if (!confirm("Tem certeza que deseja excluir sua conta?")) return;
 
@@ -93,7 +115,7 @@ export default function Perfil() {
 
             if (!res.ok) throw new Error("Erro ao excluir usuário");
 
-            logout(); // ✅ USA LOGOUT DA STORE
+            logout();
             alert("Conta excluída com sucesso!");
             router.push("/");
         } catch (err) {
@@ -102,11 +124,21 @@ export default function Perfil() {
         }
     };
 
-    // ✅ LOGOUT ATUALIZADO - USA A FUNÇÃO DA STORE
+    // ✅ Logout
     const handleLogout = () => {
-        logout(); // Limpa tudo: localStorage + Zustand
+        logout();
         router.push("/login");
     };
+
+    if (loading) {
+        return (
+            <div className={styles.back}>
+                <div className={styles.container}>
+                    <p>Carregando...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.back}>
@@ -134,14 +166,13 @@ export default function Perfil() {
 
                     <input
                         type='password'
-                        placeholder='Senha'
+                        placeholder='Nova senha (deixe em branco para manter)'
                         value={senha}
                         onChange={(e) => setSenha(e.target.value)}
                     />
 
                     <button className={styles.atualizar} type='submit'>Atualizar</button>
                     <button className={styles.excluir} type='button' onClick={handleDelete}>Excluir</button>
-                    {/* ✅ REMOVIDO O <Link> - BOTÃO FUNCIONA SOZINHO */}
                     <button className={styles.logout} type='button' onClick={handleLogout}>Sair</button>
                 </form>
             </div>
