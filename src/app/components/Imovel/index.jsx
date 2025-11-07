@@ -55,13 +55,14 @@ export default function Imovel({ id, imagemSrc, titulo, area, bed, bath, car, lo
                     <Image src={Location} alt='localização' />
                     <div>
                         <p><b>{location || "Rua João Maetini - barravelha"}</b></p>
-                        <p>{city || "Ilhabela"}- SP</p>
                     </div>
                 </div>
+                
                 {/*Preço e Ver mais*/}
                 <div className={styles.price}>
                     <h3>R${price || "2.596.000"}</h3>
-                    <Link href={`/imoveis/${id}`}>
+                    {/* IMPORTANTE: Certifique-se de que o id está sendo passado corretamente */}
+                    <Link href={`/imovelCasa/${id}`}>
                         <button className={styles.more}>Ver mais</button>
                     </Link>
                 </div>
