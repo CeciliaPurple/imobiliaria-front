@@ -21,12 +21,10 @@ export default function ImovelDetalhes() {
   useEffect(() => {
     const fetchImovel = async () => {
       try {
-        console.log('🔍 Buscando imóvel ID:', params.id);
         const response = await fetch(`http://localhost:3100/imoveis/${params.id}`);
 
         if (response.ok) {
           const data = await response.json();
-          console.log('✅ Dados recebidos:', data);
           setImovel(data.imovel || data);
           setLoading(false);
         } else {
@@ -96,7 +94,6 @@ export default function ImovelDetalhes() {
           </div>
           <div className={styles.thumbnail}>
             <img src={imovel.foto} alt={imovel.titulo} />
-            <div className={styles.morePhotos}>+ 5</div>
           </div>
         </div>
       </div>
