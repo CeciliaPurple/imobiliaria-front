@@ -12,7 +12,6 @@ export default function Perfil() {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
-    const [userId, setUserId] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const router = useRouter();
@@ -20,13 +19,17 @@ export default function Perfil() {
 
     // ✅ Pegar dados do usuário ao carregar a página
     useEffect(() => {
-       
+        console.log('🔍 Verificando autenticação...');
+        console.log('User:', user);
+        console.log('Token:', token ? 'Presente' : 'Ausente');
 
         if (!isLoggedIn || !token || !user?.id) {
             console.log("❌ Usuário não autenticado - redirecionando para login");
             router.push("/login");
             return;
         }
+
+        console.log('✅ Usuário autenticado, ID:', user.id);
 
         fetch(`http://localhost:3100/usuario/${user.id}`, {
             method: "GET",
@@ -44,9 +47,10 @@ export default function Perfil() {
             .then(data => {
                 console.log("✅ Resposta completa da API:", data);
                 
-           
+                // A API pode retornar em diferentes formatos
                 const usuario = data.profile || data.usuario || data.data || data;
                 
+                console.log('👤 Dados do usuário:', usuario);
                 
                 setNome(usuario.nome || "");
                 setEmail(usuario.email || "");
@@ -59,11 +63,10 @@ export default function Perfil() {
             });
     }, [token, user, isLoggedIn, router]);
 
-
     const handleUpdate = async (e) => {
         e.preventDefault();
 
-        if (!userId) {
+        if (!user?.id) {
             alert("Erro: usuário não identificado");
             return;
         }
@@ -76,7 +79,9 @@ export default function Perfil() {
                 bodyData.senha = senha;
             }
 
-            const res = await fetch(`http://localhost:3100/usuario/${userId}`, {
+            console.log('🔄 Atualizando usuário:', user.id, bodyData);
+
+            const res = await fetch(`http://localhost:3100/usuario/${user.id}`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -85,27 +90,32 @@ export default function Perfil() {
                 body: JSON.stringify(bodyData),
             });
 
-            if (!res.ok) throw new Error("Erro ao atualizar");
+            if (!res.ok) {
+                const error = await res.json();
+                throw new Error(error.message || "Erro ao atualizar");
+            }
 
             alert("Dados atualizados com sucesso!");
             setSenha("");
         } catch (err) {
-            console.error(err);
-            alert("Erro ao atualizar usuário");
+            console.error('❌ Erro ao atualizar:', err);
+            alert("Erro ao atualizar usuário: " + err.message);
         }
     };
 
     // ✅ Excluir usuário
     const handleDelete = async () => {
-        if (!confirm("Tem certeza que deseja excluir sua conta?")) return;
+        if (!confirm("Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita!")) return;
 
-        if (!userId) {
+        if (!user?.id) {
             alert("Erro: usuário não identificado");
             return;
         }
 
         try {
-            const res = await fetch(`http://localhost:3100/usuario/${userId}`, {
+            console.log('🗑️ Excluindo usuário:', user.id);
+
+            const res = await fetch(`http://localhost:3100/usuario/${user.id}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -113,14 +123,17 @@ export default function Perfil() {
                 },
             });
 
-            if (!res.ok) throw new Error("Erro ao excluir usuário");
+            if (!res.ok) {
+                const error = await res.json();
+                throw new Error(error.message || "Erro ao excluir usuário");
+            }
 
             logout();
             alert("Conta excluída com sucesso!");
             router.push("/");
         } catch (err) {
-            console.error(err);
-            alert("Erro ao excluir usuário");
+            console.error('❌ Erro ao excluir:', err);
+            alert("Erro ao excluir usuário: " + err.message);
         }
     };
 
@@ -166,7 +179,7 @@ export default function Perfil() {
 
                     <input
                         type='password'
-                        placeholder='Nova senha (deixe em branco para manter)'
+                        placeholder='Nova senha '
                         value={senha}
                         onChange={(e) => setSenha(e.target.value)}
                     />
