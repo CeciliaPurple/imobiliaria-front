@@ -65,7 +65,7 @@ export default function Filtro() {
         if (filtros.tipos.length > 0) {
             resultado = resultado.filter(imovel => {
                 const tituloLower = imovel.titulo?.toLowerCase() || '';
-                return filtros.tipos.some(tipo => 
+                return filtros.tipos.some(tipo =>
                     tituloLower.includes(tipo.toLowerCase())
                 );
             });
@@ -182,24 +182,24 @@ export default function Filtro() {
                 </div>
 
                 {/* Botão Limpar Filtros */}
-                {(filtros.localizacao || filtros.tipos.length > 0 || filtros.precoMin || 
-                  filtros.precoMax || filtros.quartos.length > 0 || filtros.banheiros.length > 0 || 
-                  filtros.vagas.length > 0) && (
-                    <button 
-                        onClick={limparFiltros}
-                        style={{
-                            padding: '8px 16px',
-                            background: '#222020ff',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer',
-                            marginBottom: '16px'
-                        }}
-                    >
-                        Limpar Filtros
-                    </button>
-                )}
+                {(filtros.localizacao || filtros.tipos.length > 0 || filtros.precoMin ||
+                    filtros.precoMax || filtros.quartos.length > 0 || filtros.banheiros.length > 0 ||
+                    filtros.vagas.length > 0) && (
+                        <button
+                            onClick={limparFiltros}
+                            style={{
+                                padding: '8px 16px',
+                                background: '#222020ff',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: 'pointer',
+                                marginBottom: '16px'
+                            }}
+                        >
+                            Limpar Filtros
+                        </button>
+                    )}
 
                 {/* Localização */}
                 <div className={styles.container_group}>
@@ -360,8 +360,8 @@ export default function Filtro() {
                 ) : (
                     imoveisFiltrados.map(imovel => (
                         <div className={styles.container_home} key={imovel.id}>
-                            <img 
-                                src={imovel.foto || '/img/luxo.jpg'} 
+                            <img
+                                src={imovel.foto || '/img/luxo.jpg'}
                                 alt={imovel.titulo}
                                 className={styles.image}
                             />
@@ -402,9 +402,10 @@ export default function Filtro() {
                                             <h2>{formatarPreco(imovel.valor)}</h2>
                                             <h5>IPTU: {formatarPreco(imovel.iptu)}</h5>
                                         </div>
-                                        <Link href={`/imovel/${imovel.id}`}>
+                                        <Link href={`/imovelCasa/${imovel.id}`}>
                                             <button className={styles.more}>Ver mais</button>
                                         </Link>
+
                                     </div>
                                 </div>
                             </div>

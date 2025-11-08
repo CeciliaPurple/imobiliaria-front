@@ -21,12 +21,12 @@ export default function ImovelDetalhes() {
   useEffect(() => {
     const fetchImovel = async () => {
       try {
-        console.log('Buscando imóvel ID:', params.id);
+        console.log('🔍 Buscando imóvel ID:', params.id);
         const response = await fetch(`http://localhost:3100/imoveis/${params.id}`);
 
         if (response.ok) {
           const data = await response.json();
-          console.log('Dados recebidos:', data);
+          console.log('✅ Dados recebidos:', data);
           setImovel(data.imovel || data);
           setLoading(false);
         } else {
@@ -34,7 +34,7 @@ export default function ImovelDetalhes() {
           setLoading(false);
         }
       } catch (error) {
-        console.error('Erro ao buscar imóvel:', error);
+        console.error('❌ Erro ao buscar imóvel:', error);
         setError('Erro ao carregar imóvel');
         setLoading(false);
       }
@@ -126,16 +126,16 @@ export default function ImovelDetalhes() {
               <span>{imovel.metrosQuadrados} m²</span>
             </div>
             <div className={styles.feature}>
-              <Image src={Car} alt="vagas" width={20} height={20} />
-              <span>{imovel.garagens} Quartos</span>
+              <Image src={Bed} alt="quartos" width={20} height={20} />
+              <span>{imovel.quartos} Quartos</span>
             </div>
             <div className={styles.feature}>
               <Image src={Water} alt="banheiros" width={20} height={20} />
               <span>{imovel.banheiros} Banheiros</span>
             </div>
             <div className={styles.feature}>
-              <Image src={Bed} alt="quartos" width={20} height={20} />
-              <span>{imovel.quartos} Vagas</span>
+              <Image src={Car} alt="vagas" width={20} height={20} />
+              <span>{imovel.garagens} Vagas</span>
             </div>
           </div>
 
@@ -183,14 +183,10 @@ export default function ImovelDetalhes() {
             <span className={styles.iptuValue}>{iptuFormatado}</span>
           </div>
 
-          <Link href="/agenda">
-            <button className={styles.scheduleButton}>Agendar visita</button>
-          </Link>
-
+          {/* ✅ MANTÉM APENAS ESTE BOTÃO COM O ID */}
           <Link href={`/agenda?imovel=${params.id}`}>
             <button className={styles.scheduleButton}>Agendar visita</button>
           </Link>
-
         </div>
       </div>
     </div>
