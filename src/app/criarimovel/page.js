@@ -123,19 +123,23 @@ export default function CriarIMovelAdm() {
   };
 
   const ambienteOptions = [
-    { value: "piscina", label: "Piscina" },
-    { value: "escritorio", label: "Escritório" },
+    { value: "area-de-servicos", label: "Área de Serviços" },
+    { value: "area-gourmet", label: "Área Gourmet" },
     { value: "closet", label: "Closet" },
-    { value: "amplo-arejado", label: "Amplo e arejado" },
+    { value: "escritorio", label: "Escritório" },
+    { value: "jardim", label: "Jardim" },
+    { value: "lavanderia", label: "Lavanderia" },
+    { value: "piscina", label: "Piscina" },
+    { value: "quintal", label: "Quintal" },
     { value: "sala-integrada", label: "Sala integrada" },
   ];
 
   const convenienciaOptions = [
-    { value: "ar-condicionado", label: "Ar-Condicionado" },
-    { value: "mobilhada", label: "Mobilhada" },
     { value: "academia", label: "Academia" },
-    { value: "piscina", label: "Piscina" },
-    { value: "area-gourmet", label: "Área Gourmet" },
+    { value: "ar-condicionado", label: "Ar-Condicionado" },
+    { value: "armarios-planejados", label: "Armários Planejados" },
+    { value: "hidromassagem", label: "Hidromassagem" },
+    { value: "mobiliado", label: "Mobiliado" },
     { value: "seguranca-24h", label: "Segurança 24h" },
   ];
 
@@ -326,11 +330,11 @@ export default function CriarIMovelAdm() {
 
           {/* Destaque */}
           <div className={styles.campo}>
-            <label htmlFor="Destaque?">Deseja Colocar imóvel em destaque?</label>
+            <label htmlFor="Destaque?">Deseja colocar imóvel em destaque?</label>
             <input
               id="destaque"
               type="checkbox"
-              className={styles.ajuste}
+              className={styles.check}
               checked={formData.destaque}
               onChange={(e) => setFormData({ ...formData, destaque: e.target.checked })}
             />
@@ -338,11 +342,11 @@ export default function CriarIMovelAdm() {
 
           {/* Lançamento */}
           <div className={styles.campo}>
-            <label htmlFor="Lancamento?">Deseja Colocar imóvel em lançamento?</label>
+            <label htmlFor="Lancamento?">Deseja colocar imóvel em lançamento?</label>
             <input
               id="lancamento"
               type="checkbox"
-              className={styles.ajuste}
+              className={styles.check}
               checked={formData.lancamento}
               onChange={(e) => setFormData({ ...formData, lancamento: e.target.checked })}
             />

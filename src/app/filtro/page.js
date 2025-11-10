@@ -358,7 +358,18 @@ export default function Filtro() {
                 <div className={styles.container_group}>
                     <h3>Ambientes</h3>
                     <div className={styles.container_grid}>
-                        {['Área de Serviços', 'Closet', 'Escritório', 'Jardim', 'Lavanderia', 'Piscina', 'Quintal'].map(amb => (
+                        {[
+                            'Área de Serviços', 
+                            'Área Gourmet',
+                            'Closet', 
+                            'Escritório', 
+                            'Jardim', 
+                            'Lavanderia', 
+                            'Piscina', 
+                            'Quintal',
+                            'Sala integrada',
+                            
+                        ].map(amb => (
                             <div className={styles.select} key={amb}>
                                 <input
                                     type='checkbox'
@@ -376,7 +387,14 @@ export default function Filtro() {
                 <div className={styles.container_group}>
                     <h3>Conveniências</h3>
                     <div className={styles.container_grid}>
-                        {['Ar-condicionado', 'Armários Planejados', 'Hidromassagem', 'Mobiliado'].map(conv => (
+                        {[
+                            'Academia', 
+                            'Ar-condicionado',
+                            'Armários Planejados', 
+                            'Hidromassagem', 
+                            'Mobiliado',
+                            'Segurança 24h'
+                        ].map(conv => (
                             <div className={styles.select} key={conv}>
                                 <input
                                     type='checkbox'

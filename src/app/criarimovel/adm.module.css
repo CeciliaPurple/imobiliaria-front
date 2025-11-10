@@ -111,7 +111,10 @@
     border-color: var(--azulClaro);
 }
 
-
+.check {
+    width: 25px;
+    height: 25px;
+}
 
 .container button {
     background-color: var(--vibrante);

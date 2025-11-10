@@ -65,7 +65,7 @@ export default function Login() {
 
 
 
-                <p>Nâo possui uma conta? <Link href="/cadastro" className={styles.link}><b>Clique aqui!</b></Link></p>
+                <p>Não possui uma conta? <Link href="/cadastro" className={styles.link}><b>Clique aqui!</b></Link></p>
             </div>
         </div>
     )
