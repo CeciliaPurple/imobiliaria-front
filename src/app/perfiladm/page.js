@@ -80,7 +80,7 @@ export default function PerfilAdm() {
   };
 
   const handleEditar = (id) => {
-    router.push(`/editarimovel?id=${id}`);
+    router.push(`/criarimovel?id=${id}`);
   };
 
   const handleExcluir = async (id) => {
