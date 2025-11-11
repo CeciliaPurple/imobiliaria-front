@@ -18,18 +18,22 @@ const inria = Inria_Sans({
   weight: ['300', '400', '700'],
 });
 
-
-
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 
-  // Páginas que NÃO vão ter topo e footer
   const noLayoutPages = ['/cadastro', '/login', '/perfil'];
-
   const showLayout = !noLayoutPages.includes(pathname);
 
   return (
     <html lang="pt-br" className={anek.className}>
+      <head>
+        <title>Villa Indaiá</title>
+        <meta
+          name="description"
+          content="Encontre o imóvel dos seus sonhos com a Villa Imobiliária."
+        />
+        <link rel="icon" href="/villa-logo-img.png" type="image/png" />
+      </head>
       <body className={inria.className}>
         {showLayout && <Topo />}
         {children}

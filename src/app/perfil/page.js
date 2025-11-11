@@ -6,82 +6,116 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Logo from '../../../public/villa-logo-nome.png';
 import { useState, useEffect } from "react";
+import { useAuthStore } from "@/stores/userStore";
 
 export default function Perfil() {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
-    const [userId, setUserId] = useState(null); // ✅ ADICIONE ESTA LINHA
+    const [loading, setLoading] = useState(true);
 
     const router = useRouter();
-    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const { logout, token, user, isLoggedIn } = useAuthStore();
 
-    // Pegar dados do usuário ao carregar a página
+    // ✅ Pegar dados do usuário ao carregar a página
     useEffect(() => {
-        if (!token) return;
+        console.log('🔍 Verificando autenticação...');
+        console.log('User:', user);
+        console.log('Token:', token ? 'Presente' : 'Ausente');
 
-        const id = localStorage.getItem("userId"); // Mudei o nome da variável para evitar confusão
-        if (!id) return;
+        if (!isLoggedIn || !token || !user?.id) {
+            console.log("❌ Usuário não autenticado - redirecionando para login");
+            router.push("/login");
+            return;
+        }
 
-        setUserId(id); // ✅ DEFINE O ESTADO
+        console.log('✅ Usuário autenticado, ID:', user.id);
 
-        fetch(`http://localhost:3100/usuario/${id}`, {
+        fetch(`http://localhost:3100/usuario/${user.id}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
         })
-            .then(res => res.json())
-            .then(data => {
-                console.log("Dados do usuário:", data);
-                setNome(data.nome || "");
-                setEmail(data.email || "");
-                setSenha(data.senha || ""); // ✅ CORRIGIDO: estava setNome, deveria ser setSenha
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`Erro HTTP: ${res.status}`);
+                }
+                return res.json();
             })
-            .catch(err => console.error(err));
-    }, [token]);
+            .then(data => {
+                console.log("✅ Resposta completa da API:", data);
+                
+                // A API pode retornar em diferentes formatos
+                const usuario = data.profile || data.usuario || data.data || data;
+                
+                console.log('👤 Dados do usuário:', usuario);
+                
+                setNome(usuario.nome || "");
+                setEmail(usuario.email || "");
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("❌ Erro ao buscar usuário:", err);
+                alert("Erro ao carregar dados do perfil. Verifique o console.");
+                setLoading(false);
+            });
+    }, [token, user, isLoggedIn, router]);
 
-    // Atualizar usuário
     const handleUpdate = async (e) => {
         e.preventDefault();
 
-        if (!userId) { // ✅ ADICIONA VERIFICAÇÃO DE SEGURANÇA
+        if (!user?.id) {
             alert("Erro: usuário não identificado");
             return;
         }
 
         try {
-            const res = await fetch(`http://localhost:3100/usuario/${userId}`, {
+            const bodyData = { nome, email };
+            
+            // Só envia senha se foi preenchida
+            if (senha && senha.trim() !== "") {
+                bodyData.senha = senha;
+            }
+
+            console.log('🔄 Atualizando usuário:', user.id, bodyData);
+
+            const res = await fetch(`http://localhost:3100/usuario/${user.id}`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ nome, email, senha }),
+                body: JSON.stringify(bodyData),
             });
 
-            if (!res.ok) throw new Error("Erro ao atualizar");
+            if (!res.ok) {
+                const error = await res.json();
+                throw new Error(error.message || "Erro ao atualizar");
+            }
 
             alert("Dados atualizados com sucesso!");
-            setSenha(""); // limpa campo senha
+            setSenha("");
         } catch (err) {
-            console.error(err);
-            alert("Erro ao atualizar usuário");
+            console.error('❌ Erro ao atualizar:', err);
+            alert("Erro ao atualizar usuário: " + err.message);
         }
     };
 
-    // Excluir usuário
+    // ✅ Excluir usuário
     const handleDelete = async () => {
-        if (!confirm("Tem certeza que deseja excluir sua conta?")) return;
+        if (!confirm("Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita!")) return;
 
-        if (!userId) { // ✅ ADICIONA VERIFICAÇÃO DE SEGURANÇA
+        if (!user?.id) {
             alert("Erro: usuário não identificado");
             return;
         }
 
         try {
-            const res = await fetch(`http://localhost:3100/usuario/${userId}`, { // ✅ CORRIGIDO: estava 3100, deveria ser 3001
+            console.log('🗑️ Excluindo usuário:', user.id);
+
+            const res = await fetch(`http://localhost:3100/usuario/${user.id}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -89,24 +123,35 @@ export default function Perfil() {
                 },
             });
 
-            if (!res.ok) throw new Error("Erro ao excluir usuário");
+            if (!res.ok) {
+                const error = await res.json();
+                throw new Error(error.message || "Erro ao excluir usuário");
+            }
 
-            localStorage.removeItem("token");
-            localStorage.removeItem("userId"); // ✅ BOA PRÁTICA: remove userId também
+            logout();
             alert("Conta excluída com sucesso!");
-            router.push("/"); // redireciona
+            router.push("/");
         } catch (err) {
-            console.error(err);
-            alert("Erro ao excluir usuário");
+            console.error('❌ Erro ao excluir:', err);
+            alert("Erro ao excluir usuário: " + err.message);
         }
     };
 
-    // Logout
+    // ✅ Logout
     const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId"); // ✅ BOA PRÁTICA: remove userId também
+        logout();
         router.push("/login");
     };
+
+    if (loading) {
+        return (
+            <div className={styles.back}>
+                <div className={styles.container}>
+                    <p>Carregando...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.back}>
@@ -136,19 +181,17 @@ export default function Perfil() {
 
                     <input
                         type='password'
-                        placeholder='Senha'
+                        placeholder='Nova senha '
                         value={senha}
                         onChange={(e) => setSenha(e.target.value)}
                     />
-                </form>
-                 <div className={styles.buttonGroup}>
-                        <button className={styles.atualizar} type='submit'>Atualizar</button>
-                        <button className={styles.excluir} type='button' onClick={handleDelete}>Excluir</button>
-                    </div>
 
-                    <Link href="/" className={styles.logout}>
+                    <button className={styles.atualizar} type='submit'>Atualizar</button>
+                    <button className={styles.excluir} type='button' onClick={handleDelete}>Excluir</button>
+                    <Link href="/" >
                         <button className={styles.logout} type='button' onClick={handleLogout}>Sair</button>
                     </Link>
+                </form>
             </div>
         </div>
     );

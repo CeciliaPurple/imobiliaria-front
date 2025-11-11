@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from "./page.module.css";
 import Imovel from "./components/Imovel";
 import Image from "next/image";
@@ -9,34 +9,50 @@ import Construct from '../../public/icons/construct.svg';
 import SetaD from '../../public/icons/chevron-forward.svg';
 import SetaE from '../../public/icons/chevron-back-outline.svg';
 import Gallery from '../../public/img/groupImage.png';
-import Casa1 from '../../public/img/casa.jpg';
-import Casa2 from '../../public/img/casa de praia.jpg';
-import Casa3 from '../../public/img/casaLuxoPiscina.jpg';
-import Casa4 from '../../public/img/casaModerna.jpg';
-import Luxo1 from '../../public/img/luxo.jpg';
-import Luxo2 from '../../public/img/salaLuxo.jpg';
-import Luxo3 from '../../public/img/quarto-ilhabela.jpg';
-import Luxo4 from '../../public/img/cozinha ilhabela.jpg';
-import Luxo5 from '../../public/img/sobrado1.jpg';
 
 export default function Home() {
-  const imoveisDestaqueData = [
-    { id: "d1", imagemSrc: Casa1, titulo: "Casa Moderna Jardins", area: 250, bed: 4, bath: 3, car: 2, location: "Rua 1", city: "Caraguatatuba", price: "2.000.000"},
-    { id: "d2", imagemSrc: Casa2, titulo: "Casa de Praia Ilhabela", area: 180, bed: 3, bath: 2, car: 1, location: "Rua 2", city: "Ilhabela", price: "1.500.000" },
-    { id: "d3", imagemSrc: Casa3, titulo: "Casa com Piscina", area: 300, bed: 5, bath: 4, car: 3, location: "Rua 3", city: "São Sebastião", price: "3.200.000" },
-    { id: "d4", imagemSrc: Casa4, titulo: "Casa Contemporânea", area: 220, bed: 4, bath: 3, car: 2, location: "Rua 4", city: "Ubatuba", price: "2.800.000" }
-  ];
+  const [destaqueItems, setDestaqueItems] = useState([]);
+  const [lancamentoItems, setLancamentoItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const imoveisLancamentoData = [
-    { id: "l1", imagemSrc: Luxo1, titulo: "Mansão Alto Padrão", area: 250, bed: 4, bath: 3, car: 2, location: "Rua 5", city: "Ilhabela", price: "5.000.000" },
-    { id: "l2", imagemSrc: Luxo2, titulo: "Sala Premium", area: 120, bed: 2, bath: 1, car: 1, location: "Rua 6", city: "Caraguatatuba", price: "1.200.000" },
-    { id: "l3", imagemSrc: Luxo3, titulo: "Quarto Vista Mar", area: 90, bed: 1, bath: 1, car: 0, location: "Rua 7", city: "São Sebastião", price: "800.000" },
-    { id: "l4", imagemSrc: Luxo4, titulo: "Cozinha Gourmet", area: 80, bed: 1, bath: 1, car: 0, location: "Rua 8", city: "Ubatuba", price: "600.000" },
-    { id: "l5", imagemSrc: Luxo5, titulo: "Sobrado Moderno", area: 200, bed: 3, bath: 2, car: 2, location: "Rua 9", city: "Ilhabela", price: "1.800.000" }
-  ];
+  // Função para buscar imóveis do backend
+  const fetchImoveis = async () => {
+    try {
+      const response = await fetch('http://localhost:3100/imoveis');
 
-  const [destaqueItems, setDestaqueItems] = useState(imoveisDestaqueData);
-  const [lancamentoItems, setLancamentoItems] = useState(imoveisLancamentoData);
+      if (response.ok) {
+        const data = await response.json();
+        // A resposta vem dentro de data.imovel (igual ao filtro)
+        const imoveis = data.imovel || data || [];
+
+        // Filtrar imóveis em destaque
+        const destaques = imoveis.filter(imovel => imovel.destaque === true || imovel.destaque === 1);
+
+        // Filtrar imóveis em lançamento
+        const lancamentos = imoveis.filter(imovel => imovel.lancamento === true || imovel.lancamento === 1);
+
+        setDestaqueItems(destaques);
+        setLancamentoItems(lancamentos);
+        setLoading(false);
+      } else {
+        console.error('Erro ao buscar imóveis');
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error('Erro de conexão:', error);
+      setLoading(false);
+    }
+  };
+
+  // Buscar imóveis quando o componente carregar
+  useEffect(() => {
+    fetchImoveis();
+
+    // Opcional: atualizar a cada 30 segundos
+    const interval = setInterval(fetchImoveis, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const nextDestaque = () => {
     setDestaqueItems(prev => {
@@ -70,6 +86,14 @@ export default function Home() {
     });
   };
 
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+        <p>Carregando imóveis...</p>
+      </div>
+    );
+  }
+
   return (
     <div>
       {/*Banner*/}
@@ -96,79 +120,84 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Imóveis em destaque */}
-      <section className={styles.container_box}>
-        <div className={styles.container_imovel}>
-          <h2>Imóveis em destaque</h2>
-          <div className={styles.carrossel}>
-            <Image
-              src={SetaE}
-              alt="seta voltar"
-              onClick={prevDestaque}
-              style={{ cursor: 'pointer' }}
-            />
-            <div className={styles.carrossel_content}>
-              {destaqueItems.slice(0, 3).map(item => (
-                <Imovel
-                  key={item.id}
-                  imagemSrc={item.imagemSrc}
-                  titulo={item.titulo}
-                  area={item.area}
-                  bed={item.bed}
-                  bath={item.bath}
-                  car={item.car}
-                  location={item.location}
-                  city={item.city}
-                  price={item.price}
-                />
-              ))}
+     { /* IMÓVEIS EM DESTAQUE - CORRIGIDO*/}
+      {destaqueItems.length > 0 && (
+        <section className={styles.container_box}>
+          <div className={styles.container_imovel}>
+            <h2>Imóveis em destaque</h2>
+            <div className={styles.carrossel}>
+              <Image
+                src={SetaE}
+                alt="seta voltar"
+                onClick={prevDestaque}
+                style={{ cursor: 'pointer' }}
+              />
+              <div className={styles.carrossel_content}>
+                {destaqueItems.slice(0, 3).map(item => (
+                  <Imovel
+                    key={item.id}
+                    id={item.id} 
+                    imagemSrc={item.foto}
+                    titulo={item.titulo}
+                    area={item.metrosQuadrados}
+                    bed={item.quartos}
+                    bath={item.banheiros}
+                    car={item.garagens}
+                    location={item.localizacao}
+                    price={item.valor.toLocaleString('pt-BR')}
+                  />
+                ))}
+              </div>
+              <Image
+                src={SetaD}
+                alt="seta ir"
+                onClick={nextDestaque}
+                style={{ cursor: 'pointer' }}
+              />
             </div>
-            <Image
-              src={SetaD}
-              alt="seta ir"
-              onClick={nextDestaque}
-              style={{ cursor: 'pointer' }}
-            />
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* Imóveis em lançamento */}
-      <section className={styles.container_box}>
-        <div className={styles.container_imovel}>
-          <h2>Lançamentos</h2>
-          <div className={styles.carrossel}>
-            <Image
-              src={SetaE}
-              alt="seta voltar"
-              onClick={prevLancamento}
-              style={{ cursor: 'pointer' }}
-            />
-            <div className={styles.carrossel_content}>
-              {lancamentoItems.slice(0, 4).map(item => (
-                <Imovel
-                  key={item.id}
-                  imagemSrc={item.imagemSrc}
-                  titulo={item.titulo}
-                  area={item.area}
-                  bed={item.bed}
-                  bath={item.bath}
-                  car={item.car}
-                  location={item.location}
-                  city={item.city}
-                  price={item.price}
-                />
-              ))}
+{/*IMÓVEIS EM LANÇAMENTO - CORRIGIDO*/}
+      {lancamentoItems.length > 0 && (
+        <section className={styles.container_box}>
+          <div className={styles.container_imovel}>
+            <h2>Lançamentos</h2>
+            <div className={styles.carrossel}>
+              <Image
+                src={SetaE}
+                alt="seta voltar"
+                onClick={prevLancamento}
+                style={{ cursor: 'pointer' }}
+              />
+              <div className={styles.carrossel_content}>
+                {lancamentoItems.slice(0, 4).map(item => (
+                  <Imovel
+                    key={item.id}
+                    id={item.id} 
+                    imagemSrc={item.foto}
+                    titulo={item.titulo}
+                    area={item.metrosQuadrados}
+                    bed={item.quartos}
+                    bath={item.banheiros}
+                    car={item.garagens}
+                    location={item.localizacao}
+                    price={item.valor.toLocaleString('pt-BR')}
+                  />
+                ))}
+              </div>
+              <Image
+                src={SetaD}
+                alt="seta ir"
+                onClick={nextLancamento}
+                style={{ cursor: 'pointer' }}
+              />
             </div>
-            <Image
-              src={SetaD}
-              alt="seta ir"
-              onClick={nextLancamento}
-              style={{ cursor: 'pointer' }}
-            />
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
 
       {/*Sobre nós*/}
       <section className={styles.about}>
@@ -180,7 +209,7 @@ export default function Home() {
             </div>
 
             <p id="sobre" className={styles.text}>
-              Na Villa Indaiá, acreditamos que cada imóvel conta uma história — e estamos aqui para ajudar você a escrever a sua.
+              Na Villa Indaiá, acreditamos que cada imóvel conta uma história – e estamos aqui para ajudar você a escrever a sua.
               Localizada no coração da nossa comunidade, somos especializados em venda de imóveis residenciais e comerciais,
               sempre com foco em oferecer segurança, transparência e atendimento personalizado.<br /><br />
 
