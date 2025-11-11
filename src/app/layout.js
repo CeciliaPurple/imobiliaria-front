@@ -5,6 +5,8 @@ import "./globals.css";
 import Topo from "./components/Topo";
 import Footer from './components/Footer';
 import { usePathname } from 'next/navigation';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const anek = Anek_Latin({
   subsets: ['latin'],
@@ -38,6 +40,21 @@ export default function RootLayout({ children }) {
         {showLayout && <Topo />}
         {children}
         {showLayout && <Footer />}
+
+        {/* ✅ Adicione aqui o ToastContainer */}
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          closeButton={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
       </body>
     </html>
   );
