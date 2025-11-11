@@ -18,27 +18,30 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-left: 50px;
-    padding-right: 50px;
- 
+    padding: 0px 50px 50px;
+    gap: 20px;
 }
 
 .logo {
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
+    margin-top: 10px;
 }
 
-.input_conatiner {
+.title{
+    color: var(--escuro);
+}
+
+.input_container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding-top: 30px;
-    padding-bottom: 50px;
-    gap: 50px;
+    gap: 40px;
 }
 
-.input_conatiner input {
+.input_container input {
     width: 400px;
     border: none;
     border-bottom: 3px solid var(--vibrante);
@@ -67,7 +70,7 @@
     padding: 15px 30px;
     font-size: var(--h4);
     font-weight: bold;
-    margin-top: 50px;
+    margin-top: 25px;
     filter: var(--sombra-caixa);
     transition: transform 0.7s 
 }
@@ -80,7 +83,6 @@
 .container p {
     font-size: var(--h5);
     color: var(--vibrante);
-    margin-bottom: 60px;
 }
 
 .link {

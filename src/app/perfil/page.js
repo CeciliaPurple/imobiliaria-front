@@ -115,6 +115,8 @@ export default function Perfil() {
                     <Image src={Logo} alt='logo' className={styles.logo} />
                 </Link>
 
+                <h1 className={styles.title}>Perfil</h1>
+
                 <form className={styles.input_conatiner} onSubmit={handleUpdate}>
                     <input
                         type='text'
@@ -138,13 +140,15 @@ export default function Perfil() {
                         value={senha}
                         onChange={(e) => setSenha(e.target.value)}
                     />
+                </form>
+                 <div className={styles.buttonGroup}>
+                        <button className={styles.atualizar} type='submit'>Atualizar</button>
+                        <button className={styles.excluir} type='button' onClick={handleDelete}>Excluir</button>
+                    </div>
 
-                    <button className={styles.atualizar} type='submit'>Atualizar</button>
-                    <button className={styles.excluir} type='button' onClick={handleDelete}>Excluir</button>
-                    <Link href="/" >
+                    <Link href="/" className={styles.logout}>
                         <button className={styles.logout} type='button' onClick={handleLogout}>Sair</button>
                     </Link>
-                </form>
             </div>
         </div>
     );

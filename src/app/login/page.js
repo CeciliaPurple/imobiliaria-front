@@ -39,9 +39,11 @@ export default function Login() {
     return (
         <div className={styles.back}>
             <div className={styles.container}>
-                <Link href="/"><Image src={Logo} alt='logo' className={styles.logo}/></Link>
+                <Link href="/"><Image src={Logo} alt='logo' className={styles.logo} /></Link>
 
-                <form className={styles.input_conatiner} onSubmit={handleSubmit}>
+                <h1 className={styles.title}>Login</h1>
+
+                <form className={styles.input_container} onSubmit={handleSubmit}>
 
                     <input
                         type='email'
@@ -62,7 +64,7 @@ export default function Login() {
 
 
 
-                <p>Nâo possui uma conta? <Link href="/cadastro" className={styles.link}><b>Clique aqui!</b></Link></p>
+                <p>Não possui uma conta? <Link href="/cadastro" className={styles.link}><b>Clique aqui!</b></Link></p>
             </div>
         </div>
     )

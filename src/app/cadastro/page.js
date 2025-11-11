@@ -43,7 +43,9 @@ export default function Cadastro() {
                     <Image src={Logo} alt='logo' className={styles.logo} />
                 </Link>
 
-                <form className={styles.input_conatiner} onSubmit={handleSubmit}>
+                <h1 className={styles.title}>Cadastro</h1>
+
+                <form className={styles.input_container} onSubmit={handleSubmit}>
                     <input
                         type='text'
                         placeholder='Nome de usuário'

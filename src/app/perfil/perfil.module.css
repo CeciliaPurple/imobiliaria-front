@@ -18,14 +18,18 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-left: 50px;
-    padding-right: 50px;
- 
+    padding: 0px 50px 50px;
+    gap: 20px;
 }
 
 .logo {
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
+    margin-top: 10px;
+}
+
+.title{
+    color: var(--escuro);
 }
 
 .input_conatiner {
@@ -66,24 +70,27 @@
     padding: 10px 20px;
     font-size: var(--h4);
     font-weight: bold;
-    filter: var(--sombra-caixa);
-    transition: transform 0.7s 
+    transition: transform 0.7s ;
+}
+
+.buttonGroup {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    gap: 20px;
 }
 
 .atualizar{
-    position: relative;
-    right: 130px;
+  flex: 1;
 }
 
 .excluir {
-    position: relative;
-    left: 130px;
-    bottom: 81px;
+   flex: 1;
 }
 
-.logout{
-    position: relative;
-    bottom: 80px;
+.logout {
+    width: 100%;
 }
 
 .atualizar:hover{
@@ -93,9 +100,6 @@
 .excluir:hover{
     background-color: red;
 }
-
-
-
 
 .container button:hover{
     transform: scale(1.1) ;
