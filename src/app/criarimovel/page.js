@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./adm.module.css";
 import dynamic from "next/dynamic";
+import { useAuthStore } from "@/stores/userStore";
 
 // Dynamic import do Select
 const Select = dynamic(() => import("react-select"), {
@@ -10,7 +12,14 @@ const Select = dynamic(() => import("react-select"), {
   loading: () => <p>Carregando...</p>
 });
 
-export default function CriarIMovelAdm() {
+export default function CriarEditarImovel() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const editId = searchParams.get('id'); // ID do imóvel para edição
+  const isEdit = !!editId;
+
+  const { user, token, isLoggedIn } = useAuthStore();
+  const [loading, setLoading] = useState(isEdit);
 
   const [formData, setFormData] = useState({
     foto: '',
@@ -29,11 +38,83 @@ export default function CriarIMovelAdm() {
     descricao: ''
   });
 
-  // Enviar form pro back
+  useEffect(() => {
+    // Verificar se está logado
+    if (!isLoggedIn || !token || !user) {
+      alert('Você precisa estar logado para acessar esta página');
+      router.push('/login');
+      return;
+    }
+
+    // Carregar dados do imóvel se for edição
+    if (editId) {
+      carregarImovel();
+    }
+  }, [editId, user, token, isLoggedIn, router]);
+
+  const carregarImovel = async () => {
+    try {
+      console.log('📥 Carregando imóvel:', editId);
+      
+      const response = await fetch(`http://localhost:3100/imoveis/${editId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao carregar imóvel');
+      }
+
+      const data = await response.json();
+      console.log('📦 Dados do imóvel:', data);
+
+      const imovel = data.imovel || data;
+
+      // Converter ambiente e conveniências de string para array de objetos
+      const ambienteArray = imovel.ambiente 
+        ? imovel.ambiente.split(',').map(a => ({ 
+            value: a.trim(), 
+            label: ambienteOptions.find(opt => opt.value === a.trim())?.label || a.trim() 
+          }))
+        : [];
+
+      const convenienciasArray = imovel.conveniencias 
+        ? imovel.conveniencias.split(',').map(c => ({ 
+            value: c.trim(), 
+            label: convenienciaOptions.find(opt => opt.value === c.trim())?.label || c.trim() 
+          }))
+        : [];
+
+      setFormData({
+        foto: imovel.foto || '',
+        titulo: imovel.titulo || '',
+        localizacao: imovel.localizacao || '',
+        valor: imovel.valor || '',
+        iptu: imovel.iptu || '',
+        metros_quadrados: imovel.metrosQuadrados || imovel.metros_quadrados || '',
+        quartos: imovel.quartos || '',
+        banheiros: imovel.banheiros || '',
+        garagens: imovel.garagens || '',
+        ambiente: ambienteArray,
+        conveniencias: convenienciasArray,
+        destaque: imovel.destaque || false,
+        lancamento: imovel.lancamento || false,
+        descricao: imovel.descricao || ''
+      });
+
+      setLoading(false);
+    } catch (error) {
+      console.error('❌ Erro ao carregar imóvel:', error);
+      alert('Erro ao carregar dados do imóvel');
+      router.push('/perfiladm');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Corrigindo os nomes dos campos para corresponder ao que o backend espera
     const dadosParaEnviar = {
       foto: formData.foto,
       titulo: formData.titulo,
@@ -44,50 +125,39 @@ export default function CriarIMovelAdm() {
       quartos: parseInt(formData.quartos),
       banheiros: parseInt(formData.banheiros),
       garagens: parseInt(formData.garagens),
-      ambiente: formData.ambiente.map(a => a.value).join(','),        
-      conveniencias: formData.conveniencias.map(c => c.value).join(','), 
+      ambiente: formData.ambiente.map(a => a.value).join(','),
+      conveniencias: formData.conveniencias.map(c => c.value).join(','),
       destaque: formData.destaque,
       lancamento: formData.lancamento,
       descricao: formData.descricao
     };
 
     try {
-      console.log('Dados sendo enviados:', dadosParaEnviar);
+      console.log(isEdit ? '🔄 Atualizando imóvel:' : '📤 Criando imóvel:', dadosParaEnviar);
 
-      const response = await fetch('http://localhost:3100/imoveis', {
-        method: 'POST',
+      const url = isEdit 
+        ? `http://localhost:3100/imoveis/${editId}` 
+        : 'http://localhost:3100/imoveis';
+
+      const method = isEdit ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method: method,
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(dadosParaEnviar)
       });
 
-      console.log('Status da resposta:', response.status);
+      console.log('📥 Status da resposta:', response.status);
 
       if (response.ok) {
         const result = await response.json();
-        console.log('Resposta do servidor:', result);
-        alert('Imóvel criado com sucesso!');
-
-        // Limpar formulário - CORRIGIDO
-        setFormData({
-          foto: '',
-          titulo: '',
-          localizacao: '',
-          valor: '',
-          iptu: '',
-          metros_quadrados: '',
-          quartos: '',
-          banheiros: '',
-          garagens: '',
-          ambiente: [],           // ⬅️ CORRIGIDO
-          conveniencias: [],      // ⬅️ CORRIGIDO
-          destaque: false,        // ⬅️ CORRIGIDO (era "detaque")
-          lancamento: false,
-          descricao: ''
-        });
+        console.log('✅ Resposta do servidor:', result);
+        alert(isEdit ? '✅ Imóvel atualizado com sucesso!' : '✅ Imóvel criado com sucesso!');
+        router.push('/perfiladm');
       } else {
-        // Verificar o Content-Type da resposta
         const contentType = response.headers.get('content-type');
         let errorData = {};
 
@@ -108,11 +178,11 @@ export default function CriarIMovelAdm() {
           };
         }
 
-        console.error('Erro do servidor:', errorData);
-        alert(`Erro ao criar imóvel (${response.status}): ${errorData.message || 'Erro desconhecido'}`);
+        console.error('❌ Erro do servidor:', errorData);
+        alert(`Erro ao ${isEdit ? 'atualizar' : 'criar'} imóvel (${response.status}): ${errorData.message || 'Erro desconhecido'}`);
       }
     } catch (error) {
-      console.error('Erro de rede/conexão:', error);
+      console.error('❌ Erro de rede/conexão:', error);
 
       if (error.message.includes('fetch')) {
         alert('Erro de conexão: Verifique se o servidor backend está rodando em http://localhost:3100');
@@ -143,13 +213,27 @@ export default function CriarIMovelAdm() {
     { value: "seguranca-24h", label: "Segurança 24h" },
   ];
 
+  if (loading) {
+    return (
+      <div className={styles.visita}>
+        <div className={styles.container}>
+          <p style={{ textAlign: 'center', padding: '2rem' }}>Carregando dados...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.visita}>
       <div className={styles.container}>
-        <p className={styles.agenda}>Criar Imóvel</p>
+        <p className={styles.agenda}>
+          {isEdit ? 'Editar Imóvel' : 'Criar Imóvel'}
+        </p>
 
         <form className={styles.form} onSubmit={handleSubmit}>
-          <p className={styles.perfil}>Criar Imóvel</p>
+          <p className={styles.perfil}>
+            {isEdit ? 'Editar Imóvel' : 'Criar Imóvel'}
+          </p>
 
           {/* Foto */}
           <div className={styles.campo}>
@@ -278,7 +362,7 @@ export default function CriarIMovelAdm() {
             />
           </div>
 
-          {/* Ambiente - CORRIGIDO */}
+          {/* Ambiente */}
           <div className={styles.campo}>
             <label>Ambiente:</label>
             <Select
@@ -287,7 +371,7 @@ export default function CriarIMovelAdm() {
               isMulti
               options={ambienteOptions}
               value={formData.ambiente}
-              onChange={(selected) => setFormData({ ...formData, ambiente: selected || [] })} // ⬅️ CORRIGIDO
+              onChange={(selected) => setFormData({ ...formData, ambiente: selected || [] })}
               placeholder="Selecione os ambientes"
               styles={{
                 control: (base, state) => ({
@@ -303,7 +387,7 @@ export default function CriarIMovelAdm() {
             />
           </div>
 
-          {/* Conveniências - CORRIGIDO */}
+          {/* Conveniências */}
           <div className={styles.campo}>
             <label>Conveniências:</label>
             <Select
@@ -312,7 +396,7 @@ export default function CriarIMovelAdm() {
               isMulti
               options={convenienciaOptions}
               value={formData.conveniencias}
-              onChange={(selected) => setFormData({ ...formData, conveniencias: selected || [] })} // ⬅️ CORRIGIDO
+              onChange={(selected) => setFormData({ ...formData, conveniencias: selected || [] })}
               placeholder="Selecione as conveniências"
               styles={{
                 control: (base, state) => ({
@@ -365,7 +449,22 @@ export default function CriarIMovelAdm() {
             ></textarea>
           </div>
 
-          <button type="submit">Enviar</button>
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <button type="submit">
+              {isEdit ? 'Atualizar' : 'Criar'}
+            </button>
+            
+            <button 
+              type="button"
+              onClick={() => router.push('/perfiladm')}
+              style={{
+                backgroundColor: '#6c757d',
+                cursor: 'pointer'
+              }}
+            >
+              Cancelar
+            </button>
+          </div>
         </form>
       </div>
     </div>
