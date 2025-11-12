@@ -72,7 +72,9 @@ export default function Login() {
           <Image src={Logo} alt="logo" className={styles.logo} />
         </Link>
 
-        <form className={styles.input_conatiner} onSubmit={handleSubmit}>
+        <h1 className={styles.title}>Login</h1>
+
+        <form className={styles.input_container} onSubmit={handleSubmit}>
           <input
             type="email"
             placeholder="Email"

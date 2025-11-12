@@ -3,7 +3,7 @@
 import styles from './cadastro.module.css'
 import { useRouter } from 'next/navigation';
 import Image from 'next/image'
-import { ToastContainer, toast, Bounce } from 'react-toastify'; 
+import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Link from 'next/link'
 import Logo from '../../../public/villa-logo-nome.png';
@@ -59,7 +59,9 @@ export default function Cadastro() {
           <Image src={Logo} alt='logo' className={styles.logo} />
         </Link>
 
-        <form className={styles.input_conatiner} onSubmit={handleSubmit}>
+        <h1 className={styles.title}>Cadastro</h1>
+
+        <form className={styles.input_container} onSubmit={handleSubmit}>
           <input
             type='text'
             placeholder='Nome de usuário'

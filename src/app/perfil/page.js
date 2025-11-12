@@ -22,7 +22,7 @@ export default function Perfil() {
   // ✅ Buscar dados do usuário
   useEffect(() => {
     if (!isLoggedIn || !token || !user?.id) {
-      router.push("/login");
+      router.push("/");
       return;
     }
 
@@ -177,7 +177,9 @@ export default function Perfil() {
           <Image src={Logo} alt='logo' className={styles.logo} />
         </Link>
 
-        <form className={styles.input_conatiner} onSubmit={handleUpdate}>
+        <h1 className={styles.title}>Perfil</h1>
+
+        <form className={styles.input_container} onSubmit={handleUpdate}>
           <input
             type='text'
             placeholder='Nome de usuário'
@@ -201,10 +203,14 @@ export default function Perfil() {
             onChange={(e) => setSenha(e.target.value)}
           />
 
-          <button className={styles.atualizar} type='submit'>Atualizar</button>
-          <button className={styles.excluir} type='button' onClick={handleDelete}>Excluir</button>
+          <div className={styles.buttonGroup}>
+            <button className={styles.atualizar} type='submit'>Atualizar</button>
+            <button className={styles.excluir} type='button' onClick={handleDelete}>Excluir</button>
+          </div>
+
           <button className={styles.logout} type='button' onClick={handleLogout}>Sair</button>
         </form>
+
 
       </div>
     </div>
