@@ -26,6 +26,13 @@
     width: 100px;
     height: 100px;
     margin-top: 10px;
+<<<<<<< HEAD
+=======
+}
+
+.title{
+    color: var(--escuro);
+>>>>>>> 6a84eeef721016b2eb5abf201b3e025008fc2f0d
 }
 
 .title{
@@ -62,6 +69,20 @@
     box-shadow: none;
 }
 
+<<<<<<< HEAD
+=======
+.container button {
+    background-color: var(--vibrante);
+    color: var(--background);
+    border: none;
+    border-radius: var(--curve);
+    padding: 10px 20px;
+    font-size: var(--h4);
+    font-weight: bold;
+    transition: transform 0.7s ;
+}
+
+>>>>>>> 6a84eeef721016b2eb5abf201b3e025008fc2f0d
 .buttonGroup {
     width: 100%;
     display: flex;
@@ -90,6 +111,7 @@
     background-color: red;
 }
 
+<<<<<<< HEAD
 .container button {
     background-color: var(--vibrante);
     color: var(--background);
@@ -101,6 +123,8 @@
     transition: transform 0.7s ;
 }
 
+=======
+>>>>>>> 6a84eeef721016b2eb5abf201b3e025008fc2f0d
 .container button:hover{
     transform: scale(1.1) ;
     transition: transform 0.7s 
