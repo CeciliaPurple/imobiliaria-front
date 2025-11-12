@@ -65,21 +65,19 @@ export default function Login() {
     }
   };
 
-  return (
-    <div className={styles.back}>
-      <div className={styles.container}>
-        <Link href="/">
-          <Image src={Logo} alt="logo" className={styles.logo} />
-        </Link>
+    return (
+        <div className={styles.back}>
+            <div className={styles.container}>
+                <Link href="/"><Image src={Logo} alt='logo' className={styles.logo}/></Link>
 
-        <form className={styles.input_conatiner} onSubmit={handleSubmit}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+                <form className={styles.input_conatiner} onSubmit={handleSubmit}>
+
+                    <input
+                        type='email'
+                        placeholder='Email'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required />
 
           <div className={styles.password_container}>
             <input

@@ -59,6 +59,7 @@ export default function Cadastro() {
           <Image src={Logo} alt='logo' className={styles.logo} />
         </Link>
 
+<<<<<<< HEAD
         <form className={styles.input_conatiner} onSubmit={handleSubmit}>
           <input
             type='text'
@@ -67,6 +68,17 @@ export default function Cadastro() {
             onChange={(e) => setNome(e.target.value)}
             required
           />
+=======
+                <h1 className={styles.title}>Cadastro</h1>
+
+                <form className={styles.input_container} onSubmit={handleSubmit}>
+                    <input
+                        type='text'
+                        placeholder='Nome de usuário'
+                        value={nome}
+                        onChange={(e) => setNome(e.target.value)}
+                        required />
+>>>>>>> dev
 
           <input
             type='email'
