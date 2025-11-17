@@ -181,9 +181,23 @@ export default function ImovelDetalhes() {
           </div>
 
           {/* ✅ MANTÉM APENAS ESTE BOTÃO COM O ID */}
-          <Link href={`/agenda?imovel=${params.id}`}>
+          <Link
+            href={`/agenda?imovel=${params.id}`}
+            onClick={() => {
+              if (imovel) {
+                localStorage.setItem("ultimoImovel", JSON.stringify({
+                  id: imovel.id,
+                  foto: imovel.foto,
+                  titulo: imovel.titulo,
+                  localizacao: imovel.localizacao,
+                  valor: imovel.valor
+                }));
+              }
+            }}
+          >
             <button className={styles.scheduleButton}>Agendar visita</button>
           </Link>
+
         </div>
       </div>
     </div>

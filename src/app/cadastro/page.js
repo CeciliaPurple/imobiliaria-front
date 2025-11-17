@@ -1,5 +1,4 @@
-
-"use client"; // necessário para usar useState
+"use client"; 
 
 import styles from './cadastro.module.css'
 import { useRouter } from 'next/navigation';
@@ -20,36 +19,38 @@ export default function Cadastro() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:3100/usuario", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, email, senha }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      toast.success('Cadastro realizado com sucesso! ✅', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        closeButton: false,
-        theme: "dark",
-        transition: Bounce,
+    try {
+      const response = await fetch("http://localhost:3100/usuario", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, email, senha }),
       });
 
-      // espera um pequeno tempo antes de redirecionar (para mostrar o toast)
-      setTimeout(() => router.push("/login"), 1500);
+      const data = await response.json();
 
-    } else {
-      toast.error(data.error || "Erro ao cadastrar", {
-        position: "top-center",
-        theme: "colored",
-      });
+      if (response.ok) {
+        toast.success('Cadastro realizado com sucesso! ✅', {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          closeButton: false,
+          theme: "dark",
+          transition: Bounce,
+        });
+
+        setTimeout(() => router.push("/login"), 1500);
+      } else {
+        toast.error(data.error || "Erro ao cadastrar", {
+          position: "top-center",
+          theme: "colored",
+        });
+      }
+    } catch (err) {
+      toast.error("Erro de conexão. Tente novamente.", { position: "top-center" });
+      console.error(err);
     }
   };
 
@@ -97,4 +98,3 @@ export default function Cadastro() {
     </div>
   );
 }
-// ...existing code...
