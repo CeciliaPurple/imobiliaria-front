@@ -1,3 +1,4 @@
+
 "use client"; // necessário para usar useState
 
 import styles from './cadastro.module.css'
@@ -56,17 +57,12 @@ export default function Cadastro() {
     <div className={styles.back}>
       <div className={styles.container}>
         <Link href="/" >
-          <Image src={Logo} alt='logo' className={styles.logo} />
+          <Image src={Logo} alt='logo' className={styles.logo} width={240} height={64} />
         </Link>
 
-<<<<<<< HEAD
         <h1 className={styles.title}>Cadastro</h1>
 
         <form className={styles.input_container} onSubmit={handleSubmit}>
-=======
-<<<<<<< HEAD
-        <form className={styles.input_conatiner} onSubmit={handleSubmit}>
->>>>>>> 6a84eeef721016b2eb5abf201b3e025008fc2f0d
           <input
             type='text'
             placeholder='Nome de usuário'
@@ -74,17 +70,6 @@ export default function Cadastro() {
             onChange={(e) => setNome(e.target.value)}
             required
           />
-=======
-                <h1 className={styles.title}>Cadastro</h1>
-
-                <form className={styles.input_container} onSubmit={handleSubmit}>
-                    <input
-                        type='text'
-                        placeholder='Nome de usuário'
-                        value={nome}
-                        onChange={(e) => setNome(e.target.value)}
-                        required />
->>>>>>> dev
 
           <input
             type='email'
@@ -107,9 +92,9 @@ export default function Cadastro() {
         </form>
 
         <p>Já possui uma conta? <Link href="/login" className={styles.link}><b>Entre aqui!</b></Link></p>
-        {/* ✅ Exibe os toasts (caso o RootLayout não tenha) */}
         <ToastContainer />
       </div>
     </div>
   );
 }
+// ...existing code...
