@@ -12,7 +12,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: start;
+    align-items: center;
 }
 
 .logo {
@@ -24,12 +24,12 @@
 .list {
     display: flex;
     flex-direction: column;
-    margin-top: 40px;
+    margin-top: 20px;
     font-size: var(--h5);
     font-weight: bold;
     color: var(--vibrante);
     border-left: 4px solid var(--background);
-    padding: 0 40px;
+    padding: 20px 40px;
     gap: 10px;
 }
 
@@ -38,8 +38,23 @@
     color: var(--escuro);
 }
 
+.text_list {
+    text-decoration: none;
+    color: var(--vibrante);
+}
+
+.text_listS {
+    text-decoration: none;
+    color: var(--vibrante);
+}
+
+.text_listS:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .title_social {
-    font-size: var(--h3);
+    font-size: var(--h4);
     color: var(--escuro);
     align-self: center;
 }
@@ -49,12 +64,24 @@
     grid-template-columns: 1fr 1fr;
     justify-content: center;
     align-items: center;
-    gap: 20px 40px;
+    gap: 30px 40px;
 }
 
 .icon_group {
     display: flex;
     gap: 10px;
+    text-decoration: none;
+    color: var(--vibrante);
+}
+
+.icon_group:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.icon {
+    width: 25px;
+    height: 25px;
 }
 
 .copy {
@@ -65,4 +92,21 @@
     font-size: var(--h5);
     font-weight: bold;
     color: var(--escuro);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.copy_link {
+    text-decoration: none;
+    color: var(--vibrante);
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.copy_link:hover {
+    text-decoration: underline;
+    color: color-mix(in srgb, var(--vibrante) 80%, black 20%);
 }

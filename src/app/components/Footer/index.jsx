@@ -11,12 +11,12 @@ export default function Footer() {
     return (
         <footer className={styles.footer}>
             <div className={styles.container_contact}>
-                <Image src={Logo} alt='logo' className={styles.logo}></Image>
+                <Link href='/'><Image src={Logo} alt='logo' className={styles.logo}></Image></Link>
                 <div className={styles.list}>
                     <p className={styles.title_list}>Navegação</p>
-                    <p className={styles.text_list}>Imóveis</p>
-                    <p className={styles.text_list}>Sobre</p>
-                    <p className={styles.text_list}>Contatos</p>
+                    <Link href="/filtro" className={styles.text_listS}>Imóveis</Link>
+                    <Link href="/#sobre" className={styles.text_listS}>Sobre</Link>
+                    <Link href="/agenda" className={styles.text_listS}>Agenda</Link>
                 </div>
 
                 <div className={styles.list}>
@@ -37,30 +37,36 @@ export default function Footer() {
                 <div className={styles.list}>
                     <p className={styles.title_social}>Redes Sociais</p>
                     <div className={styles.list_social}>
-                        <div className={styles.icon_group}>
-                            <Link href="/"><Image src={Insta} alt='instagram' /></Link>
+
+                        <Link href="https://www.instagram.com/" className={styles.icon_group} target="_blank">
+                            <Image src={Insta} alt='instagram' className={styles.icon} />
                             <p>Instagram</p>
-                        </div>
-                        <div className={styles.icon_group}>
-                            <Link href="/"><Image src={Twitter} alt='twitter' /></Link>
+                        </Link>
+
+                        <Link href="https://x.com/?lang=pt" className={styles.icon_group} target="_blank">
+                            <Image src={Twitter} alt='twitter' className={styles.icon} />
                             <p>Twitter</p>
-                        </div>
+                        </Link>
 
-                        <div className={styles.icon_group}>
-                            <Link href="/"><Image src={Whatsapp} alt='whatsapp' /></Link>
+                        <Link href="https://web.whatsapp.com/" className={styles.icon_group} target="_blank">
+                            <Image src={Whatsapp} alt='whatsapp' className={styles.icon} />
                             <p>Whatsapp</p>
-                        </div>
+                        </Link>
 
-                        <div className={styles.icon_group}>
-                            <Link href="/"><Image src={Facebook} alt='facebook' /></Link>
+                        <Link href="https://www.facebook.com/?locale=pt_BR" className={styles.icon_group} target="_blank">
+                            <Image src={Facebook} alt='facebook' className={styles.icon} />
                             <p>Facebook</p>
-                        </div>
+                        </Link>
                     </div>
                 </div>
             </div>
 
             {/*Copyright*/}
-            <p className={styles.copy}>&copy;2025 Vila Indaiá. Todos os direitos reservados. | Política de Privacidade | Termos de Uso</p>
+            <p className={styles.copy}>
+                &copy;2025 Vila Indaiá. Todos os direitos reservados. | 
+                <Link href="/politica-privacidade" className={styles.copy_link}>Política de Privacidade</Link> | 
+                <Link href="/termos" className={styles.copy_link}>Termos de Uso</Link>
+            </p>
         </footer>
 
     )
