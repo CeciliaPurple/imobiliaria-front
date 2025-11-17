@@ -1,9 +1,12 @@
+// ...existing code...
 "use client";
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuthStore } from "../../stores/userStore";
 import styles from "./agenda.module.css";
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Visitas() {
   const router = useRouter();
@@ -27,9 +30,7 @@ export default function Visitas() {
 
   // Verificar autenticação
   useEffect(() => {
-    console.log('🔍 Debug - Parâmetros:', { editId, imovelId, isEdit });
-    console.log('🔍 Debug - User:', user);
-    console.log('🔍 Debug - Token:', token ? 'Presente' : 'Ausente');
+   
 
     if (!token || !user) {
       alert('Você precisa estar logado para agendar uma visita');
@@ -48,7 +49,6 @@ export default function Visitas() {
 
     // Carregar dados da visita se for edição
     if (editId) {
-      console.log('✏️ Modo edição ativado, ID:', editId);
       carregarVisita();
     }
   }, [editId, user, token]);
@@ -68,11 +68,11 @@ export default function Visitas() {
       }
 
       const data = await response.json();
-      console.log('📥 Dados carregados:', data);
+      
 
       // A API pode retornar { agendamentos: {...} } ou diretamente o objeto
       const visita = data.agendamentos || data;
-      console.log('📥 Visita extraída:', visita);
+     
 
       // Verificar se tem os dados necessários
       if (!visita || !visita.dataVisita) {
@@ -146,7 +146,7 @@ export default function Visitas() {
           observacoes: formData.observacoes
         };
 
-        console.log('🔄 Atualizando agendamento:', dadosAtualizacao);
+       
 
         const response = await fetch(`http://localhost:3100/agenda/${editId}`, {
           method: "PUT",
@@ -157,12 +157,22 @@ export default function Visitas() {
           body: JSON.stringify(dadosAtualizacao)
         });
 
-        console.log('📥 Status da resposta:', response.status);
+    
 
         if (response.ok) {
           const data = await response.json();
           console.log("✅ Resposta:", data);
-          alert("✅ Visita atualizada com sucesso!");
+          toast.success('Cadastro realizado com sucesso! ✅', {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            closeButton: false,
+            theme: "dark",
+            transition: Bounce,
+          });
           router.push("/visita");
         } else {
           const error = await response.json();
@@ -181,7 +191,7 @@ export default function Visitas() {
           status: "pendente"
         };
 
-        console.log('📤 Criando agendamento:', agendamento);
+       
 
         const response = await fetch("http://localhost:3100/agenda", {
           method: "POST",
@@ -192,13 +202,23 @@ export default function Visitas() {
           body: JSON.stringify(agendamento)
         });
 
-        console.log('📥 Status da resposta:', response.status);
+      
 
         if (response.ok) {
           const data = await response.json();
           console.log("✅ Resposta:", data);
-          alert("✅ Visita agendada com sucesso!");
-          router.push("/visita");
+          toast.success('Cadastro realizado com sucesso! ✅', {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            closeButton: false,
+            theme: "dark",
+            transition: Bounce,
+             onClose: () => router.push("/visita") 
+          });
         } else {
           const error = await response.json();
           console.error("❌ Erro do servidor:", error);
@@ -293,9 +313,9 @@ export default function Visitas() {
             <button type="submit" disabled={loading}>
               {loading ? "Processando..." : isEdit ? "Atualizar Visita" : "Agendar Visita"}
             </button>
-            
-            <button 
-              type="button" 
+
+            <button
+              type="button"
               onClick={() => router.push('/visita')}
               style={{
                 backgroundColor: '#6c757d',
@@ -306,7 +326,10 @@ export default function Visitas() {
             </button>
           </div>
         </form>
+
+        <ToastContainer />
       </div>
     </div>
   );
 }
+// ...existing code...
