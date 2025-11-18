@@ -9,7 +9,6 @@ import Car from '../../../../public/icons/car-outline.svg';
 import Location from '../../../../public/icons/location-outline.svg';
 
 export default function ImovelP({ imovel }) {
-    // Se não receber dados do imóvel, mostra placeholder
     if (!imovel) {
         return (
             <div className={styles.container_home}>
@@ -21,14 +20,22 @@ export default function ImovelP({ imovel }) {
     return (
         <div className={styles.container_home}>
             <div className={styles.image_container}>
+                {/* Imagem de fundo */}
                 <Image 
                     src={imovel.foto} 
                     alt={imovel.titulo} 
-                    width={400} 
-                    height={250}
-                    style={{ objectFit: 'cover' }}
+                    fill
+                    style={{ objectFit: 'cover', zIndex: 0 }}
+                    sizes="320px"
                 />
+                
+                {/* Gradiente escuro */}
+                <div className={styles.gradient}></div>
+                
+                {/* Título */}
                 <h3>{imovel.titulo}</h3>
+                
+                {/* Ícone de favorito */}
                 <Image src={Heart} alt='favoritar' className={styles.heart}/>
             </div>
 
@@ -66,7 +73,7 @@ export default function ImovelP({ imovel }) {
                 {/*Preço e Ver mais*/}
                 <div className={styles.price}>
                     <h3>R$ {Number(imovel.valor).toLocaleString('pt-BR')}</h3>
-                    <Link href={`/imovelCasa?id=${imovel.id}`}>
+                    <Link href={`/imovelCasa/${imovel.id}`}>
                         <button className={styles.more}>Ver mais</button>
                     </Link>
                 </div>

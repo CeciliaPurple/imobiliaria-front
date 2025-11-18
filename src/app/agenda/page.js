@@ -162,8 +162,8 @@ export default function Visitas() {
         if (response.ok) {
           const data = await response.json();
           console.log("✅ Resposta:", data);
-          toast.success('Cadastro realizado com sucesso! ✅', {
-            position: "top-center",
+          toast.success('Agenda realizada com sucesso! ✅', {
+            position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,

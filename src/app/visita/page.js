@@ -14,8 +14,6 @@ export default function Visita() {
     const [agendamentos, setAgendamentos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    // Último imóvel salvo ao clicar em Agendar visita
     const [ultimoImovel, setUltimoImovel] = useState(null);
 
     useEffect(() => {
@@ -114,26 +112,14 @@ export default function Visita() {
         }
     };
 
-    // ⭐ LOADING COM A FOTO DO ÚLTIMO IMÓVEL
+    // ⭐ LOADING — APENAS O CARD DO ÚLTIMO IMÓVEL
     if (loading) {
         return (
             <div className={styles.container}>
-
-                {ultimoImovel ? (
-                    <div className={styles.card}>
-                        <div className={styles.container_visita}>
-                            <ImovelP imovel={ultimoImovel} />
-                        </div>
-                        <p style={{ textAlign: "center", padding: "1rem" }}>
-                            Carregando seus agendamentos...
-                        </p>
-                    </div>
-                ) : (
-                    <p style={{ textAlign: "center", padding: "2rem" }}>
-                        Carregando agendamentos...
-                    </p>
-                )}
-
+                <div className={styles.loadingCard}>
+                    {ultimoImovel && <ImovelP imovel={ultimoImovel} />}
+                    <p>Carregando seus agendamentos...</p>
+                </div>
             </div>
         );
     }
@@ -151,24 +137,13 @@ export default function Visita() {
     if (agendamentos.length === 0) {
         return (
             <div className={styles.container}>
-                <div className={styles.card} style={{ textAlign: "center", padding: "3rem" }}>
+                <div className={styles.cardEmpty}>
                     <h3>Nenhuma visita agendada</h3>
                     <p style={{ marginTop: "1rem", color: "#666" }}>
                         Você ainda não agendou nenhuma visita.
                     </p>
                     <Link href="/">
-                        <button
-                            type="button"
-                            style={{
-                                marginTop: "1.5rem",
-                                padding: "0.75rem 2rem",
-                                backgroundColor: "#4CAF50",
-                                color: "white",
-                                border: "none",
-                                borderRadius: "4px",
-                                cursor: "pointer",
-                            }}
-                        >
+                        <button className={styles.btnVerImoveis}>
                             Ver Imóveis
                         </button>
                     </Link>
@@ -182,8 +157,8 @@ export default function Visita() {
             {agendamentos.map((agendamento) => (
                 <div key={agendamento.id} className={styles.container}>
                     <div className={styles.card}>
-
-                        {/* Card do imóvel */}
+                        
+                        {/* CARD DO IMÓVEL */}
                         <div className={styles.container_visita}>
                             {agendamento.imovel ? (
                                 <ImovelP imovel={agendamento.imovel} />
@@ -192,13 +167,13 @@ export default function Visita() {
                             )}
                         </div>
 
-                        {/* Dados da visita */}
+                        {/* DADOS DA VISITA */}
                         <div className={styles.texto_visita}>
                             <h3 className={styles.titulo}>Visita Agendada</h3>
                             <p><b>Nome:</b> {agendamento.usuario?.nome || "Não informado"}</p>
                             <p><b>Horário:</b> {agendamento.horario}</p>
                             <p><b>Data:</b> {formatarData(agendamento.dataVisita)}</p>
-                            <p><b>Tel:</b> {agendamento.telefone || "Não informado"}</p>
+                            <p><b>Tel:</b> {agendamento.telefone}</p>
 
                             <div className={styles.btns}>
                                 <Link href={`/agenda?edit=${agendamento.id}`}>
@@ -212,17 +187,17 @@ export default function Visita() {
                                 >
                                     Cancelar
                                 </button>
-
-                                <p className={styles.status}>
-                                    Status:{" "}
-                                    <span style={{ color: getStatusColor(agendamento.status) }}>
-                                        {formatarStatus(agendamento.status)}
-                                    </span>
-                                </p>
                             </div>
+
+                            <p className={styles.status}>
+                                Status:
+                                <span style={{ color: getStatusColor(agendamento.status) }}>
+                                    {formatarStatus(agendamento.status)}
+                                </span>
+                            </p>
                         </div>
 
-                        {/* Observações */}
+                        {/* OBSERVAÇÕES */}
                         <div className={styles.obs}>
                             <label><b>Obs:</b></label>
                             <textarea
