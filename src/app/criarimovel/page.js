@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./adm.module.css";
 import dynamic from "next/dynamic";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useAuthStore } from "@/stores/userStore";
 
 // Dynamic import do Select
@@ -62,6 +64,7 @@ export default function CriarEditarImovel() {
     // Verificar se está logado
     if (!isLoggedIn || !token || !user) {
       alert('Você precisa estar logado para acessar esta página');
+      toast.warn('Você precisa estar logado para acessar esta página');
       router.push('/login');
       return;
     }
@@ -128,6 +131,7 @@ export default function CriarEditarImovel() {
     } catch (error) {
       console.error('❌ Erro ao carregar imóvel:', error);
       alert('Erro ao carregar dados do imóvel');
+      toast.error('Erro ao carregar dados do imóvel');
       router.push('/perfiladm');
     }
   };
@@ -176,6 +180,7 @@ export default function CriarEditarImovel() {
         const result = await response.json();
         console.log('✅ Resposta do servidor:', result);
         alert(isEdit ? '✅ Imóvel atualizado com sucesso!' : '✅ Imóvel criado com sucesso!');
+        toast.success(isEdit ? 'Imóvel atualizado com sucesso!' : 'Imóvel criado com sucesso!');
         router.push('/perfiladm');
       } else {
         const contentType = response.headers.get('content-type');
@@ -200,14 +205,17 @@ export default function CriarEditarImovel() {
 
         console.error('❌ Erro do servidor:', errorData);
         alert(`Erro ao ${isEdit ? 'atualizar' : 'criar'} imóvel (${response.status}): ${errorData.message || 'Erro desconhecido'}`);
+        toast.error(`Erro ao ${isEdit ? 'atualizar' : 'criar'} imóvel: ${errorData.message || 'Erro desconhecido'}`);
       }
     } catch (error) {
       console.error('❌ Erro de rede/conexão:', error);
 
       if (error.message.includes('fetch')) {
         alert('Erro de conexão: Verifique se o servidor backend está rodando em http://localhost:3100');
+        toast.error('Erro de conexão: Verifique se o servidor backend está rodando.');
       } else {
         alert('Erro de conexão: ' + error.message);
+        toast.error('Erro de conexão: ' + error.message);
       }
     }
   };
@@ -245,6 +253,7 @@ export default function CriarEditarImovel() {
 
   return (
     <div className={styles.visita}>
+      <ToastContainer theme="dark" position="top-center" autoClose={3000} />
       <div className={styles.container}>
         <p className={styles.agenda}>
           {isEdit ? 'Editar Imóvel' : 'Criar Imóvel'}

@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ImovelP from "../components/ImovelP";
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useAuthStore } from "../../stores/userStore";
 import styles from "./visita.module.css";
 
@@ -25,7 +27,7 @@ export default function Visita() {
 
     useEffect(() => {
         if (!token || !user) {
-            alert("Você precisa fazer login para ver suas visitas");
+            toast.warn("Você precisa fazer login para ver suas visitas");
             router.push("/login");
             return;
         }
@@ -91,25 +93,52 @@ export default function Visita() {
     };
 
     const handleCancelar = async (id) => {
-        if (!confirm("Deseja realmente cancelar este agendamento?")) return;
+        const toastId = `confirm-cancel-${id}`;
 
-        try {
-            const response = await fetch(`http://localhost:3100/agenda/${id}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            if (!response.ok) throw new Error("Erro ao cancelar agendamento");
-
-            alert("Agendamento cancelado com sucesso!");
-            buscarAgendamentos();
-
-        } catch (error) {
-            console.error("❌ Erro ao cancelar:", error);
-            alert("Erro ao cancelar agendamento");
+        // Impede que múltiplos toasts de confirmação sejam abertos para o mesmo item
+        if (toast.isActive(toastId)) {
+            console.log("A confirmação já está visível.");
+            return;
         }
+
+        const performDelete = async () => {
+            try {
+                const response = await fetch(`http://localhost:3100/agenda/${id}`, {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+    
+                if (!response.ok) throw new Error("Erro ao cancelar agendamento");
+    
+                toast.success("Agendamento cancelado com sucesso!");
+                buscarAgendamentos();
+    
+            } catch (error) {
+                console.error("❌ Erro ao cancelar:", error);
+                toast.error("Erro ao cancelar agendamento.");
+            }
+        };
+
+        // Componente para confirmação dentro do toast
+        const Confirmation = ({ closeToast }) => (
+            <div>
+                <p>Deseja realmente cancelar?</p>
+                <button className={styles.btnConfirm} onClick={() => { performDelete(); closeToast(); }}>Sim</button>
+                <button className={styles.btnCancel} onClick={closeToast}>Não</button>
+            </div>
+        );
+
+        // Exibe o toast de confirmação
+        toast.warn(<Confirmation />, {
+            toastId: toastId, // Atribui um ID único ao toast
+            position: "top-center",
+            autoClose: false,
+            closeOnClick: false,
+            draggable: false,
+            closeButton: true,
+        });
     };
 
     // ⭐ LOADING — APENAS O CARD DO ÚLTIMO IMÓVEL
@@ -154,6 +183,7 @@ export default function Visita() {
 
     return (
         <div>
+            <ToastContainer theme="dark" position="top-center" autoClose={3000} />
             {agendamentos.map((agendamento) => (
                 <div key={agendamento.id} className={styles.container}>
                     <div className={styles.card}>
