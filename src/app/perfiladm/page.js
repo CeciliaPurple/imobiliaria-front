@@ -8,6 +8,8 @@ import heart from '../../../public/icons/heart-outline.svg';
 import Image from 'next/image';
 import { Edit2, Trash2, Plus } from "lucide-react";
 import { useAuthStore } from "@/stores/userStore";
+import { showWarningToast, showSuccessToast, showErrorToast } from "@/utils/toast";
+import ConfirmationDialog from '../components/Confirmation'; 
 
 export default function PerfilAdm() {
   const router = useRouter();
@@ -18,11 +20,12 @@ export default function PerfilAdm() {
   const [busca, setBusca] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+  const [imovelToDeleteId, setImovelToDeleteId] = useState(null);
 
   useEffect(() => {
-    // Verificar se está logado
     if (!isLoggedIn || !token || !user) {
-      alert('Você precisa estar logado para acessar esta página');
+      showWarningToast('Você precisa estar logado para acessar esta página');
       router.push('/login');
       return;
     }
@@ -45,19 +48,15 @@ export default function PerfilAdm() {
       }
 
       const data = await response.json();
-      
-    
       const imoveisData = data.imovel || data.imoveis || data;
       
-      // Garantir que é um array
       const imoveisArray = Array.isArray(imoveisData) ? imoveisData : [];
-      
       
       setImoveis(imoveisArray);
       setImoveisFiltrados(imoveisArray);
       setLoading(false);
     } catch (error) {
-      console.error('❌ Erro ao buscar imóveis:', error);
+      console.error('Erro ao buscar imóveis:', error);
       setError(error.message);
       setLoading(false);
     }
@@ -83,13 +82,23 @@ export default function PerfilAdm() {
     router.push(`/criarimovel?id=${id}`);
   };
 
-  const handleExcluir = async (id) => {
-    if (!confirm('Tem certeza que deseja excluir este imóvel?')) {
-      return;
-    }
+  const openDeleteConfirmation = (id) => {
+    setImovelToDeleteId(id);
+    setIsConfirmingDelete(true);
+  };
 
+  const executeDelete = async () => {
+    setIsConfirmingDelete(false); 
+
+    const id = imovelToDeleteId;
+    setImovelToDeleteId(null); 
+
+    if (!id) {
+        showErrorToast('Erro: ID do imóvel não identificado para exclusão.');
+        return;
+    }
+    
     try {
-      
       const response = await fetch(`http://localhost:3100/imoveis/${id}`, {
         method: 'DELETE',
         headers: {
@@ -98,27 +107,26 @@ export default function PerfilAdm() {
         }
       });
 
-
       if (!response.ok) {
-        // Tentar ler a mensagem de erro do servidor
         let errorMessage = 'Erro ao excluir imóvel';
         try {
           const errorData = await response.json();
           errorMessage = errorData.message || errorData.error || errorMessage;
         } catch (e) {
           const errorText = await response.text();
-          console.log('❌ Resposta do servidor:', errorText);
+          console.log('Resposta do servidor (erro):', errorText);
         }
         throw new Error(errorMessage);
       }
 
-      alert('✅ Imóvel excluído com sucesso!');
-      buscarImoveis(); // Recarrega a lista
+      showSuccessToast('✅ Imóvel excluído com sucesso!');
+      buscarImoveis(); 
     } catch (error) {
-      console.error('❌ Erro ao excluir:', error);
-      alert('Erro ao excluir imóvel: ' + error.message);
+      console.error('Erro ao excluir:', error);
+      showErrorToast('Erro ao excluir imóvel: ' + error.message);
     }
   };
+
 
   if (loading) {
     return (
@@ -193,7 +201,6 @@ export default function PerfilAdm() {
                 )}
               </div>
               <div className={styles.icons}>
-                <Image src={heart} alt="Favoritos" className={styles.heart} />
                 <button 
                   className={styles.editar}
                   onClick={() => handleEditar(imovel.id)}
@@ -203,7 +210,7 @@ export default function PerfilAdm() {
                 </button>
                 <button 
                   className={styles.lixeira}
-                  onClick={() => handleExcluir(imovel.id)}
+                  onClick={() => openDeleteConfirmation(imovel.id)}
                   title="Excluir imóvel"
                 >
                   <Trash2 size={24} color="#375A76" />
@@ -213,6 +220,14 @@ export default function PerfilAdm() {
           ))
         )}
       </div>
+      
+      {isConfirmingDelete && (
+        <ConfirmationDialog
+          message="Tem certeza que deseja excluir este imóvel? Esta ação é irreversível!"
+          onConfirm={executeDelete}
+          onCancel={() => setIsConfirmingDelete(false)}
+        />
+      )}
     </div>
   );
 }

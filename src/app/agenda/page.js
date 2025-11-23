@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuthStore } from "../../stores/userStore";
+import { showWarningToast, showSuccessToast, showErrorToast } from "../../utils/toast";
 import styles from "./agenda.module.css";
 
 export default function Visitas() {
@@ -32,7 +33,7 @@ export default function Visitas() {
     console.log('🔍 Debug - Token:', token ? 'Presente' : 'Ausente');
 
     if (!token || !user) {
-      alert('Você precisa estar logado para agendar uma visita');
+      showWarningToast('Você precisa estar logado para agendar uma visita');
       router.push('/login');
       return;
     }
@@ -102,7 +103,7 @@ export default function Visitas() {
       }
     } catch (error) {
       console.error("❌ Erro ao carregar visita:", error);
-      alert('Erro ao carregar dados do agendamento');
+      showErrorToast('Erro ao carregar dados do agendamento');
       router.push('/visita');
     } finally {
       setLoadingData(false);
@@ -131,7 +132,7 @@ export default function Visitas() {
 
     try {
       if (!token || !user?.id) {
-        alert("Você precisa estar logado para agendar uma visita.");
+        showErrorToast("Você precisa estar logado para agendar uma visita.");
         router.push('/login');
         setLoading(false);
         return;
@@ -162,12 +163,12 @@ export default function Visitas() {
         if (response.ok) {
           const data = await response.json();
           console.log("✅ Resposta:", data);
-          alert("✅ Visita atualizada com sucesso!");
+          showSuccessToast("✅ Visita atualizada com sucesso!");
           router.push("/visita");
         } else {
           const error = await response.json();
           console.error("❌ Erro do servidor:", error);
-          alert("❌ Erro: " + (error.message || "Tente novamente."));
+          showErrorToast("❌ Erro: " + (error.message || "Tente novamente."));
         }
       } else {
         // CRIAR novo agendamento
@@ -197,17 +198,17 @@ export default function Visitas() {
         if (response.ok) {
           const data = await response.json();
           console.log("✅ Resposta:", data);
-          alert("✅ Visita agendada com sucesso!");
+          showSuccessToast("✅ Visita agendada com sucesso!");
           router.push("/visita");
         } else {
           const error = await response.json();
           console.error("❌ Erro do servidor:", error);
-          alert("❌ Erro: " + (error.message || "Tente novamente."));
+          showErrorToast("❌ Erro: " + (error.message || "Tente novamente."));
         }
       }
     } catch (error) {
       console.error("❌ Erro:", error);
-      alert(isEdit ? "❌ Erro ao atualizar visita." : "❌ Erro ao agendar visita.");
+      showErrorToast(isEdit ? "❌ Erro ao atualizar visita." : "❌ Erro ao agendar visita.");
     } finally {
       setLoading(false);
     }

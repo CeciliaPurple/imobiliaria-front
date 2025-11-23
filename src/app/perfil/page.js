@@ -7,29 +7,24 @@ import Link from 'next/link';
 import Logo from '../../../public/villa-logo-nome.png';
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/stores/userStore";
+import { showErrorToast, showSuccessToast } from "@/utils/toast";
+import ConfirmationDialog from '../components/Confirmation'; 
 
 export default function Perfil() {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [loading, setLoading] = useState(true);
+    const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
 
     const router = useRouter();
     const { logout, token, user, isLoggedIn } = useAuthStore();
 
-    // ✅ Pegar dados do usuário ao carregar a página
     useEffect(() => {
-        console.log('🔍 Verificando autenticação...');
-        console.log('User:', user);
-        console.log('Token:', token ? 'Presente' : 'Ausente');
-
         if (!isLoggedIn || !token || !user?.id) {
-            console.log("❌ Usuário não autenticado - redirecionando para login");
             router.push("/login");
             return;
         }
-
-        console.log('✅ Usuário autenticado, ID:', user.id);
 
         fetch(`http://localhost:3100/usuario/${user.id}`, {
             method: "GET",
@@ -45,20 +40,15 @@ export default function Perfil() {
                 return res.json();
             })
             .then(data => {
-                console.log("✅ Resposta completa da API:", data);
-                
-                // A API pode retornar em diferentes formatos
                 const usuario = data.profile || data.usuario || data.data || data;
-                
-                console.log('👤 Dados do usuário:', usuario);
                 
                 setNome(usuario.nome || "");
                 setEmail(usuario.email || "");
                 setLoading(false);
             })
             .catch(err => {
-                console.error("❌ Erro ao buscar usuário:", err);
-                alert("Erro ao carregar dados do perfil. Verifique o console.");
+                console.error("Erro ao buscar usuário:", err);
+                showErrorToast("Erro ao carregar dados do perfil. Verifique o console.");
                 setLoading(false);
             });
     }, [token, user, isLoggedIn, router]);
@@ -67,19 +57,16 @@ export default function Perfil() {
         e.preventDefault();
 
         if (!user?.id) {
-            alert("Erro: usuário não identificado");
+            showErrorToast("Erro: usuário não identificado");
             return;
         }
 
         try {
             const bodyData = { nome, email };
             
-            // Só envia senha se foi preenchida
             if (senha && senha.trim() !== "") {
                 bodyData.senha = senha;
             }
-
-            console.log('🔄 Atualizando usuário:', user.id, bodyData);
 
             const res = await fetch(`http://localhost:3100/usuario/${user.id}`, {
                 method: "PUT",
@@ -95,26 +82,29 @@ export default function Perfil() {
                 throw new Error(error.message || "Erro ao atualizar");
             }
 
-            alert("Dados atualizados com sucesso!");
+            showSuccessToast("Dados atualizados com sucesso!");
             setSenha("");
         } catch (err) {
-            console.error('❌ Erro ao atualizar:', err);
-            alert("Erro ao atualizar usuário: " + err.message);
+            console.error('Erro ao atualizar:', err);
+            showErrorToast("Erro ao atualizar usuário: " + err.message);
         }
     };
 
-    // ✅ Excluir usuário
-    const handleDelete = async () => {
-        if (!confirm("Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita!")) return;
+    // Abre o diálogo de confirmação
+    const openDeleteConfirmation = () => {
+        setIsConfirmingDelete(true);
+    };
+
+    // Lógica real para exclusão, chamada após a confirmação
+    const executeDelete = async () => {
+        setIsConfirmingDelete(false);
 
         if (!user?.id) {
-            alert("Erro: usuário não identificado");
+            showErrorToast("Erro: usuário não identificado");
             return;
         }
 
         try {
-            console.log('🗑️ Excluindo usuário:', user.id);
-
             const res = await fetch(`http://localhost:3100/usuario/${user.id}`, {
                 method: "DELETE",
                 headers: {
@@ -129,15 +119,14 @@ export default function Perfil() {
             }
 
             logout();
-            alert("Conta excluída com sucesso!");
+            showSuccessToast("Conta excluída com sucesso!");
             router.push("/");
         } catch (err) {
-            console.error('❌ Erro ao excluir:', err);
-            alert("Erro ao excluir usuário: " + err.message);
+            console.error('Erro ao excluir:', err);
+            showErrorToast("Erro ao excluir usuário: " + err.message);
         }
     };
 
-    // ✅ Logout
     const handleLogout = () => {
         logout();
         router.push("/login");
@@ -187,12 +176,20 @@ export default function Perfil() {
                     />
 
                     <button className={styles.atualizar} type='submit'>Atualizar</button>
-                    <button className={styles.excluir} type='button' onClick={handleDelete}>Excluir</button>
+                    <button className={styles.excluir} type='button' onClick={openDeleteConfirmation}>Excluir</button>
                     <Link href="/" >
                         <button className={styles.logout} type='button' onClick={handleLogout}>Sair</button>
                     </Link>
                 </form>
             </div>
+            
+            {isConfirmingDelete && (
+                <ConfirmationDialog
+                    message="Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita!"
+                    onConfirm={executeDelete}
+                    onCancel={() => setIsConfirmingDelete(false)}
+                />
+            )}
         </div>
     );
 }

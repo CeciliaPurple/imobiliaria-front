@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./adm.module.css";
 import dynamic from "next/dynamic";
 import { useAuthStore } from "@/stores/userStore";
+import { showSuccessToast, showErrorToast, showWarningToast } from "@/utils/toast";
 
 // Dynamic import do Select
 const Select = dynamic(() => import("react-select"), {
@@ -41,7 +42,7 @@ export default function CriarEditarImovel() {
   useEffect(() => {
     // Verificar se está logado
     if (!isLoggedIn || !token || !user) {
-      alert('Você precisa estar logado para acessar esta página');
+      showWarningToast('Você precisa estar logado para acessar esta página');
       router.push('/login');
       return;
     }
@@ -107,7 +108,7 @@ export default function CriarEditarImovel() {
       setLoading(false);
     } catch (error) {
       console.error('❌ Erro ao carregar imóvel:', error);
-      alert('Erro ao carregar dados do imóvel');
+      showErrorToast('Erro ao carregar dados do imóvel');
       router.push('/perfiladm');
     }
   };
@@ -155,7 +156,7 @@ export default function CriarEditarImovel() {
       if (response.ok) {
         const result = await response.json();
         console.log('✅ Resposta do servidor:', result);
-        alert(isEdit ? '✅ Imóvel atualizado com sucesso!' : '✅ Imóvel criado com sucesso!');
+        showSuccessToast(isEdit ? '✅ Imóvel atualizado com sucesso!' : '✅ Imóvel criado com sucesso!');
         router.push('/perfiladm');
       } else {
         const contentType = response.headers.get('content-type');
@@ -179,15 +180,15 @@ export default function CriarEditarImovel() {
         }
 
         console.error('❌ Erro do servidor:', errorData);
-        alert(`Erro ao ${isEdit ? 'atualizar' : 'criar'} imóvel (${response.status}): ${errorData.message || 'Erro desconhecido'}`);
+        showErrorToast(`Erro ao ${isEdit ? 'atualizar' : 'criar'} imóvel (${response.status}): ${errorData.message || 'Erro desconhecido'}`);
       }
     } catch (error) {
       console.error('❌ Erro de rede/conexão:', error);
 
       if (error.message.includes('fetch')) {
-        alert('Erro de conexão: Verifique se o servidor backend está rodando em http://localhost:3100');
+        showErrorToast('Erro de conexão: Verifique se o servidor backend está rodando em http://localhost:3100');
       } else {
-        alert('Erro de conexão: ' + error.message);
+        showErrorToast('Erro de conexão: ' + error.message);
       }
     }
   };

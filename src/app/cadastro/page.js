@@ -1,10 +1,10 @@
 "use client"; // necessário para usar useState
 
-
 import styles from './cadastro.module.css'
 import { useRouter } from 'next/navigation';
 import Image from 'next/image'
 import Link from 'next/link'
+import { showSuccessToast, showErrorToast } from '../../utils/toast';
 import Logo from '../../../public/villa-logo-nome.png';
 import { useState } from "react";
 
@@ -28,11 +28,11 @@ export default function Cadastro() {
         const data = await response.json();
 
         if (response.ok) {
-            alert("Cadastro realizado com sucesso!");
+            showSuccessToast("Cadastro realizado com sucesso!");
             router.push("/login"); // ✅ redireciona para a página de login
 
         } else {
-            alert(data.error || "Erro ao cadastrar");
+            showErrorToast(data.error || "Erro ao cadastrar");
         }
     };
 

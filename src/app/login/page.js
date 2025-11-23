@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image'
 import Link from 'next/link'
 import { useAuthStore } from '../../stores/userStore';
+import { showSuccessToast, showErrorToast } from '../../utils/toast';
 import Logo from '../../../public/villa-logo-nome.png';
 import { useState } from "react";
 
@@ -30,12 +31,12 @@ export default function Login() {
         const data = await response.json();
 
         if (response.ok) {
-            alert("Login realizado com sucesso!");
+            showSuccessToast("Login realizado com sucesso!");
             login({id: data.id, email:data.email, tipo:data.tipo}, data.token); // salva no Zustand
             router.push("/");
 
         } else {
-            alert(data.error || "Email ou Senha incorreto ");
+            showErrorToast(data.error || "Email ou Senha incorreto ");
         }
     };
 

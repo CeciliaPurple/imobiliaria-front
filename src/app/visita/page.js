@@ -5,21 +5,23 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ImovelP from "../components/ImovelP";
 import { useAuthStore } from "../../stores/userStore";
+import { showWarningToast, showSuccessToast, showErrorToast } from "../../utils/toast";
 import styles from "./visita.module.css";
+import ConfirmationDialog from '../components/Confirmation';
 
 export default function Visita() {
     const router = useRouter();
-    const { user, token } = useAuthStore(); // Pega do Zustand
+    const { user, token } = useAuthStore();
     const [agendamentos, setAgendamentos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
+    const [isConfirmingCancel, setIsConfirmingCancel] = useState(false);
+    const [agendamentoToCancelId, setAgendamentoToCancelId] = useState(null);
 
-        // Verifica autenticação
+    useEffect(() => {
         if (!token || !user) {
-            console.log('❌ Redirecionando para login...');
-            alert('Você precisa fazer login para ver suas visitas');
+            showWarningToast('Você precisa fazer login para ver suas visitas');
             router.push('/login');
             return;
         }
@@ -29,7 +31,6 @@ export default function Visita() {
 
     const buscarAgendamentos = async () => {
         try {
-
             if (!token || !user) {
                 setError('Usuário não autenticado');
                 setLoading(false);
@@ -45,21 +46,19 @@ export default function Visita() {
                 }
             });
 
-
             if (!response.ok) {
-                const errorText = await response.text();
                 throw new Error(`Erro ao buscar agendamentos: ${response.status}`);
             }
 
             const data = await response.json();
-
-
             let agendamentosData = data.agendamentos || data;
 
             if (!Array.isArray(agendamentosData)) {
                 agendamentosData = [];
             }
 
+            // Opcional: Ordenar por data (como sugerido anteriormente)
+            agendamentosData.sort((a, b) => new Date(b.dataVisita) - new Date(a.dataVisita));
 
             setAgendamentos(agendamentosData);
             setLoading(false);
@@ -68,6 +67,26 @@ export default function Visita() {
             setError(error.message);
             setLoading(false);
         }
+    };
+
+    // 💡 NOVA FUNÇÃO: Formata o telefone para (XX) XXXXX-XXXX
+    const formatarTelefone = (telefone) => {
+        if (!telefone) return 'Não informado';
+
+        // Remove tudo que não for dígito
+        const apenasDigitos = telefone.replace(/\D/g, '');
+
+        // Verifica se tem 10 ou 11 dígitos (com DDD)
+        if (apenasDigitos.length === 10) {
+            // Formato (XX) XXXX-XXXX (fixo)
+            return apenasDigitos.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
+        } else if (apenasDigitos.length === 11) {
+            // Formato (XX) XXXXX-XXXX (celular 9 dígitos)
+            return apenasDigitos.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+        }
+
+        // Retorna o original se a formatação falhar
+        return telefone;
     };
 
     const formatarData = (data) => {
@@ -95,8 +114,19 @@ export default function Visita() {
         return colors[status] || '#000';
     };
 
-    const handleCancelar = async (id) => {
-        if (!confirm('Deseja realmente cancelar este agendamento?')) {
+    const openCancelConfirmation = (id) => {
+        setAgendamentoToCancelId(id);
+        setIsConfirmingCancel(true);
+    };
+
+    const executeCancel = async () => {
+        setIsConfirmingCancel(false);
+
+        const id = agendamentoToCancelId;
+        setAgendamentoToCancelId(null);
+
+        if (!id) {
+            showErrorToast('Erro: ID do agendamento não encontrado.');
             return;
         }
 
@@ -113,14 +143,14 @@ export default function Visita() {
                 throw new Error('Erro ao cancelar agendamento');
             }
 
-            alert('Agendamento cancelado com sucesso!');
-            buscarAgendamentos(); // Recarrega a lista
+            showSuccessToast('Agendamento cancelado com sucesso!');
+            buscarAgendamentos();
         } catch (error) {
             console.error('❌ Erro ao cancelar:', error);
-            alert('Erro ao cancelar agendamento');
+            showErrorToast('Erro ao cancelar agendamento');
         }
     };
-    
+
     if (loading) {
         return (
             <div className={styles.container}>
@@ -147,7 +177,7 @@ export default function Visita() {
                     <p style={{ marginTop: '1rem', color: '#666' }}>
                         Você ainda não agendou nenhuma visita.
                     </p>
-                    <Link href="/">
+                    <Link href="/filtro">
                         <button
                             type="button"
                             style={{
@@ -194,7 +224,9 @@ export default function Visita() {
                             <p><b>Nome:</b> {agendamento.usuario?.nome || 'Não informado'}</p>
                             <p><b>Horário:</b> {agendamento.horario}</p>
                             <p><b>Data:</b> {formatarData(agendamento.dataVisita)}</p>
-                            <p><b>Tel:</b> {agendamento.telefone || 'Não informado'}</p>
+
+                            {/* 🚀 ALTERAÇÃO AQUI: Usando a nova função formatarTelefone */}
+                            <p><b>Tel:</b> {formatarTelefone(agendamento.telefone || agendamento.usuario?.telefone)}</p>
 
                             <div className={styles.btns}>
                                 <Link href={`/agenda?edit=${agendamento.id}`}>
@@ -202,7 +234,7 @@ export default function Visita() {
                                 </Link>
                                 <button
                                     type="button"
-                                    onClick={() => handleCancelar(agendamento.id)}
+                                    onClick={() => openCancelConfirmation(agendamento.id)}
                                     disabled={agendamento.status === 'cancelado'}
                                 >
                                     Cancelar
@@ -217,16 +249,24 @@ export default function Visita() {
 
                         {/* Observações */}
                         <div className={styles.obs}>
-                            <label htmlFor={`obs-${agendamento.id}`}><b>Obs:</b></label>
-                            <textarea
-                                id={`obs-${agendamento.id}`}
-                                value={agendamento.observacoes || 'Sem observações'}
-                                readOnly
-                            />
+                            <label><b>Obs:</b></label>
+                            <div className={styles.observacoes}>
+                                {agendamento.observacoes || 'Sem observações'}
+                            </div>
                         </div>
+
                     </div>
                 </div>
             ))}
+
+            {isConfirmingCancel && (
+                <ConfirmationDialog
+                    message="Deseja realmente cancelar este agendamento?"
+                    onConfirm={executeCancel}
+                    onCancel={() => setIsConfirmingCancel(false)}
+                    messageConfirm="Sim, Cancelar"
+                />
+            )}
         </div>
     );
 }
