@@ -35,7 +35,7 @@ export default function Topo() {
                         <Image src={User} alt="perfil" />
                     </Link>
                 ) : (
-                    <Link href="/cadastro">
+                    <Link href="/login">
                         <button type="button">Login</button>
                     </Link>
                 )}

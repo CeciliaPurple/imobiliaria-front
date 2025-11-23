@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react"; // 👈 Importando useRef
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ImovelP from "../components/ImovelP";
@@ -18,20 +18,34 @@ export default function Visita() {
 
     const [isConfirmingCancel, setIsConfirmingCancel] = useState(false);
     const [agendamentoToCancelId, setAgendamentoToCancelId] = useState(null);
+    
+    // 👈 NOVO: Ref para garantir que o redirecionamento só aconteça uma vez.
+    const hasRedirected = useRef(false); 
 
     useEffect(() => {
+        // Se já tentamos redirecionar (ou já estamos logados e buscando), saímos
+        if (hasRedirected.current) {
+            return;
+        }
+
         if (!token || !user) {
+            // Se não está autenticado e ainda não fizemos o redirecionamento
+            hasRedirected.current = true; // Sinaliza que o redirecionamento está ocorrendo
             showWarningToast('Você precisa fazer login para ver suas visitas');
             router.push('/login');
             return;
         }
 
+        // Se autenticado, busca os agendamentos
         buscarAgendamentos();
+        
     }, [user, token]);
 
     const buscarAgendamentos = async () => {
         try {
             if (!token || !user) {
+                // Esta verificação aqui ainda é útil como fallback para erro interno, 
+                // mas a lógica principal está no useEffect.
                 setError('Usuário não autenticado');
                 setLoading(false);
                 return;
@@ -57,7 +71,6 @@ export default function Visita() {
                 agendamentosData = [];
             }
 
-            // Opcional: Ordenar por data (como sugerido anteriormente)
             agendamentosData.sort((a, b) => new Date(b.dataVisita) - new Date(a.dataVisita));
 
             setAgendamentos(agendamentosData);
@@ -69,23 +82,17 @@ export default function Visita() {
         }
     };
 
-    // 💡 NOVA FUNÇÃO: Formata o telefone para (XX) XXXXX-XXXX
     const formatarTelefone = (telefone) => {
         if (!telefone) return 'Não informado';
 
-        // Remove tudo que não for dígito
         const apenasDigitos = telefone.replace(/\D/g, '');
 
-        // Verifica se tem 10 ou 11 dígitos (com DDD)
         if (apenasDigitos.length === 10) {
-            // Formato (XX) XXXX-XXXX (fixo)
             return apenasDigitos.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
         } else if (apenasDigitos.length === 11) {
-            // Formato (XX) XXXXX-XXXX (celular 9 dígitos)
             return apenasDigitos.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
         }
 
-        // Retorna o original se a formatação falhar
         return telefone;
     };
 
@@ -203,7 +210,6 @@ export default function Visita() {
             {agendamentos.map((agendamento) => (
                 <div key={agendamento.id} className={styles.container}>
                     <div className={styles.card}>
-                        {/* Card do imóvel */}
                         <div className={styles.container_visita}>
                             {agendamento.imovel ? (
                                 <ImovelP
@@ -218,14 +224,12 @@ export default function Visita() {
                             )}
                         </div>
 
-                        {/* Dados da visita */}
                         <div className={styles.texto_visita}>
                             <h3 className={styles.titulo}>Visita Agendada</h3>
                             <p><b>Nome:</b> {agendamento.usuario?.nome || 'Não informado'}</p>
                             <p><b>Horário:</b> {agendamento.horario}</p>
                             <p><b>Data:</b> {formatarData(agendamento.dataVisita)}</p>
 
-                            {/* 🚀 ALTERAÇÃO AQUI: Usando a nova função formatarTelefone */}
                             <p><b>Tel:</b> {formatarTelefone(agendamento.telefone || agendamento.usuario?.telefone)}</p>
 
                             <div className={styles.btns}>
@@ -247,7 +251,6 @@ export default function Visita() {
                             </div>
                         </div>
 
-                        {/* Observações */}
                         <div className={styles.obs}>
                             <label><b>Obs:</b></label>
                             <div className={styles.observacoes}>
