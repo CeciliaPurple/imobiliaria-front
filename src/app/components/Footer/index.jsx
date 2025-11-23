@@ -7,9 +7,14 @@ import Facebook from '../../../../public/icons/facebook.svg';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function Footer() {
+export default function Footer({ isVisitaPage }) {
+    
+    const footerClass = isVisitaPage 
+        ? `${styles.footer} ${styles.fixedFooter}`
+        : styles.footer;
+
     return (
-        <footer className={styles.footer}>
+        <footer className={footerClass}>
             <div className={styles.container_contact}>
                 <Link href='/'><Image src={Logo} alt='logo' className={styles.logo}></Image></Link>
                 <div className={styles.list}>
@@ -68,6 +73,5 @@ export default function Footer() {
                 <Link href="/termos" className={styles.copy_link}>Termos de Uso</Link>
             </p>
         </footer>
-
     )
 }

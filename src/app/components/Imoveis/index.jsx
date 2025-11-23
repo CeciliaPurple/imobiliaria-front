@@ -27,13 +27,13 @@ export default function Imoveis() {
                 <div className={styles.bloco1}>
                     <h2 className={styles.title}>Espaço, conforto e localização privilegiada: Sobrado com 4 dormitórios e 120m² a poucos passos da ilhabela — viva o melhor do litoral!
                         <div className={styles.Hearticon}>
-                        <Image src="/icons/heart.svg" alt="favorito" width={50} height={50} />
+                            <Image src="/icons/heart.svg" alt="favorito" width={50} height={50} />
                         </div>
                     </h2>
 
                     <h3 className={styles.subtitle}>Avenida Dom João V, Ilhabela - SP.
                         <div className={styles.locationicon} >
-                        <Image src="/icons/location.svg" alt="location" width={30} height={30} />
+                            <Image src="/icons/location.svg" alt="location" width={30} height={30} />
                         </div>
                     </h3>
 
@@ -84,17 +84,17 @@ export default function Imoveis() {
             </div>
 
 
-           
-                <div className={styles.objambiente}>
-                    <p>ambiente</p>
-                </div>
-                <div className={styles.ambientelista}>
-                    <p>Área de Serviços</p>
-                    <p>quintal</p>
-                    <p>Closet</p>
-                    <p>Piscina</p>
-                    <p>Escritório</p>
-                </div>
+
+            <div className={styles.objambiente}>
+                <p>ambiente</p>
+            </div>
+            <div className={styles.ambientelista}>
+                <p>Área de Serviços</p>
+                <p>quintal</p>
+                <p>Closet</p>
+                <p>Piscina</p>
+                <p>Escritório</p>
+            </div>
 
             <div className={styles.Conveniencias}>
                 <p className={styles.objConveniencias}>Conveniencias</p>
