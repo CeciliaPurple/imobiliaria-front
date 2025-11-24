@@ -151,7 +151,7 @@ export default function Perfil() {
 
         <h1 className={styles.title}>Perfil</h1>
 
-        <form className={styles.input_conatiner} onSubmit={handleUpdate}>
+        <form className={styles.input_container} onSubmit={handleUpdate}>
           <input
             type='text'
             placeholder='Nome de usuário'
@@ -175,8 +175,11 @@ export default function Perfil() {
             onChange={(e) => setSenha(e.target.value)}
           />
 
-          <button className={styles.atualizar} type='submit'>Atualizar</button>
-          <button className={styles.excluir} type='button' onClick={openDeleteConfirmation}>Excluir</button>
+          <div className={styles.buttonGroup}>
+            <button className={styles.atualizar} type='submit'>Atualizar</button>
+            <button className={styles.excluir} type='button' onClick={openDeleteConfirmation}>Excluir</button>
+          </div>
+
           <button className={styles.logout} type='button' onClick={handleLogout}>Sair</button>
         </form>
       </div>
