@@ -17,7 +17,6 @@
     justify-content: center;
     align-items: center;
     padding-top: 30px;
-    
     gap: 30px;
 }
 
@@ -30,7 +29,7 @@
 
 .form input::placeholder {
     justify-self: start;
-    color: var(--black);
+    color: gray;
     font-size: var(--h4);
 }
 
@@ -66,7 +65,7 @@
 }
 
 .form textarea::placeholder {
-    color: var(--black);
+    color: gray;
     font-size: var(--h4);
 }
 
