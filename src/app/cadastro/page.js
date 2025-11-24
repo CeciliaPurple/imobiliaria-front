@@ -1,4 +1,4 @@
-"use client"; // necessário para usar useState
+"use client";
 
 import styles from './cadastro.module.css'
 import { useRouter } from 'next/navigation';
@@ -42,26 +42,22 @@ export default function Cadastro() {
           transition: Bounce,
         });
 
+        showSuccessToast("Cadastro realizado com sucesso!");
+
         setTimeout(() => router.push("/login"), 1500);
+
       } else {
         toast.error(data.error || "Erro ao cadastrar", {
           position: "top-center",
           theme: "colored",
         });
+        showErrorToast(data.error || "Erro ao cadastrar");
       }
     } catch (err) {
       toast.error("Erro de conexão. Tente novamente.", { position: "top-center" });
       console.error(err);
     }
   };
-
-  if (response.ok) {
-    showSuccessToast("Cadastro realizado com sucesso!");
-    router.push("/login"); // ✅ redireciona para a página de login
-
-  } else {
-    showErrorToast(data.error || "Erro ao cadastrar");
-  }
 
   return (
     <div className={styles.back}>
