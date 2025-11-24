@@ -1,3 +1,4 @@
+// ...existing code...
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -5,6 +6,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAuthStore } from "../../stores/userStore";
 import { showWarningToast, showSuccessToast, showErrorToast } from "../../utils/toast";
 import styles from "./agenda.module.css";
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Visitas() {
     const router = useRouter();

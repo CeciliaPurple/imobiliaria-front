@@ -2,13 +2,12 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      // Permite imagens de qualquer domínio (ótimo para ambientes dinâmicos ou CMS externos)
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: '*',
       },
     ],
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

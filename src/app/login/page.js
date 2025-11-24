@@ -1,75 +1,96 @@
-"use client"; // necessário para usar useState
+"use client";
 
-
-import styles from './login.module.css'
+import styles from './login.module.css';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image'
-import Link from 'next/link'
+import Image from 'next/image';
+import Link from 'next/link';
 import { useAuthStore } from '../../stores/userStore';
 import { showSuccessToast, showErrorToast } from '../../utils/toast';
 import Logo from '../../../public/villa-logo-nome.png';
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const { login } = useAuthStore();
 
-    const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const router = useRouter();
+    try {
+      const response = await fetch("http://localhost:3100/usuario/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha }),
+      });
 
-    const { login } = useAuthStore();
+      const data = await response.json();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+      if (response.ok) {
+        showSuccessToast("Login realizado com sucesso!");
+        // Salva o usuário no Zustand
+        login({ id: data.id, email: data.email, tipo: data.tipo }, data.token);
+        router.push("/");
+      } else {
+        showErrorToast(data.error || "Email ou Senha incorreto");
+      }
+    } catch (error) {
+      console.error("Falha ao fazer login:", error);
+      showErrorToast("Ocorreu um erro ao tentar fazer login. Tente novamente.");
+    }
+  };
 
-        const response = await fetch("http://localhost:3100/usuario/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, senha }),
-        });
+  return (
+    <div className={styles.back}>
+      <div className={styles.container}>
+        <Link href="/"><Image src={Logo} alt='logo' className={styles.logo} /></Link>
 
-        const data = await response.json();
+        <h1 className={styles.title}>Login</h1>
 
-        if (response.ok) {
-            showSuccessToast("Login realizado com sucesso!");
-            login({id: data.id, email:data.email, tipo:data.tipo}, data.token); // salva no Zustand
-            router.push("/");
+        <form className={styles.input_container} onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-        } else {
-            showErrorToast(data.error || "Email ou Senha incorreto ");
-        }
-    };
+          <div className={styles.password_container}>
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Senha"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              autoComplete="current-password"
+              required
+            />
+            <span
+              className={styles.eye_icon}
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
 
-    return (
-        <div className={styles.back}>
-            <div className={styles.container}>
-                <Link href="/"><Image src={Logo} alt='logo' className={styles.logo} /></Link>
+          <button type="submit">Entrar</button>
+        </form>
 
-                <h1 className={styles.title}>Login</h1>
+        <p>
+          Não possui uma conta?{" "}
+          <Link href="/cadastro" className={styles.link}>
+            <b>Clique aqui!</b>
+          </Link>
+        </p>
 
-                <form className={styles.input_container} onSubmit={handleSubmit}>
-
-                    <input
-                        type='email'
-                        placeholder='Email'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required />
-
-                    <input
-                        type='password'
-                        placeholder='Senha'
-                        value={senha}
-                        onChange={(e) => setSenha(e.target.value)}
-                        required />
-
-                    <button type='submit'>Entrar</button>
-                </form>
-
-
-
-                <p>Não possui uma conta? <Link href="/cadastro" className={styles.link}><b>Clique aqui!</b></Link></p>
-            </div>
-        </div>
-    )
+        {/* ✅ Container global de notificações */}
+        <ToastContainer />
+      </div>
+    </div>
+  );
 }

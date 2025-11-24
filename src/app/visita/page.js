@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react"; // 👈 Importando useRef
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ImovelP from "../components/ImovelP";
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useAuthStore } from "../../stores/userStore";
 import { showWarningToast, showSuccessToast, showErrorToast } from "../../utils/toast";
 import styles from "./visita.module.css";
@@ -15,12 +17,13 @@ export default function Visita() {
     const [agendamentos, setAgendamentos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [ultimoImovel, setUltimoImovel] = useState(null);
 
     const [isConfirmingCancel, setIsConfirmingCancel] = useState(false);
     const [agendamentoToCancelId, setAgendamentoToCancelId] = useState(null);
-    
+
     // 👈 NOVO: Ref para garantir que o redirecionamento só aconteça uma vez.
-    const hasRedirected = useRef(false); 
+    const hasRedirected = useRef(false);
 
     useEffect(() => {
         // Se já tentamos redirecionar (ou já estamos logados e buscando), saímos
@@ -38,7 +41,7 @@ export default function Visita() {
 
         // Se autenticado, busca os agendamentos
         buscarAgendamentos();
-        
+
     }, [user, token]);
 
     const buscarAgendamentos = async () => {
@@ -55,9 +58,9 @@ export default function Visita() {
 
             const response = await fetch(url, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
             });
 
             if (!response.ok) {
@@ -75,8 +78,9 @@ export default function Visita() {
 
             setAgendamentos(agendamentosData);
             setLoading(false);
+
         } catch (error) {
-            console.error('❌ Erro ao buscar agendamentos:', error);
+            console.error("❌ Erro ao buscar agendamentos:", error);
             setError(error.message);
             setLoading(false);
         }
@@ -98,27 +102,27 @@ export default function Visita() {
 
     const formatarData = (data) => {
         const dataObj = new Date(data);
-        return dataObj.toLocaleDateString('pt-BR');
+        return dataObj.toLocaleDateString("pt-BR");
     };
 
     const formatarStatus = (status) => {
         const statusMap = {
-            'pendente': 'Pendente',
-            'confirmado': 'Confirmado',
-            'recusado': 'Recusado',
-            'cancelado': 'Cancelado'
+            pendente: "Pendente",
+            confirmado: "Confirmado",
+            recusado: "Recusado",
+            cancelado: "Cancelado",
         };
         return statusMap[status] || status;
     };
 
     const getStatusColor = (status) => {
         const colors = {
-            'pendente': '#FFA500',
-            'confirmado': '#4CAF50',
-            'recusado': '#f44336',
-            'cancelado': '#9E9E9E'
+            pendente: "#FFA500",
+            confirmado: "#4CAF50",
+            recusado: "#f44336",
+            cancelado: "#9E9E9E",
         };
-        return colors[status] || '#000';
+        return colors[status] || "#000";
     };
 
     const openCancelConfirmation = (id) => {
@@ -161,7 +165,10 @@ export default function Visita() {
     if (loading) {
         return (
             <div className={styles.container}>
-                <p style={{ textAlign: 'center', padding: '2rem' }}>Carregando agendamentos...</p>
+                <div className={styles.loadingCard}>
+                    {ultimoImovel && <ImovelP imovel={ultimoImovel} />}
+                    <p>Carregando seus agendamentos...</p>
+                </div>
             </div>
         );
     }
@@ -169,7 +176,7 @@ export default function Visita() {
     if (error) {
         return (
             <div className={styles.container}>
-                <p style={{ textAlign: 'center', padding: '2rem', color: 'red' }}>
+                <p style={{ textAlign: "center", padding: "2rem", color: "red" }}>
                     Erro: {error}
                 </p>
             </div>
@@ -179,9 +186,9 @@ export default function Visita() {
     if (agendamentos.length === 0) {
         return (
             <div className={styles.container}>
-                <div className={styles.card} style={{ textAlign: 'center', padding: '3rem' }}>
+                <div className={styles.cardEmpty}>
                     <h3>Nenhuma visita agendada</h3>
-                    <p style={{ marginTop: '1rem', color: '#666' }}>
+                    <p style={{ marginTop: "1rem", color: "#666" }}>
                         Você ainda não agendou nenhuma visita.
                     </p>
                     <Link href="/filtro">
@@ -207,18 +214,13 @@ export default function Visita() {
 
     return (
         <div>
+            <ToastContainer theme="dark" position="top-center" autoClose={3000} />
             {agendamentos.map((agendamento) => (
                 <div key={agendamento.id} className={styles.container}>
                     <div className={styles.card}>
                         <div className={styles.container_visita}>
                             {agendamento.imovel ? (
-                                <ImovelP
-                                    foto={agendamento.imovel.foto}
-                                    titulo={agendamento.imovel.titulo}
-                                    localizacao={agendamento.imovel.localizacao}
-                                    valor={agendamento.imovel.valor}
-                                    id={agendamento.imovel.id}
-                                />
+                                <ImovelP imovel={agendamento.imovel} />
                             ) : (
                                 <p>Imóvel não disponível</p>
                             )}
@@ -226,7 +228,7 @@ export default function Visita() {
 
                         <div className={styles.texto_visita}>
                             <h3 className={styles.titulo}>Visita Agendada</h3>
-                            <p><b>Nome:</b> {agendamento.usuario?.nome || 'Não informado'}</p>
+                            <p><b>Nome:</b> {agendamento.usuario?.nome || "Não informado"}</p>
                             <p><b>Horário:</b> {agendamento.horario}</p>
                             <p><b>Data:</b> {formatarData(agendamento.dataVisita)}</p>
 
@@ -236,6 +238,7 @@ export default function Visita() {
                                 <Link href={`/agenda?edit=${agendamento.id}`}>
                                     <button type="button">Editar</button>
                                 </Link>
+
                                 <button
                                     type="button"
                                     onClick={() => openCancelConfirmation(agendamento.id)}
@@ -243,12 +246,14 @@ export default function Visita() {
                                 >
                                     Cancelar
                                 </button>
-                                <p className={styles.status}>
-                                    Status: <span style={{ color: getStatusColor(agendamento.status) }}>
-                                        {formatarStatus(agendamento.status)}
-                                    </span>
-                                </p>
                             </div>
+
+                            <p className={styles.status}>
+                                Status:
+                                <span style={{ color: getStatusColor(agendamento.status) }}>
+                                    {formatarStatus(agendamento.status)}
+                                </span>
+                            </p>
                         </div>
 
                         <div className={styles.obs}>

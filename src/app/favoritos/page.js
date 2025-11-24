@@ -6,23 +6,66 @@ import Imovel from '../components/Imovel'
 
 export default function Favoritos() {
     const [favoritos, setFavoritos] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Busca os favoritos do localStorage quando o componente é montado.
-        const imoveisFavoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
-        setFavoritos(imoveisFavoritos);
+        const fetchFavoritos = () => {
+            try {
+                // Pega os objetos completos dos imóveis do localStorage
+                const favoritosStorage = JSON.parse(localStorage.getItem('favoritos') || '[]');
+                
+                console.log('📦 Favoritos carregados:', favoritosStorage);
+                
+                setFavoritos(favoritosStorage);
+            } catch (error) {
+                console.error("❌ Erro ao carregar favoritos:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchFavoritos();
+
+        // Recarrega favoritos quando o localStorage muda
+        const handleStorageChange = (event) => {
+            if (event.key === 'favoritos') {
+                fetchFavoritos();
+            }
+        };
+
+        const handleFocus = () => fetchFavoritos();
+
+        window.addEventListener('storage', handleStorageChange);
+        window.addEventListener('focus', handleFocus);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+            window.removeEventListener('focus', handleFocus);
+        };
     }, []);
 
     return (
         <div className={styles.container_fave}>
              <h2>Favoritos</h2>
 
-             {favoritos.length > 0 ? (
+             {loading ? (
+                <p>Carregando favoritos...</p>
+             ) : favoritos.length > 0 ? (
                 <div className={styles.container_imoveis}>
                     {favoritos.map((imovel) => (
-                        // Assumindo que o componente Imovel recebe os dados via props
-                        // e que cada imovel tem um 'id' único.
-                        <Imovel key={imovel.id} {...imovel} />
+                        <Imovel 
+                            key={imovel.id} 
+                            id={imovel.id}
+                            imagemSrc={imovel.imagemSrc}
+                            titulo={imovel.titulo}
+                            area={imovel.area}
+                            bed={imovel.bed}
+                            bath={imovel.bath}
+                            car={imovel.car}
+                            location={imovel.location}
+                            city={imovel.city}
+                            price={imovel.price}
+                        />
                     ))}
                 </div>
              ) : (

@@ -4,8 +4,10 @@
   margin-top: 30px;
 }
 
+/* CARD GERAL COM 3 COLUNAS */
 .card {
-  display: flex;
+  display: grid;
+  grid-template-columns: 380px 1fr 300px;
   gap: 20px;
   background: var(--cinza);
   border-radius: 12px;
@@ -29,62 +31,59 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 35px;
-  position: relative;
-  right: 155px;
-  font-size: 22px;
-}
-
-.obs {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 75px;
+  gap: 10px;
   font-size: 20px;
 }
 
-.obs textarea {
-  resize: none;
-  width: 100%;
-  min-height: 140px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 8px;
-  font-size: 14px;
-  background-color: #fff;
+/* TÍTULO */
+.titulo {
+  font-size: 24px;
+  margin-bottom: 10px;
 }
 
+/* COLUNA DE OBSERVAÇÕES */
+.obs {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
+.obs textarea {
+  width: 100%;
+  min-height: 140px;
+  resize: none;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: white;
+}
+
+/* BOTÕES */
 .btns {
   display: flex;
   gap: 12px;
-  margin-top: 12px;
-  align-items: center;
+  margin-top: 10px;
 }
 
 .btns button {
-  background: #0d6efd;
-  color: #fff;
-  border: none;
   padding: 6px 14px;
   border-radius: 6px;
+  border: none;
   cursor: pointer;
   font-size: 14px;
+  background: #0d6efd;
+  color: white;
 }
 
 .btns button:nth-child(2) {
   background: #6c757d;
 }
 
-.status {
-  position: relative;
-  top: 55px;
-  display: flex;
-  flex-wrap: nowrap;
-  font-weight: bold;
-  gap: 5px;
+.btns button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 
 .status span {
@@ -92,21 +91,21 @@
 }
 
 .observacoes {
-    font-size: 15px;
-    padding: 10px;
-    border: 1px solid var(--cor-da-borda, #ccc);
-    border-radius: 8px;
-    min-width: 250px;
-    max-width: 250px;
-    min-height: 80px;
-    max-height: 150px;
-    overflow-x: auto;
-    white-space: pre-wrap; 
-    word-break: break-word; 
-    background-color: #ffffff; 
+  font-size: 15px;
+  padding: 10px;
+  border: 1px solid var(--cor-da-borda, #ccc);
+  border-radius: 8px;
+  min-width: 250px;
+  max-width: 250px;
+  min-height: 80px;
+  max-height: 150px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background-color: #ffffff;
 
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }

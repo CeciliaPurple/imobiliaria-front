@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./adm.module.css";
 import dynamic from "next/dynamic";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useAuthStore } from "@/stores/userStore";
 import { showSuccessToast, showErrorToast, showWarningToast } from "@/utils/toast";
 
@@ -38,6 +40,26 @@ export default function CriarEditarImovel() {
     lancamento: false,
     descricao: ''
   });
+
+  // Função para formatar valor em Real brasileiro
+  const formatarMoeda = (valor) => {
+    // Remove tudo que não é número
+    const apenasNumeros = valor.replace(/\D/g, '');
+    
+    // Converte para número e divide por 100 para ter os centavos
+    const numero = parseFloat(apenasNumeros) / 100;
+    
+    // Formata para Real brasileiro
+    return numero.toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  };
+
+  // Função para converter valor formatado de volta para número
+  const desformatarMoeda = (valorFormatado) => {
+    return valorFormatado.replace(/\./g, '').replace(',', '.');
+  };
 
   useEffect(() => {
     // Verificar se está logado
@@ -92,8 +114,8 @@ export default function CriarEditarImovel() {
         foto: imovel.foto || '',
         titulo: imovel.titulo || '',
         localizacao: imovel.localizacao || '',
-        valor: imovel.valor || '',
-        iptu: imovel.iptu || '',
+        valor: imovel.valor ? formatarMoeda(String(imovel.valor * 100)) : '',
+        iptu: imovel.iptu ? formatarMoeda(String(imovel.iptu * 100)) : '',
         metros_quadrados: imovel.metrosQuadrados || imovel.metros_quadrados || '',
         quartos: imovel.quartos || '',
         banheiros: imovel.banheiros || '',
@@ -120,8 +142,8 @@ export default function CriarEditarImovel() {
       foto: formData.foto,
       titulo: formData.titulo,
       localizacao: formData.localizacao,
-      valor: parseFloat(formData.valor),
-      iptu: parseFloat(formData.iptu),
+      valor: parseFloat(desformatarMoeda(formData.valor)),
+      iptu: parseFloat(desformatarMoeda(formData.iptu)),
       metrosQuadrados: parseFloat(formData.metros_quadrados),
       quartos: parseInt(formData.quartos),
       banheiros: parseInt(formData.banheiros),
@@ -226,6 +248,7 @@ export default function CriarEditarImovel() {
 
   return (
     <div className={styles.visita}>
+      <ToastContainer theme="dark" position="top-center" autoClose={3000} />
       <div className={styles.container}>
         <p className={styles.agenda}>
           {isEdit ? 'Editar Imóvel' : 'Criar Imóvel'}
@@ -278,30 +301,34 @@ export default function CriarEditarImovel() {
 
           {/* Valor */}
           <div className={styles.campo}>
-            <label htmlFor="valor">Valor</label>
+            <label htmlFor="valor">Valor (R$)</label>
             <input
               id="valor"
               className={styles.hora}
-              type="number"
-              step="0.01"
+              type="text"
               value={formData.valor}
-              onChange={(e) => setFormData({ ...formData, valor: e.target.value })}
-              placeholder="R$ 0,00"
+              onChange={(e) => {
+                const valorFormatado = formatarMoeda(e.target.value);
+                setFormData({ ...formData, valor: valorFormatado });
+              }}
+              placeholder="0,00"
               required
             />
           </div>
 
           {/* Iptu */}
           <div className={styles.campo}>
-            <label htmlFor="Iptu">Iptu</label>
+            <label htmlFor="Iptu">IPTU (R$)</label>
             <input
               id="Iptu"
-              type="number"
-              step="0.01"
+              type="text"
               className={styles.ajuste}
               value={formData.iptu}
-              onChange={(e) => setFormData({ ...formData, iptu: e.target.value })}
-              placeholder="R$ 0,00"
+              onChange={(e) => {
+                const valorFormatado = formatarMoeda(e.target.value);
+                setFormData({ ...formData, iptu: valorFormatado });
+              }}
+              placeholder="0,00"
               required
             />
           </div>

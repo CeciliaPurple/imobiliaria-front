@@ -17,6 +17,7 @@ export default function ImovelDetalhes() {
   const [imovel, setImovel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isFavorited, setIsFavorited] = useState(false);
 
   useEffect(() => {
     const fetchImovel = async () => {
@@ -26,6 +27,12 @@ export default function ImovelDetalhes() {
         if (response.ok) {
           const data = await response.json();
           setImovel(data.imovel || data);
+          
+          // Verifica se o imóvel já está nos favoritos
+          const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+          const jaEhFavorito = favoritos.some(fav => String(fav.id) === String(params.id));
+          setIsFavorited(jaEhFavorito);
+
           setLoading(false);
         } else {
           setError('Imóvel não encontrado');
@@ -42,6 +49,42 @@ export default function ImovelDetalhes() {
       fetchImovel();
     }
   }, [params.id]);
+
+  const handleToggleFavorite = () => {
+    if (!imovel) return;
+
+    const favoritosAtuais = JSON.parse(localStorage.getItem('favoritos') || '[]');
+    const imovelIndex = favoritosAtuais.findIndex(fav => String(fav.id) === String(imovel.id));
+
+    let novosFavoritos;
+
+    if (imovelIndex > -1) {
+      // Remove dos favoritos
+      novosFavoritos = favoritosAtuais.filter(fav => String(fav.id) !== String(imovel.id));
+      setIsFavorited(false);
+      console.log('✅ Removido dos favoritos');
+    } else {
+      // Adiciona aos favoritos - salva o objeto completo
+      const imovelParaAdicionar = {
+        id: imovel.id,
+        imagemSrc: imovel.foto,
+        titulo: imovel.titulo,
+        area: imovel.metrosQuadrados,
+        bed: imovel.quartos,
+        bath: imovel.banheiros,
+        car: imovel.garagens,
+        location: imovel.localizacao,
+        city: imovel.cidade || '',
+        price: imovel.valor
+      };
+      
+      novosFavoritos = [...favoritosAtuais, imovelParaAdicionar];
+      setIsFavorited(true);
+      console.log('✅ Adicionado aos favoritos');
+    }
+
+    localStorage.setItem('favoritos', JSON.stringify(novosFavoritos));
+  };
 
   if (loading) {
     return (
@@ -110,8 +153,8 @@ export default function ImovelDetalhes() {
                 <span>{imovel.localizacao}</span>
               </div>
             </div>
-            <button className={styles.favoriteButton}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <button onClick={handleToggleFavorite} className={styles.favoriteButton}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill={isFavorited ? '#DE302A' : 'none'} stroke={isFavorited ? '#DE302A' : 'currentColor'} strokeWidth="2">
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
               </svg>
             </button>
@@ -180,10 +223,27 @@ export default function ImovelDetalhes() {
             <span className={styles.iptuValue}>{iptuFormatado}</span>
           </div>
 
-          {/* ✅ MANTÉM APENAS ESTE BOTÃO COM O ID */}
-          <Link href={`/agenda?imovel=${params.id}`}>
+          <Link
+            href={`/agenda?imovel=${params.id}`}
+            onClick={() => {
+              if (imovel) {
+                localStorage.setItem("ultimoImovel", JSON.stringify({
+                  id: imovel.id,
+                  foto: imovel.foto,
+                  titulo: imovel.titulo,
+                  localizacao: imovel.localizacao,
+                  valor: imovel.valor,
+                  metrosQuadrados: imovel.metrosQuadrados,
+                  quartos: imovel.quartos,
+                  banheiros: imovel.banheiros,
+                  garagens: imovel.garagens
+                }));
+              }
+            }}
+          >
             <button className={styles.scheduleButton}>Agendar visita</button>
           </Link>
+
         </div>
       </div>
     </div>
