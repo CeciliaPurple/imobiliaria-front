@@ -12,11 +12,17 @@ const Car = "/icons/car.svg";
 const Water = "/icons/water.svg";
 const Home = "/icons/home.svg";
 
-export default function ImovelDetalhes() {
+// Componente principal da página
+export default function ImovelDetalhesPage() {
   const params = useParams();
   const [imovel, setImovel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [modalImage, setModalImage] = useState(null); // Estado para o URL da imagem no modal
+
+  // Variável para simular múltiplas fotos
+  const galleryImages = imovel ? [imovel.foto, imovel.foto, imovel.foto] : [];
 
   useEffect(() => {
     const fetchImovel = async () => {
@@ -26,6 +32,12 @@ export default function ImovelDetalhes() {
         if (response.ok) {
           const data = await response.json();
           setImovel(data.imovel || data);
+
+          // Verifica se o imóvel já está nos favoritos
+          const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+          const jaEhFavorito = favoritos.some(fav => String(fav.id) === String(params.id));
+          setIsFavorited(jaEhFavorito);
+
           setLoading(false);
         } else {
           setError('Imóvel não encontrado');
@@ -42,6 +54,51 @@ export default function ImovelDetalhes() {
       fetchImovel();
     }
   }, [params.id]);
+
+  const handleToggleFavorite = () => {
+    if (!imovel) return;
+
+    const favoritosAtuais = JSON.parse(localStorage.getItem('favoritos') || '[]');
+    const imovelIndex = favoritosAtuais.findIndex(fav => String(fav.id) === String(imovel.id));
+
+    let novosFavoritos;
+
+    if (imovelIndex > -1) {
+      // Remove dos favoritos
+      novosFavoritos = favoritosAtuais.filter(fav => String(fav.id) !== String(imovel.id));
+      setIsFavorited(false);
+      console.log('✅ Removido dos favoritos');
+    } else {
+      // Adiciona aos favoritos - salva o objeto completo
+      const imovelParaAdicionar = {
+        id: imovel.id,
+        imagemSrc: imovel.foto,
+        titulo: imovel.titulo,
+        area: imovel.metrosQuadrados,
+        bed: imovel.quartos,
+        bath: imovel.banheiros,
+        car: imovel.garagens,
+        location: imovel.localizacao,
+        city: imovel.cidade || '',
+        price: imovel.valor
+      };
+
+      novosFavoritos = [...favoritosAtuais, imovelParaAdicionar];
+      setIsFavorited(true);
+      console.log('✅ Adicionado aos favoritos');
+    }
+
+    localStorage.setItem('favoritos', JSON.stringify(novosFavoritos));
+  };
+
+  // Funções de controle do modal de zoom
+  const openModal = (imageSrc) => {
+    setModalImage(imageSrc);
+  };
+
+  const closeModal = () => {
+    setModalImage(null);
+  };
 
   if (loading) {
     return (
@@ -82,110 +139,145 @@ export default function ImovelDetalhes() {
   }).format(imovel.iptu) : 'Não informado';
 
   return (
-    <div className={styles.container}>
-      {/* Galeria de Imagens */}
-      <div className={styles.imageGallery}>
-        <div className={styles.mainImage}>
-          <img src={imovel.foto} alt={imovel.titulo} />
-        </div>
-        <div className={styles.thumbnails}>
-          <div className={styles.thumbnail}>
-            <img src={imovel.foto} alt={imovel.titulo} />
+    <>
+      <div className={styles.container}>
+        {/* Galeria de Imagens */}
+        <div className={styles.imageGallery}>
+          {/* Imagem Principal - Clicável */}
+          <div className={styles.mainImage} onClick={() => openModal(galleryImages[0])}>
+            <img src={galleryImages[0]} alt={imovel.titulo} />
           </div>
-          <div className={styles.thumbnail}>
-            <img src={imovel.foto} alt={imovel.titulo} />
+          <div className={styles.thumbnails}>
+            {/* Renderiza as miniaturas (as fotos seguintes da galeria) */}
+            {galleryImages.slice(1, 3).map((imageSrc, index) => (
+              <div
+                key={index}
+                className={styles.thumbnail}
+                onClick={() => openModal(imageSrc)}
+              >
+                <img src={imageSrc} alt={`${imovel.titulo} - Miniatura ${index + 1}`} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Container Principal */}
+        <div className={styles.mainContent}>
+          {/* Informações da Propriedade (Esquerda) */}
+          <div className={styles.propertyInfo}>
+            <div className={styles.headerSection}>
+              <div>
+                <h1 className={styles.title}>{imovel.titulo}</h1>
+                <div className={styles.location}>
+                  <Image src={Location} alt="localização" width={16} height={16} />
+                  <span>{imovel.localizacao}</span>
+                </div>
+              </div>
+              <button onClick={handleToggleFavorite} className={styles.favoriteButton}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill={isFavorited ? '#DE302A' : 'none'} stroke={isFavorited ? '#DE302A' : 'currentColor'} strokeWidth="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+              </button>
+            </div>
+
+            <div className={styles.features}>
+              <div className={styles.feature}>
+                <Image src={Home} alt="área" width={20} height={20} />
+                <span>{imovel.metrosQuadrados} m²</span>
+              </div>
+              <div className={styles.feature}>
+                <Image src={Bed} alt="quartos" width={20} height={20} />
+                <span>{imovel.quartos} Quartos</span>
+              </div>
+              <div className={styles.feature}>
+                <Image src={Water} alt="banheiros" width={20} height={20} />
+                <span>{imovel.banheiros} Banheiros</span>
+              </div>
+              <div className={styles.feature}>
+                <Image src={Car} alt="vagas" width={20} height={20} />
+                <span>{imovel.garagens} Vagas</span>
+              </div>
+            </div>
+
+            {/* Ambientes */}
+            {ambientes.length > 0 && (
+              <div className={styles.section}>
+                <h3>Ambientes</h3>
+                <div className={styles.tags}>
+                  {ambientes.map((ambiente, index) => (
+                    <span key={index} className={styles.tag}>{ambiente}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Conveniências */}
+            {conveniencias.length > 0 && (
+              <div className={styles.section}>
+                <h3>Conveniências</h3>
+                <div className={styles.tags}>
+                  {conveniencias.map((conveniencia, index) => (
+                    <span key={index} className={styles.tag}>{conveniencia}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Descrição */}
+            <div className={styles.section}>
+              <h3>Descrição</h3>
+              <p className={styles.description}>{imovel.descricao}</p>
+            </div>
+          </div>
+
+          {/* Card de Venda (Direita) */}
+          <div className={styles.saleCard}>
+            <div className={styles.saleType}>Venda</div>
+
+            <div className={styles.priceSection}>
+              <h2 className={styles.price}>{valorFormatado}</h2>
+            </div>
+
+            <div className={styles.iptuSection}>
+              <span className={styles.iptuLabel}>IPTU</span>
+              <span className={styles.iptuValue}>{iptuFormatado}</span>
+            </div>
+
+            <Link
+              href={`/agenda?imovel=${params.id}`}
+              onClick={() => {
+                if (imovel) {
+                  localStorage.setItem("ultimoImovel", JSON.stringify({
+                    id: imovel.id,
+                    foto: imovel.foto,
+                    titulo: imovel.titulo,
+                    localizacao: imovel.localizacao,
+                    valor: imovel.valor,
+                    metrosQuadrados: imovel.metrosQuadrados,
+                    quartos: imovel.quartos,
+                    banheiros: imovel.banheiros,
+                    garagens: imovel.garagens
+                  }));
+                }
+              }}
+            >
+              <button className={styles.scheduleButton}>Agendar visita</button>
+            </Link>
+
           </div>
         </div>
       </div>
 
-      {/* Container Principal */}
-      <div className={styles.mainContent}>
-        {/* Informações da Propriedade (Esquerda) */}
-        <div className={styles.propertyInfo}>
-          <div className={styles.headerSection}>
-            <div>
-              <h1 className={styles.title}>{imovel.titulo}</h1>
-              <div className={styles.location}>
-                <Image src={Location} alt="localização" width={16} height={16} />
-                <span>{imovel.localizacao}</span>
-              </div>
-            </div>
-            <button className={styles.favoriteButton}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-              </svg>
-            </button>
-          </div>
+      {/* Modal de Zoom - Renderizado apenas se modalImage tiver um valor */}
+      {modalImage && (
+        <div className={styles.modalOverlay} onClick={closeModal}>
+          <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+            <img src={modalImage} alt="Imagem em zoom" className={styles.modalImageZoom} />
+            <button className={styles.closeButton} onClick={closeModal}>&times;</button>
 
-          <div className={styles.features}>
-            <div className={styles.feature}>
-              <Image src={Home} alt="área" width={20} height={20} />
-              <span>{imovel.metrosQuadrados} m²</span>
-            </div>
-            <div className={styles.feature}>
-              <Image src={Bed} alt="quartos" width={20} height={20} />
-              <span>{imovel.quartos} Quartos</span>
-            </div>
-            <div className={styles.feature}>
-              <Image src={Water} alt="banheiros" width={20} height={20} />
-              <span>{imovel.banheiros} Banheiros</span>
-            </div>
-            <div className={styles.feature}>
-              <Image src={Car} alt="vagas" width={20} height={20} />
-              <span>{imovel.garagens} Vagas</span>
-            </div>
-          </div>
-
-          {/* Ambientes */}
-          {ambientes.length > 0 && (
-            <div className={styles.section}>
-              <h3>Ambientes</h3>
-              <div className={styles.tags}>
-                {ambientes.map((ambiente, index) => (
-                  <span key={index} className={styles.tag}>{ambiente}</span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Conveniências */}
-          {conveniencias.length > 0 && (
-            <div className={styles.section}>
-              <h3>Conveniências</h3>
-              <div className={styles.tags}>
-                {conveniencias.map((conveniencia, index) => (
-                  <span key={index} className={styles.tag}>{conveniencia}</span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Descrição */}
-          <div className={styles.section}>
-            <h3>Descrição</h3>
-            <p className={styles.description}>{imovel.descricao}</p>
           </div>
         </div>
-
-        {/* Card de Venda (Direita) */}
-        <div className={styles.saleCard}>
-          <div className={styles.saleType}>Venda</div>
-
-          <div className={styles.priceSection}>
-            <h2 className={styles.price}>{valorFormatado}</h2>
-          </div>
-
-          <div className={styles.iptuSection}>
-            <span className={styles.iptuLabel}>IPTU</span>
-            <span className={styles.iptuValue}>{iptuFormatado}</span>
-          </div>
-
-          {/* ✅ MANTÉM APENAS ESTE BOTÃO COM O ID */}
-          <Link href={`/agenda?imovel=${params.id}`}>
-            <button className={styles.scheduleButton}>Agendar visita</button>
-          </Link>
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
