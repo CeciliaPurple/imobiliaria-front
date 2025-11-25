@@ -151,7 +151,7 @@ export default function Perfil() {
 
                 <h1 className={styles.title}>Perfil</h1>
 
-                <form className={styles.input_conatiner} onSubmit={handleUpdate}>
+                <form className={styles.input_container} onSubmit={handleUpdate}>
                     <input
                         type='text'
                         placeholder='Nome de usuário'
