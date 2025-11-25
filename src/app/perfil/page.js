@@ -8,7 +8,7 @@ import Logo from '../../../public/villa-logo-nome.png';
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/stores/userStore";
 import { showErrorToast, showSuccessToast } from "@/utils/toast";
-import ConfirmationDialog from '../components/Confirmation'; 
+import ConfirmationDialog from '../components/Confirmation';
 
 export default function Perfil() {
     const [nome, setNome] = useState("");
@@ -41,7 +41,7 @@ export default function Perfil() {
             })
             .then(data => {
                 const usuario = data.profile || data.usuario || data.data || data;
-                
+
                 setNome(usuario.nome || "");
                 setEmail(usuario.email || "");
                 setLoading(false);
@@ -63,7 +63,7 @@ export default function Perfil() {
 
         try {
             const bodyData = { nome, email };
-            
+
             if (senha && senha.trim() !== "") {
                 bodyData.senha = senha;
             }
@@ -174,15 +174,15 @@ export default function Perfil() {
                         value={senha}
                         onChange={(e) => setSenha(e.target.value)}
                     />
+                    <div className={styles.buttonGroup}>
+                        <button className={styles.atualizar} type='submit'>Atualizar</button>
+                        <button className={styles.excluir} type='button' onClick={openDeleteConfirmation}>Excluir</button>
+                    </div>
+                    <button className={styles.logout} type='button' onClick={handleLogout}>Sair</button>
 
-                    <button className={styles.atualizar} type='submit'>Atualizar</button>
-                    <button className={styles.excluir} type='button' onClick={openDeleteConfirmation}>Excluir</button>
-                    <Link href="/" >
-                        <button className={styles.logout} type='button' onClick={handleLogout}>Sair</button>
-                    </Link>
                 </form>
             </div>
-            
+
             {isConfirmingDelete && (
                 <ConfirmationDialog
                     message="Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita!"
