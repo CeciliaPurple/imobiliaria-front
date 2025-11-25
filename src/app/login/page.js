@@ -9,16 +9,15 @@ import { useAuthStore } from '../../stores/userStore';
 import { showSuccessToast, showErrorToast } from '../../utils/toast';
 import Logo from '../../../public/villa-logo-nome.png';
 import { useState } from "react";
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function Login() {
 
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const router = useRouter();
-    const { login } = useAuthStore();
 
+    const router = useRouter();
+
+    const { login } = useAuthStore();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,7 +32,7 @@ export default function Login() {
 
         if (response.ok) {
             showSuccessToast("Login realizado com sucesso!");
-            login({ id: data.id, email: data.email, tipo: data.tipo }, data.token);
+            login({id: data.id, email:data.email, tipo:data.tipo}, data.token); // salva no Zustand
             router.push("/");
 
         } else {
@@ -49,33 +48,25 @@ export default function Login() {
                 <h1 className={styles.title}>Login</h1>
 
                 <form className={styles.input_container} onSubmit={handleSubmit}>
+
                     <input
-                        type="email"
-                        placeholder="Email"
+                        type='email'
+                        placeholder='Email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
+                        required />
 
-                    <div className={styles.password_container}>
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Senha"
-                            value={senha}
-                            onChange={(e) => setSenha(e.target.value)}
-                            autoComplete="current-password"
-                            required
-                        />
-                        <span
-                            className={styles.eye_icon}
-                            onClick={() => setShowPassword(!showPassword)}
-                        >
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                        </span>
-                    </div>
+                    <input
+                        type='password'
+                        placeholder='Senha'
+                        value={senha}
+                        onChange={(e) => setSenha(e.target.value)}
+                        required />
 
-                    <button type="submit">Entrar</button>
+                    <button type='submit'>Entrar</button>
                 </form>
+
+
 
                 <p>Não possui uma conta? <Link href="/cadastro" className={styles.link}><b>Clique aqui!</b></Link></p>
             </div>

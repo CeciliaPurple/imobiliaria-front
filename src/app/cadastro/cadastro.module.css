@@ -52,12 +52,12 @@
     font-size: var(--h4);
 }
 
-.input_conatiner input::placeholder {
+.input_container input::placeholder {
     color: var(--clean);
     font-size: var(--h4);
 }
 
-.input_conatiner input:focus {
+.input_container input:focus {
     outline: none;
     box-shadow: none;
 }

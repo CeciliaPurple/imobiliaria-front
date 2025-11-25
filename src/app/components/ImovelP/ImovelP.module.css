@@ -3,34 +3,46 @@
     filter: var(--caixa);
     border-radius: var(--curve);
     color: var(--escuro);
+    position: relative;
+    overflow: hidden;
 }
 
 .image_container {
     width: 100%;
     height: 170px;
     position: relative;
-    background-image: 
-        linear-gradient(to top, rgba(0, 0, 0, 1), transparent 35%),
-        image-set(url('../../../../public/img/sobrado1.jpg'));
-    background-size: cover;
-    background-position: center;
     border-top-left-radius: var(--curve);
     border-top-right-radius: var(--curve);
     display: flex;
     justify-content: space-between;
     align-items: end;
     padding: 15px 20px;
+    overflow: hidden;
+}
+
+.gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 35%);
+    z-index: 1;
+    pointer-events: none;
 }
 
 .image_container h3 {
     color: var(--background);
     font-size: var(--h4);
     font-weight: normal;
+    position: relative;
+    z-index: 2;
 }
 
 .heart {
     cursor: pointer;
-    
+    position: relative;
+    z-index: 2;
 }
 
 .info_home {
