@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react"; // 👈 Importando useRef
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ImovelP from "../components/ImovelP";
-import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuthStore } from "../../stores/userStore";
 import { showWarningToast, showSuccessToast, showErrorToast } from "../../utils/toast";
@@ -22,24 +22,20 @@ export default function Visita() {
     const [isConfirmingCancel, setIsConfirmingCancel] = useState(false);
     const [agendamentoToCancelId, setAgendamentoToCancelId] = useState(null);
 
-    // 👈 NOVO: Ref para garantir que o redirecionamento só aconteça uma vez.
     const hasRedirected = useRef(false);
 
     useEffect(() => {
-        // Se já tentamos redirecionar (ou já estamos logados e buscando), saímos
         if (hasRedirected.current) {
             return;
         }
 
         if (!token || !user) {
-            // Se não está autenticado e ainda não fizemos o redirecionamento
-            hasRedirected.current = true; // Sinaliza que o redirecionamento está ocorrendo
+            hasRedirected.current = true;
             showWarningToast('Você precisa fazer login para ver suas visitas');
             router.push('/login');
             return;
         }
 
-        // Se autenticado, busca os agendamentos
         buscarAgendamentos();
 
     }, [user, token]);
@@ -47,8 +43,6 @@ export default function Visita() {
     const buscarAgendamentos = async () => {
         try {
             if (!token || !user) {
-                // Esta verificação aqui ainda é útil como fallback para erro interno, 
-                // mas a lógica principal está no useEffect.
                 setError('Usuário não autenticado');
                 setLoading(false);
                 return;
@@ -68,7 +62,8 @@ export default function Visita() {
             }
 
             const data = await response.json();
-            let agendamentosData = data.agendamentos || data;
+            
+            let agendamentosData = data.agenda || data.agendamentos || data;
 
             if (!Array.isArray(agendamentosData)) {
                 agendamentosData = [];
@@ -162,6 +157,9 @@ export default function Visita() {
         }
     };
 
+    // Verifica se o agendamento pode ser editado/cancelado (apenas se pendente)
+    const podeEditar = (status) => status === 'pendente';
+
     if (loading) {
         return (
             <div className={styles.container}>
@@ -227,40 +225,60 @@ export default function Visita() {
                         </div>
 
                         <div className={styles.texto_visita}>
-                            <h3 className={styles.titulo}>Visita Agendada</h3>
+                            <h3 style={{ marginBottom: '15px', marginTop: 0, textAlign: 'center' }}>Visita Agendada</h3>
                             <p><b>Nome:</b> {agendamento.usuario?.nome || "Não informado"}</p>
                             <p><b>Horário:</b> {agendamento.horario}</p>
                             <p><b>Data:</b> {formatarData(agendamento.dataVisita)}</p>
-
                             <p><b>Tel:</b> {formatarTelefone(agendamento.telefone || agendamento.usuario?.telefone)}</p>
 
+                            <p className={styles.status}>
+                                <b>Status:</b>
+                                <span style={{ color: getStatusColor(agendamento.status) }}>
+                                    {' '}{formatarStatus(agendamento.status)}
+                                </span>
+                            </p>
+
                             <div className={styles.btns}>
-                                <Link href={`/agenda?edit=${agendamento.id}`}>
-                                    <button type="button">Editar</button>
-                                </Link>
+                                {podeEditar(agendamento.status) ? (
+                                    <Link href={`/agenda?edit=${agendamento.id}`}>
+                                        <button type="button">Editar</button>
+                                    </Link>
+                                ) : (
+                                    <button 
+                                        type="button" 
+                                        disabled
+                                        style={{
+                                            backgroundColor: '#ccc',
+                                            cursor: 'not-allowed',
+                                            color: '#666'
+                                        }}
+                                    >
+                                        Editar
+                                    </button>
+                                )}
 
                                 <button
                                     type="button"
                                     onClick={() => openCancelConfirmation(agendamento.id)}
-                                    disabled={agendamento.status === 'cancelado'}
+                                    disabled={!podeEditar(agendamento.status)}
+                                    style={{
+                                        backgroundColor: podeEditar(agendamento.status) ? '#f04704' : '#ccc',
+                                        cursor: podeEditar(agendamento.status) ? 'pointer' : 'not-allowed',
+                                        color: podeEditar(agendamento.status) ? '#fff' : '#666'
+                                    }}
                                 >
                                     Cancelar
                                 </button>
                             </div>
-
-                            <p className={styles.status}>
-                                Status:
-                                <span style={{ color: getStatusColor(agendamento.status) }}>
-                                    {formatarStatus(agendamento.status)}
-                                </span>
-                            </p>
                         </div>
 
                         <div className={styles.obs}>
-                            <label><b>Obs:</b></label>
-                            <div className={styles.observacoes}>
-                                {agendamento.observacoes || 'Sem observações'}
-                            </div>
+                            <label htmlFor={`obs-${agendamento.id}`}><b>Obs:</b></label>
+                            <textarea 
+                                id={`obs-${agendamento.id}`}
+                                value={agendamento.observacoes || 'Sem observações'} 
+                                readOnly 
+                            />
                         </div>
 
                     </div>

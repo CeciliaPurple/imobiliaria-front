@@ -35,8 +35,6 @@ export default function ImovelP({ imovel }) {
                 {/* Título */}
                 <h3>{imovel.titulo}</h3>
                 
-                {/* Ícone de favorito */}
-                <Image src={Heart} alt='favoritar' className={styles.heart}/>
             </div>
 
             <div className={styles.info_home}>
