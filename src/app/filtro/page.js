@@ -194,11 +194,12 @@ export default function Filtro() {
                 novosFavoritos = favoritosAtuais.filter(fav => fav.id !== imovel.id);
                 setIsFavorited(false);
             } else {
-                // 🔥 CORRIGIDO: Garante que a foto seja salva
+                // ✅ CORRIGIDO: Usa fotoPrincipal
                 const imovelParaSalvar = {
                     ...imovel,
-                    // Se a foto estiver null/undefined, usa a imagem padrão
-                    foto: imovel.foto || '/img/luxo.jpg'
+                    imagemSrc: imovel.fotoPrincipal || '/img/luxo.jpg',
+                    // Mantém compatibilidade com código antigo
+                    foto: imovel.fotoPrincipal || '/img/luxo.jpg'
                 };
                 novosFavoritos = [...favoritosAtuais, imovelParaSalvar];
                 setIsFavorited(true);
@@ -428,7 +429,7 @@ export default function Filtro() {
                     imoveisFiltrados.map(imovel => (
                         <div className={styles.container_home} key={imovel.id}>
                             <img
-                                src={imovel.foto || '/img/luxo.jpg'}
+                                src={imovel.fotoPrincipal || '/img/luxo.jpg'}
                                 alt={imovel.titulo}
                                 className={styles.image}
                             />

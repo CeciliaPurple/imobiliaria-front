@@ -54,14 +54,14 @@ export default function Favoritos() {
                         <Imovel 
                             key={imovel.id} 
                             id={imovel.id}
-                            imagemSrc={imovel.foto || '/img/luxo.jpg'}
+                            imagemSrc={imovel.fotoPrincipal || imovel.imagemSrc || imovel.foto || '/img/luxo.jpg'}
                             titulo={imovel.titulo}
-                            area={imovel.metrosQuadrados}
-                            bed={imovel.quartos}
-                            bath={imovel.banheiros}
-                            car={imovel.garagens}
-                            location={imovel.localizacao}
-                            price={imovel.valor?.toLocaleString('pt-BR')}
+                            area={imovel.metrosQuadrados || imovel.area}
+                            bed={imovel.quartos || imovel.bed}
+                            bath={imovel.banheiros || imovel.bath}
+                            car={imovel.garagens || imovel.car}
+                            location={imovel.localizacao || imovel.location}
+                            price={imovel.valor?.toLocaleString('pt-BR') || imovel.price}
                         />
                     ))}
                 </div>

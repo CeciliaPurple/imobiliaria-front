@@ -56,7 +56,7 @@ export default function Cadastro() {
 
       if (response.ok) {
         toast.success('✅ Cadastro realizado com sucesso!', {
-          position: "top-center",
+          position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: false,
@@ -64,7 +64,7 @@ export default function Cadastro() {
           draggable: true,
           progress: undefined,
           closeButton: false,
-          theme: "dark",
+          theme: "white",
           transition: Bounce,
         });
 

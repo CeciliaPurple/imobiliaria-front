@@ -14,316 +14,6 @@
   height: 450px;
 }
 
-.mainImage {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 16px;
-  position: relative;
-}
-
-.mainImage img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.thumbnails {
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  gap: 15px;
-}
-
-.thumbnail {
-  width: 80%;
-  height: 80%;
-  overflow: hidden;
-  border-radius: 16px;
-  position: relative;
-}
-
-.thumbnail img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.morePhotos {
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-/* Container Principal */
-.mainContent {
-  display: grid;
-  grid-template-columns: 1.8fr 1fr;
-  gap: 50px;
-  margin-top: 30px;
-}
-
-/* Informações da Propriedade */
-.propertyInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-
-.headerSection {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #e8e8e8;
-}
-
-.title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin: 0 0 8px 0;
-}
-
-.location {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #666;
-  font-size: 14px;
-}
-
-.favoriteButton {
-  background: none;
-  border: 2px solid #e8e8e8;
-  border-radius: 8px;
-  padding: 10px;
-  cursor: pointer;
-  color: #ff6b6b;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.favoriteButton:hover {
-  background: #fff5f5;
-  border-color: #ff6b6b;
-}
-
-.features {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  padding: 20px 0;
-  border-bottom: 1px solid #e8e8e8;
-}
-
-.feature {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: #333;
-}
-
-/* Seções */
-.section {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.section h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin: 0;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag {
-  background: #e8f0fe;
-  color: #1967d2;
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.description {
-  font-size: 14px;
-  line-height: 1.7;
-  color: #666;
-  margin: 0;
-}
-
-/* Card de Venda */
-.saleCard {
-  background: #f8f9fb;
-  border-radius: 16px;
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  height: fit-content;
-  position: sticky;
-  top: 20px;
-  border: 1px solid #e8e8e8;
-}
-
-.saleType {
-  background: #e8f0fe;
-  color: #1967d2;
-  padding: 6px 16px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  width: fit-content;
-}
-
-.priceSection {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.price {
-  font-size: 28px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0;
-}
-
-.iptuSection {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 0;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.iptuLabel {
-  font-size: 13px;
-  color: #666;
-  font-weight: 600;
-}
-
-.iptuValue {
-  font-size: 13px;
-  color: #1a1a1a;
-  font-weight: 600;
-}
-
-.scheduleButton,
-.contactButton {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.scheduleButton {
-  background: #1967d2;
-  color: white;
-}
-
-.scheduleButton:hover {
-  background: #1557b0;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(25, 103, 210, 0.3);
-}
-
-.contactButton {
-  background: white;
-  color: #1967d2;
-  border: 2px solid #1967d2;
-}
-
-.contactButton:hover {
-  background: #e8f0fe;
-}
-
-/* Responsivo */
-@media (max-width: 1024px) {
-  .mainContent {
-    grid-template-columns: 1fr;
-  }
-
-  .saleCard {
-    position: static;
-  }
-
-  .features {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .imageGallery {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
-
-  .thumbnails {
-    display: none;
-  }
-
-  .mainImage {
-    height: 300px;
-  }
-
-  .features {
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-  }
-
-  .title {
-    font-size: 20px;
-  }
-
-  .price {
-    font-size: 24px;
-  }
-
-  .headerSection {
-    flex-direction: column;
-    gap: 15px;
-  }
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 30px 20px;
-  background: #fff;
-}
-
-/* Galeria de Imagens */
-.imageGallery {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 15px;
-  margin-bottom: 30px;
-  height: 450px;
-}
-
 /* Garante que imagens na galeria sejam clicáveis */
 .mainImage,
 .thumbnail {
@@ -359,7 +49,6 @@
 
 .thumbnail {
   width: 100%;
-  /* Ajuste para preencher o espaço corretamente */
   height: 100%;
 }
 
@@ -581,7 +270,7 @@
   background: #e8f0fe;
 }
 
-/* Estilos do Modal de Zoom (Novo e Aprimorado) */
+/* Estilos do Modal de Zoom (Tamanho Padrão) */
 
 .modalOverlay {
   position: fixed;
@@ -594,26 +283,31 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  /* Adicionamos transição para o overlay */
   transition: background 0.3s ease;
 }
 
 .modalContent {
-  max-width: 95vw;
-  max-height: 95vh;
   display: flex;
   position: relative;
-  /* Removemos o transform inicial aqui e o colocamos na imagem */
+  width: 90vw;
+  max-width: 1200px;
+  height: 80vh;
+}
+
+.modalImageContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modalImageZoom {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-
-  /* Efeito de Zoom: inicia menor e cresce rapidamente */
   transform: scale(0.8);
   opacity: 0;
   animation: zoomIn 0.3s forwards;
@@ -638,6 +332,7 @@
   line-height: 1;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
   transition: color 0.2s;
+  z-index: 10;
 }
 
 .closeButton:hover {
@@ -689,5 +384,10 @@
   .headerSection {
     flex-direction: column;
     gap: 15px;
+  }
+  
+  .modalContent {
+    width: 95vw;
+    height: 70vh;
   }
 }

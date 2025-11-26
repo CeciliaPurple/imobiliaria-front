@@ -27,7 +27,7 @@ export default function ImovelP({ imovel }) {
         <div className={styles.container_home}>
             <div className={styles.image_container}>
                 <Image 
-                    src={imovel.foto} 
+                    src={imovel.fotoPrincipal || imovel.foto || '/img/luxo.jpg'} 
                     alt={imovel.titulo} 
                     fill
                     style={{ objectFit: 'cover', zIndex: 0 }}

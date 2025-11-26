@@ -186,7 +186,7 @@ export default function PerfilAdm() {
             <div key={imovel.id} className={styles.card}>
               <div className={styles.imageWrapper}>
                 <Image 
-                  src={imovel.foto || imovel.fotos?.[0] || '/img/casaModerna.jpg'} 
+                  src={imovel.fotoPrincipal || imovel.foto || imovel.fotos?.[0] || '/img/casaModerna.jpg'} 
                   alt={imovel.titulo} 
                   className={styles.imagem}
                   width={200}

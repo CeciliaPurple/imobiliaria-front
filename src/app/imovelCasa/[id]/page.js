@@ -19,10 +19,7 @@ export default function ImovelDetalhesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isFavorited, setIsFavorited] = useState(false);
-  const [modalImage, setModalImage] = useState(null); // Estado para o URL da imagem no modal
-
-  // Variável para simular múltiplas fotos
-  const galleryImages = imovel ? [imovel.foto, imovel.foto, imovel.foto] : [];
+  const [modalImage, setModalImage] = useState(null);
 
   useEffect(() => {
     const fetchImovel = async () => {
@@ -72,7 +69,7 @@ export default function ImovelDetalhesPage() {
       // Adiciona aos favoritos - salva o objeto completo
       const imovelParaAdicionar = {
         id: imovel.id,
-        imagemSrc: imovel.foto,
+        imagemSrc: imovel.fotoPrincipal,
         titulo: imovel.titulo,
         area: imovel.metrosQuadrados,
         bed: imovel.quartos,
@@ -121,6 +118,13 @@ export default function ImovelDetalhesPage() {
     );
   }
 
+  // Criar array de fotos usando os 3 campos do banco
+  const galleryImages = [
+    imovel.fotoPrincipal,
+    imovel.fotoSecundaria,
+    imovel.fotoTerciaria
+  ].filter(Boolean); // Remove valores vazios ou null
+
   // Processar arrays de ambiente e conveniências
   const ambientes = imovel.ambiente ? imovel.ambiente.split(',').map(a => a.trim()) : [];
   const conveniencias = imovel.conveniencias ? imovel.conveniencias.split(',').map(c => c.trim()) : [];
@@ -145,17 +149,17 @@ export default function ImovelDetalhesPage() {
         <div className={styles.imageGallery}>
           {/* Imagem Principal - Clicável */}
           <div className={styles.mainImage} onClick={() => openModal(galleryImages[0])}>
-            <img src={galleryImages[0]} alt={imovel.titulo} />
+            <img src={galleryImages[0]} alt={imovel.titulo} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
           </div>
           <div className={styles.thumbnails}>
-            {/* Renderiza as miniaturas (as fotos seguintes da galeria) */}
-            {galleryImages.slice(1, 3).map((imageSrc, index) => (
+            {/* Renderiza as miniaturas (foto secundária e terciária) */}
+            {galleryImages.slice(1).map((imageSrc, index) => (
               <div
                 key={index}
                 className={styles.thumbnail}
                 onClick={() => openModal(imageSrc)}
               >
-                <img src={imageSrc} alt={`${imovel.titulo} - Miniatura ${index + 1}`} />
+                <img src={imageSrc} alt={`${imovel.titulo} - Foto ${index + 2}`} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
               </div>
             ))}
           </div>
@@ -249,7 +253,7 @@ export default function ImovelDetalhesPage() {
                 if (imovel) {
                   localStorage.setItem("ultimoImovel", JSON.stringify({
                     id: imovel.id,
-                    foto: imovel.foto,
+                    foto: imovel.fotoPrincipal,
                     titulo: imovel.titulo,
                     localizacao: imovel.localizacao,
                     valor: imovel.valor,
@@ -272,9 +276,10 @@ export default function ImovelDetalhesPage() {
       {modalImage && (
         <div className={styles.modalOverlay} onClick={closeModal}>
           <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-            <img src={modalImage} alt="Imagem em zoom" className={styles.modalImageZoom} />
+            <div className={styles.modalImageContainer}>
+              <img src={modalImage} alt="Imagem em zoom" className={styles.modalImageZoom} />
+            </div>
             <button className={styles.closeButton} onClick={closeModal}>&times;</button>
-
           </div>
         </div>
       )}

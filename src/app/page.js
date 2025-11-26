@@ -120,7 +120,7 @@ export default function Home() {
         </div>
       </section>
 
-     { /* IMÓVEIS EM DESTAQUE - CORRIGIDO*/}
+     { /* IMÓVEIS EM DESTAQUE - CORRIGIDO COM fotoPrincipal*/}
       {destaqueItems.length > 0 && (
         <section className={styles.container_box}>
           <div className={styles.container_imovel}>
@@ -137,7 +137,7 @@ export default function Home() {
                   <Imovel
                     key={item.id}
                     id={item.id} 
-                    imagemSrc={item.foto}
+                    imagemSrc={item.fotoPrincipal}
                     titulo={item.titulo}
                     area={item.metrosQuadrados}
                     bed={item.quartos}
@@ -159,7 +159,7 @@ export default function Home() {
         </section>
       )}
 
-{/*IMÓVEIS EM LANÇAMENTO - CORRIGIDO*/}
+{/*IMÓVEIS EM LANÇAMENTO - CORRIGIDO COM fotoPrincipal*/}
       {lancamentoItems.length > 0 && (
         <section className={styles.container_box}>
           <div className={styles.container_imovel}>
@@ -176,7 +176,7 @@ export default function Home() {
                   <Imovel
                     key={item.id}
                     id={item.id} 
-                    imagemSrc={item.foto}
+                    imagemSrc={item.fotoPrincipal}
                     titulo={item.titulo}
                     area={item.metrosQuadrados}
                     bed={item.quartos}

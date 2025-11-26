@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuthStore } from "@/stores/userStore";
 import { showSuccessToast, showErrorToast, showWarningToast } from "@/utils/toast";
+import ConfirmationDialog from '../components/Confirmation';
 
 // Dynamic import do Select
 const Select = dynamic(() => import("react-select"), {
@@ -18,14 +19,18 @@ const Select = dynamic(() => import("react-select"), {
 export default function CriarEditarImovel() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const editId = searchParams.get('id'); // ID do imóvel para edição
+  const editId = searchParams.get('id');
   const isEdit = !!editId;
 
   const { user, token, isLoggedIn } = useAuthStore();
   const [loading, setLoading] = useState(isEdit);
+  const [isConfirmingSave, setIsConfirmingSave] = useState(false);
+  const [isConfirmingCancel, setIsConfirmingCancel] = useState(false);
 
   const [formData, setFormData] = useState({
-    foto: '',
+    foto1: '',
+    foto2: '',
+    foto3: '',
     titulo: '',
     localizacao: '',
     valor: '',
@@ -41,35 +46,26 @@ export default function CriarEditarImovel() {
     descricao: ''
   });
 
-  // Função para formatar valor em Real brasileiro
   const formatarMoeda = (valor) => {
-    // Remove tudo que não é número
     const apenasNumeros = valor.replace(/\D/g, '');
-    
-    // Converte para número e divide por 100 para ter os centavos
     const numero = parseFloat(apenasNumeros) / 100;
-    
-    // Formata para Real brasileiro
     return numero.toLocaleString('pt-BR', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
   };
 
-  // Função para converter valor formatado de volta para número
   const desformatarMoeda = (valorFormatado) => {
     return valorFormatado.replace(/\./g, '').replace(',', '.');
   };
 
   useEffect(() => {
-    // Verificar se está logado
     if (!isLoggedIn || !token || !user) {
       showWarningToast('Você precisa estar logado para acessar esta página');
       router.push('/login');
       return;
     }
 
-    // Carregar dados do imóvel se for edição
     if (editId) {
       carregarImovel();
     }
@@ -95,7 +91,6 @@ export default function CriarEditarImovel() {
 
       const imovel = data.imovel || data;
 
-      // Converter ambiente e conveniências de string para array de objetos
       const ambienteArray = imovel.ambiente 
         ? imovel.ambiente.split(',').map(a => ({ 
             value: a.trim(), 
@@ -111,7 +106,9 @@ export default function CriarEditarImovel() {
         : [];
 
       setFormData({
-        foto: imovel.foto || '',
+        foto1: imovel.fotoPrincipal || '',
+        foto2: imovel.fotoSecundaria || '',
+        foto3: imovel.fotoTerciaria || '',
         titulo: imovel.titulo || '',
         localizacao: imovel.localizacao || '',
         valor: imovel.valor ? formatarMoeda(String(imovel.valor * 100)) : '',
@@ -137,9 +134,16 @@ export default function CriarEditarImovel() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsConfirmingSave(true);
+  };
+
+  const executeSave = async () => {
+    setIsConfirmingSave(false);
 
     const dadosParaEnviar = {
-      foto: formData.foto,
+      fotoPrincipal: formData.foto1,
+      fotoSecundaria: formData.foto2 || '',
+      fotoTerciaria: formData.foto3 || '',
       titulo: formData.titulo,
       localizacao: formData.localizacao,
       valor: parseFloat(desformatarMoeda(formData.valor)),
@@ -215,6 +219,35 @@ export default function CriarEditarImovel() {
     }
   };
 
+  const handleCancelar = () => {
+    // Verifica se o formulário foi modificado
+    const formularioModificado = 
+      formData.foto1 !== '' || 
+      formData.foto2 !== '' || 
+      formData.foto3 !== '' || 
+      formData.titulo !== '' ||
+      formData.localizacao !== '' ||
+      formData.valor !== '' ||
+      formData.metros_quadrados !== '' ||
+      formData.quartos !== '' ||
+      formData.banheiros !== '' ||
+      formData.garagens !== '' ||
+      formData.ambiente.length > 0 ||
+      formData.conveniencias.length > 0 ||
+      formData.descricao !== '';
+
+    if (formularioModificado) {
+      setIsConfirmingCancel(true);
+    } else {
+      router.push('/perfiladm');
+    }
+  };
+
+  const executeCancel = () => {
+    setIsConfirmingCancel(false);
+    router.push('/perfiladm');
+  };
+
   const ambienteOptions = [
     { value: "area-de-servicos", label: "Área de Serviços" },
     { value: "area-gourmet", label: "Área Gourmet" },
@@ -259,16 +292,44 @@ export default function CriarEditarImovel() {
             {isEdit ? 'Editar Imóvel' : 'Criar Imóvel'}
           </p>
 
-          {/* Foto */}
+          {/* Foto 1 */}
           <div className={styles.campo}>
-            <label htmlFor="foto">Foto</label>
+            <label htmlFor="foto1">Foto Principal</label>
             <input
-              id="foto"
-              aria-label="Foto"
+              id="foto1"
+              aria-label="Foto Principal"
               type="url"
-              value={formData.foto}
-              onChange={(e) => setFormData({ ...formData, foto: e.target.value })}
-              placeholder="Cole o link da imagem"
+              value={formData.foto1}
+              onChange={(e) => setFormData({ ...formData, foto1: e.target.value })}
+              placeholder="Cole o link da imagem principal"
+              required
+            />
+          </div>
+
+          {/* Foto 2 */}
+          <div className={styles.campo}>
+            <label htmlFor="foto2">Foto Secundária</label>
+            <input
+              id="foto2"
+              aria-label="Foto Secundária"
+              type="url"
+              value={formData.foto2}
+              onChange={(e) => setFormData({ ...formData, foto2: e.target.value })}
+              placeholder="Cole o link da imagem secundária"
+              required
+            />
+          </div>
+
+          {/* Foto 3 */}
+          <div className={styles.campo}>
+            <label htmlFor="foto3">Foto Terciária</label>
+            <input
+              id="foto3"
+              aria-label="Foto Terciária"
+              type="url"
+              value={formData.foto3}
+              onChange={(e) => setFormData({ ...formData, foto3: e.target.value })}
+              placeholder="Cole o link da imagem terciária"
               required
             />
           </div>
@@ -484,7 +545,7 @@ export default function CriarEditarImovel() {
             
             <button 
               type="button"
-              onClick={() => router.push('/perfiladm')}
+              onClick={handleCancelar}
               style={{
                 backgroundColor: '#6c757d',
                 cursor: 'pointer'
@@ -495,6 +556,33 @@ export default function CriarEditarImovel() {
           </div>
         </form>
       </div>
+
+      {/* Modal de Confirmação para Salvar */}
+      {isConfirmingSave && (
+        <ConfirmationDialog
+          message={isEdit 
+            ? "Tem certeza que deseja atualizar este imóvel?" 
+            : "Tem certeza que deseja criar este imóvel?"
+          }
+          onConfirm={executeSave}
+          onCancel={() => setIsConfirmingSave(false)}
+          confirmText={isEdit ? "Sim, Atualizar" : "Sim, Criar"}
+          cancelText="Cancelar"
+          confirmColor="#375A76"
+        />
+      )}
+
+      {/* Modal de Confirmação para Cancelar */}
+      {isConfirmingCancel && (
+        <ConfirmationDialog
+          message="Você tem alterações não salvas. Deseja realmente sair sem salvar?"
+          onConfirm={executeCancel}
+          onCancel={() => setIsConfirmingCancel(false)}
+          confirmText="Sim, Sair"
+          cancelText="Continuar Editando"
+          confirmColor="#dc3545"
+        />
+      )}
     </div>
   );
 }

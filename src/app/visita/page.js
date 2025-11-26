@@ -38,6 +38,21 @@ export default function Visita() {
 
         buscarAgendamentos();
 
+        // Recuperar último imóvel visualizado
+        const ultimoImovelSalvo = localStorage.getItem("ultimoImovel");
+        if (ultimoImovelSalvo) {
+            try {
+                const imovelData = JSON.parse(ultimoImovelSalvo);
+                // Normalizar o campo de foto para fotoPrincipal
+                if (imovelData.foto && !imovelData.fotoPrincipal) {
+                    imovelData.fotoPrincipal = imovelData.foto;
+                }
+                setUltimoImovel(imovelData);
+            } catch (e) {
+                console.error("Erro ao parsear último imóvel:", e);
+            }
+        }
+
     }, [user, token, router]);
 
     const buscarAgendamentos = async () => {
@@ -49,6 +64,7 @@ export default function Visita() {
             }
 
             const url = `http://localhost:3100/agenda/usuario/${user.id}`;
+            console.log('🔍 Buscando agendamentos em:', url);
 
             const response = await fetch(url, {
                 headers: {
@@ -58,16 +74,30 @@ export default function Visita() {
             });
 
             if (!response.ok) {
+                const errorText = await response.text();
+                console.error('❌ Resposta do servidor:', errorText);
                 throw new Error(`Erro ao buscar agendamentos: ${response.status}`);
             }
 
             const data = await response.json();
+            console.log('✅ Dados recebidos:', data);
             
             let agendamentosData = data.agenda || data.agendamentos || data;
 
             if (!Array.isArray(agendamentosData)) {
                 agendamentosData = [];
             }
+
+            // Normalizar campo de foto nos imóveis dos agendamentos
+            agendamentosData = agendamentosData.map(ag => {
+                if (ag.imovel) {
+                    // Se existe 'foto' mas não 'fotoPrincipal', faz a conversão
+                    if (ag.imovel.foto && !ag.imovel.fotoPrincipal) {
+                        ag.imovel.fotoPrincipal = ag.imovel.foto;
+                    }
+                }
+                return ag;
+            });
 
             // 🔥 LÓGICA DE PRIORIZAÇÃO E LIMITAÇÃO A 4 AGENDAMENTOS
             
@@ -195,9 +225,34 @@ export default function Visita() {
     if (error) {
         return (
             <div className={styles.container}>
-                <p style={{ textAlign: "center", padding: "2rem", color: "red" }}>
-                    Erro: {error}
-                </p>
+                <div className={styles.cardEmpty}>
+                    <h3>Erro ao carregar agendamentos</h3>
+                    <p style={{ marginTop: "1rem", color: "#f44336" }}>
+                        {error}
+                    </p>
+                    <p style={{ marginTop: "0.5rem", color: "#666", fontSize: "0.9rem" }}>
+                        Por favor, verifique se o servidor backend está rodando na porta 3100.
+                    </p>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setLoading(true);
+                            setError(null);
+                            buscarAgendamentos();
+                        }}
+                        style={{
+                            marginTop: '1.5rem',
+                            padding: '0.75rem 2rem',
+                            backgroundColor: '#4CAF50',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        Tentar Novamente
+                    </button>
+                </div>
             </div>
         );
     }

@@ -1,38 +1,135 @@
+'use client'
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Heart from '../../../../public/icons/Heart.svg'
-import Home from '../../../../public/icons/Home.svg'
-import Location from '../../../../public/icons/Location.svg'
-import Bed from "/public/icons/bed.svg";
-import Car from "/public/icons/car.svg";
-import Water from '../../../../public/icons/water.svg'
-import styles from '../Imoveis/imoveis.module.css'
+import { useParams } from 'next/navigation';
+import styles from '../Imoveis/imoveis.module.css';
 
 export default function Imoveis() {
+    const params = useParams();
+    const [imovel, setImovel] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [isFavorited, setIsFavorited] = useState(false);
+
+    useEffect(() => {
+        const fetchImovel = async () => {
+            try {
+                const response = await fetch(`http://localhost:3100/imoveis/${params.id}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    setImovel(data.imovel || data);
+                    
+                    // Verifica favoritos
+                    const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+                    const jaEhFavorito = favoritos.some(fav => String(fav.id) === String(params.id));
+                    setIsFavorited(jaEhFavorito);
+                    
+                    setLoading(false);
+                } else {
+                    setLoading(false);
+                }
+            } catch (error) {
+                console.error('❌ Erro ao buscar imóvel:', error);
+                setLoading(false);
+            }
+        };
+
+        if (params.id) {
+            fetchImovel();
+        }
+    }, [params.id]);
+
+    const handleToggleFavorite = () => {
+        if (!imovel) return;
+
+        const favoritosAtuais = JSON.parse(localStorage.getItem('favoritos') || '[]');
+        const imovelIndex = favoritosAtuais.findIndex(fav => String(fav.id) === String(imovel.id));
+
+        let novosFavoritos;
+
+        if (imovelIndex > -1) {
+            novosFavoritos = favoritosAtuais.filter(fav => String(fav.id) !== String(imovel.id));
+            setIsFavorited(false);
+        } else {
+            const imovelParaAdicionar = {
+                id: imovel.id,
+                imagemSrc: imovel.fotoPrincipal,
+                titulo: imovel.titulo,
+                area: imovel.metrosQuadrados,
+                bed: imovel.quartos,
+                bath: imovel.banheiros,
+                car: imovel.garagens,
+                location: imovel.localizacao,
+                price: imovel.valor
+            };
+
+            novosFavoritos = [...favoritosAtuais, imovelParaAdicionar];
+            setIsFavorited(true);
+        }
+
+        localStorage.setItem('favoritos', JSON.stringify(novosFavoritos));
+    };
+
+    if (loading) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+                <p>Carregando imóvel...</p>
+            </div>
+        );
+    }
+
+    if (!imovel) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+                <p>Imóvel não encontrado</p>
+            </div>
+        );
+    }
+
+    // Processar dados
+    const ambientes = imovel.ambiente ? imovel.ambiente.split(',').map(a => a.trim()) : [];
+    const conveniencias = imovel.conveniencias ? imovel.conveniencias.split(',').map(c => c.trim()) : [];
+
+    const valorFormatado = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+        minimumFractionDigits: 2
+    }).format(imovel.valor);
+
+    const iptuFormatado = imovel.iptu ? new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+        minimumFractionDigits: 2
+    }).format(imovel.iptu) : 'Não informado';
+
     return (
         <div>
             <div className={styles.imageGallery}>
-
                 <div className={styles.imageGallery}>
                     <div className={styles.leftImage}>
-                        <img src="/img/casa de praia.jpg" alt="casa" className={styles.largeImage} />
+                        <img src={imovel.fotoPrincipal} alt={imovel.titulo} className={styles.largeImage} />
                     </div>
                     <div className={styles.rightImages}>
-                        <img src="/img/cozinha.jpg" alt="cozinha" className={styles.smallImage1} />
-                        <img src="/img/quarto-ilhabela.jpg" alt="quarto" className={styles.smallImage2} />
+                        <img src={imovel.fotoPrincipal} alt={imovel.titulo} className={styles.smallImage1} />
+                        <img src={imovel.fotoPrincipal} alt={imovel.titulo} className={styles.smallImage2} />
                     </div>
                 </div>
             </div>
 
             <div className={styles.propriedadeInfo}>
                 <div className={styles.bloco1}>
-                    <h2 className={styles.title}>Espaço, conforto e localização privilegiada: Sobrado com 4 dormitórios e 120m² a poucos passos da ilhabela — viva o melhor do litoral!
-                        <div className={styles.Hearticon}>
-                            <Image src="/icons/heart.svg" alt="favorito" width={50} height={50} />
+                    <h2 className={styles.title}>
+                        {imovel.titulo}
+                        <div className={styles.Hearticon} onClick={handleToggleFavorite} style={{ cursor: 'pointer' }}>
+                            <svg width="50" height="50" viewBox="0 0 24 24" fill={isFavorited ? '#DE302A' : 'none'} stroke={isFavorited ? '#DE302A' : 'currentColor'} strokeWidth="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                            </svg>
                         </div>
                     </h2>
 
-                    <h3 className={styles.subtitle}>Avenida Dom João V, Ilhabela - SP.
-                        <div className={styles.locationicon} >
+                    <h3 className={styles.subtitle}>
+                        {imovel.localizacao}
+                        <div className={styles.locationicon}>
                             <Image src="/icons/location.svg" alt="location" width={30} height={30} />
                         </div>
                     </h3>
@@ -40,28 +137,27 @@ export default function Imoveis() {
                     <div className={styles.caracteristicas}>
                         <div className={styles.item}>
                             <Image src="/icons/bed.svg" alt="quartos" width={30} height={30} />
-                            <span>4 Quartos</span>
+                            <span>{imovel.quartos} Quartos</span>
                         </div>
                         <div className={styles.item}>
                             <Image src="/icons/Water.svg" alt="banheiros" width={30} height={30} />
-                            <span>2 Banheiros</span>
+                            <span>{imovel.banheiros} Banheiros</span>
                         </div>
                         <div className={styles.item}>
                             <Image src="/icons/car.svg" alt="vagas" width={30} height={30} />
-                            <span>3 Vagas</span>
+                            <span>{imovel.garagens} Vagas</span>
                         </div>
                         <div className={styles.item}>
                             <Image src="/icons/Home.svg" alt="metragem" width={30} height={30} />
-                            <span>120 m²</span>
+                            <span>{imovel.metrosQuadrados} m²</span>
                         </div>
                     </div>
-
                 </div>
 
                 <div className={styles.venda}>
                     <div className={styles.infovenda}>
-                        <div className={styles.vendalista} >
-                            <p>R$1.250.000.00</p>
+                        <div className={styles.vendalista}>
+                            <p>{valorFormatado}</p>
                         </div>
                         <p className={styles.vendalista2}>
                             <p>Venda</p>
@@ -70,7 +166,7 @@ export default function Imoveis() {
                             <p>IPTU</p>
                         </div>
                         <div className={styles.numero}>
-                            <p>R$ 1.530/ano</p>
+                            <p>{iptuFormatado}</p>
                         </div>
                     </div>
                     <button className={styles.agendarButton}>
@@ -83,45 +179,36 @@ export default function Imoveis() {
                 </div>
             </div>
 
+            {ambientes.length > 0 && (
+                <>
+                    <div className={styles.objambiente}>
+                        <p>Ambiente</p>
+                    </div>
+                    <div className={styles.ambientelista}>
+                        {ambientes.map((ambiente, index) => (
+                            <p key={index}>{ambiente}</p>
+                        ))}
+                    </div>
+                </>
+            )}
 
-
-            <div className={styles.objambiente}>
-                <p>ambiente</p>
-            </div>
-            <div className={styles.ambientelista}>
-                <p>Área de Serviços</p>
-                <p>quintal</p>
-                <p>Closet</p>
-                <p>Piscina</p>
-                <p>Escritório</p>
-            </div>
-
-            <div className={styles.Conveniencias}>
-                <p className={styles.objConveniencias}>Conveniencias</p>
-                <p className={styles.listaConveniencias}>
-                    <p>Mobiliado</p>
-                    <p>Ar-condicionado</p>
-                </p>
-            </div>
-
+            {conveniencias.length > 0 && (
+                <div className={styles.Conveniencias}>
+                    <p className={styles.objConveniencias}>Conveniências</p>
+                    <p className={styles.listaConveniencias}>
+                        {conveniencias.map((conveniencia, index) => (
+                            <p key={index}>{conveniencia}</p>
+                        ))}
+                    </p>
+                </div>
+            )}
 
             <div className={styles.descriçao}>
                 <p className={styles.objdescrição}>Descrição</p>
                 <div className={styles.textodescrição}>
-                    <p>Descubra o prazer de viver ou investir no litoral norte de São Paulo! Localizada em uma</p>
-                    <p>das praias mais charmosas e tranquilas de São Sebastião, esta casa é ideal para quem busca</p>
-                    <p>conforto, praticidade e qualidade de vida</p>
-                </div>
-                <div className={styles.descricaolista}>
-                    <p>4 dormitórios amplos e bem iluminados;</p>
-                    <p>Sala aconchegante com ótima ventilação natural;</p>
-                    <p>Cozinha funcional com boa distribuição de espaço;</p>
-                    <p>Banheiro social;</p>
-                    <p>Vaga de garagem;</p>
-                    <p>Terreno com ótimo aproveitamento.</p>
+                    <p>{imovel.descricao}</p>
                 </div>
             </div>
         </div>
-
     );
 }
