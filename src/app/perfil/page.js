@@ -7,8 +7,10 @@ import Link from 'next/link';
 import Logo from '../../../public/villa-logo-nome.png';
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/stores/userStore";
-import { showErrorToast, showSuccessToast } from "@/utils/toast";
+import { showErrorToast, showSuccessToast, showInfoToast } from "@/utils/toast";
 import ConfirmationDialog from '../components/Confirmation';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Perfil() {
   const [nome, setNome] = useState("");
@@ -82,20 +84,18 @@ export default function Perfil() {
         throw new Error(error.message || "Erro ao atualizar");
       }
 
-      showSuccessToast("Dados atualizados com sucesso!");
+      showSuccessToast(" Dados atualizados com sucesso!");
       setSenha("");
     } catch (err) {
       console.error('Erro ao atualizar:', err);
-      showErrorToast("Erro ao atualizar usuário: " + err.message);
+      showErrorToast("❌ Erro ao atualizar usuário: " + err.message);
     }
   };
 
-  // Abre o diálogo de confirmação
   const openDeleteConfirmation = () => {
     setIsConfirmingDelete(true);
   };
 
-  // Lógica real para exclusão, chamada após a confirmação
   const executeDelete = async () => {
     setIsConfirmingDelete(false);
 
@@ -118,23 +118,33 @@ export default function Perfil() {
         throw new Error(error.message || "Erro ao excluir usuário");
       }
 
-      logout();
-      showSuccessToast("Conta excluída com sucesso!");
-      router.push("/");
+      showSuccessToast(" Conta excluída com sucesso!");
+      
+      
+      setTimeout(() => {
+        logout();
+        router.push("/");
+      }, 2000);
     } catch (err) {
       console.error('Erro ao excluir:', err);
-      showErrorToast("Erro ao excluir usuário: " + err.message);
+      showErrorToast("❌ Erro ao excluir usuário: " + err.message);
     }
   };
 
   const handleLogout = () => {
-    logout();
-    router.push("/login");
+    showInfoToast("Logout feito com sucesso. Até logo👋.");
+    
+    // Aguarda 2 segundos para mostrar a mensagem antes de sair
+    setTimeout(() => {
+      logout();
+      router.push("/login");
+    }, 2000);
   };
 
   if (loading) {
     return (
       <div className={styles.back}>
+        <ToastContainer />
         <div className={styles.container}>
           <p>Carregando...</p>
         </div>
@@ -144,6 +154,19 @@ export default function Perfil() {
 
   return (
     <div className={styles.back}>
+      <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+
       <div className={styles.container}>
         <Link href="/" >
           <Image src={Logo} alt='logo' className={styles.logo} />
@@ -170,7 +193,7 @@ export default function Perfil() {
 
           <input
             type='password'
-            placeholder='Nova senha '
+            placeholder='Nova senha (opcional)'
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
           />

@@ -151,11 +151,18 @@ export default function PerfilAdm() {
       <p className={styles.agenda}>Perfil Administrativo</p>
 
       <div className={styles.container}>
-        <Link href="/criarimovel" className={styles.botao}>
-          <span className={styles.texto}>Novo Imóvel</span>
-          <Plus size={24} color="#000" />
-        </Link>
+         <div className={styles.botoesContainer}>
+          <Link href="/criarimovel" className={styles.botao}>
+            <span className={styles.texto}>Novo Imóvel</span>
+            <Plus size={24} color="#000" />
+          </Link>
 
+          <Link href="/historicoAgenda" className={styles.botao1}>
+            <span className={styles.texto}>Histórico de agendas</span>
+          </Link>
+        </div>
+
+        
         <p className={styles.listagem}>
           Listagem Imóveis ({imoveisFiltrados.length})
         </p>

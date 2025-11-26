@@ -21,7 +21,7 @@ export default function Footer({ isVisitaPage }) {
                     <p className={styles.title_list}>Navegação</p>
                     <Link href="/filtro" className={styles.text_listS}>Imóveis</Link>
                     <Link href="/#sobre" className={styles.text_listS}>Sobre</Link>
-                    <Link href="/agenda" className={styles.text_listS}>Agenda</Link>
+                    <Link href="/visita" className={styles.text_listS}>Agenda</Link>
                 </div>
 
                 <div className={styles.list}>

@@ -194,8 +194,13 @@ export default function Filtro() {
                 novosFavoritos = favoritosAtuais.filter(fav => fav.id !== imovel.id);
                 setIsFavorited(false);
             } else {
-                // Adiciona aos favoritos
-                novosFavoritos = [...favoritosAtuais, imovel];
+                // 🔥 CORRIGIDO: Garante que a foto seja salva
+                const imovelParaSalvar = {
+                    ...imovel,
+                    // Se a foto estiver null/undefined, usa a imagem padrão
+                    foto: imovel.foto || '/img/luxo.jpg'
+                };
+                novosFavoritos = [...favoritosAtuais, imovelParaSalvar];
                 setIsFavorited(true);
             }
 

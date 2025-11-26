@@ -41,6 +41,14 @@
     gap: 40px;
 }
 
+/* Container do campo de senha */
+.password_container {
+    position: relative;
+    width: 400px;
+    display: flex;
+    align-items: center;
+}
+
 .input_container input {
     width: 400px;
     border: none;
@@ -52,6 +60,12 @@
     font-size: var(--h4);
 }
 
+/* Ajusta o input dentro do password_container para dar espaço ao ícone */
+.password_container input {
+    width: 100%;
+    padding-right: 40px;
+}
+
 .input_container input::placeholder {
     color: var(--clean);
     font-size: var(--h4);
@@ -60,6 +74,22 @@
 .input_container input:focus {
     outline: none;
     box-shadow: none;
+}
+
+/* Estilo do ícone de visualização (eye_icon) */
+.eye_icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--vibrante);
+    font-size: var(--h4);
+    transition: color 0.3s;
+}
+
+.eye_icon:hover {
+    color: var(--escuro);
 }
 
 .container button {

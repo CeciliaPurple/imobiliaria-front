@@ -58,6 +58,12 @@
   border-radius: 8px;
   border: 1px solid #ccc;
   background: white;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  outline: none;
+  pointer-events: none;
 }
 
 /* BOTÕES */

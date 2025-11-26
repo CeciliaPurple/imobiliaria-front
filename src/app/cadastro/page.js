@@ -1,24 +1,46 @@
 "use client";
 
-import styles from './cadastro.module.css'
+import styles from './cadastro.module.css';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image'
+import Image from 'next/image';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Link from 'next/link'
-import { showSuccessToast, showErrorToast } from '../../utils/toast';
+import Link from 'next/link';
 import Logo from '../../../public/villa-logo-nome.png';
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function Cadastro() {
-
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [dots, setDots] = useState("");
   const router = useRouter();
+
+  useEffect(() => {
+    let dotInterval;
+
+    if (loading) {
+      dotInterval = setInterval(() => {
+        setDots((prev) => (prev.length < 3 ? prev + "." : ""));
+      }, 400); // Animação suave dos pontos
+    } else {
+      setDots(""); // Reseta os pontos quando não está loading
+    }
+
+    return () => {
+      if (dotInterval) clearInterval(dotInterval);
+    };
+  }, [loading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
+    // Delay mínimo para garantir que o usuário veja o loading
+    const minLoadingTime = new Promise(resolve => setTimeout(resolve, 800));
 
     try {
       const response = await fetch("http://localhost:3100/usuario", {
@@ -29,40 +51,47 @@ export default function Cadastro() {
 
       const data = await response.json();
 
+      // Aguarda o tempo mínimo de loading
+      await minLoadingTime;
+
       if (response.ok) {
-        toast.success('Cadastro realizado com sucesso! ✅', {
+        toast.success('✅ Cadastro realizado com sucesso!', {
           position: "top-center",
-          autoClose: 3000,
+          autoClose: 5000,
           hideProgressBar: false,
-          closeOnClick: true,
+          closeOnClick: false,
           pauseOnHover: true,
           draggable: true,
+          progress: undefined,
           closeButton: false,
           theme: "dark",
           transition: Bounce,
         });
 
-        showSuccessToast("Cadastro realizado com sucesso!");
-
+        // espera um pequeno tempo antes de redirecionar (para mostrar o toast)
         setTimeout(() => router.push("/login"), 1500);
 
       } else {
-        toast.error(data.error || "Erro ao cadastrar", {
+        toast.error(data.error || "❌ Erro ao cadastrar", {
           position: "top-center",
           theme: "colored",
         });
-        showErrorToast(data.error || "Erro ao cadastrar");
       }
     } catch (err) {
-      toast.error("Erro de conexão. Tente novamente.", { position: "top-center" });
+      toast.error("❌ Erro de conexão. Tente novamente.", {
+        position: "top-center",
+        theme: "colored",
+      });
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className={styles.back}>
       <div className={styles.container}>
-        <Link href="/" >
+        <Link href="/">
           <Image src={Logo} alt='logo' className={styles.logo} width={240} height={64} />
         </Link>
 
@@ -75,6 +104,7 @@ export default function Cadastro() {
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             required
+            disabled={loading}
           />
 
           <input
@@ -83,21 +113,35 @@ export default function Cadastro() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={loading}
           />
 
-          <input
-            type='password'
-            placeholder='Senha'
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            autoComplete='new-password'
-            required
-          />
+          <div className={styles.password_container}>
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder='Senha'
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              autoComplete='new-password'
+              required
+              disabled={loading}
+            />
+            <span
+              className={styles.eye_icon}
+              onClick={() => !loading && setShowPassword(!showPassword)}
+              style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
 
-          <button type='submit'>Cadastrar</button>
+          <button type='submit' disabled={loading}>
+            {loading ? `Cadastrando${dots}` : "Cadastrar"}
+          </button>
         </form>
 
         <p>Já possui uma conta? <Link href="/login" className={styles.link}><b>Entre aqui!</b></Link></p>
+        
         <ToastContainer />
       </div>
     </div>

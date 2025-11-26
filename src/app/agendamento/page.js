@@ -84,8 +84,12 @@ export default function VisitaAdm() {
             // Ordenar por data mais recente
             agendamentosData.sort((a, b) => new Date(b.dataVisita) - new Date(a.dataVisita));
 
-            console.log('✅ Agendamentos finais:', agendamentosData);
-            setAgendamentos(agendamentosData);
+            // 🔥 FILTRA APENAS AGENDAMENTOS PENDENTES E LIMITA A 4
+            const agendamentosPendentes = agendamentosData.filter(ag => ag.status === 'pendente');
+            const agendamentosLimitados = agendamentosPendentes.slice(0, 4);
+
+            console.log('✅ Agendamentos pendentes (limitados a 4):', agendamentosLimitados);
+            setAgendamentos(agendamentosLimitados);
             setLoading(false);
 
         } catch (error) {
@@ -241,7 +245,7 @@ export default function VisitaAdm() {
             <div style={{ padding: '2rem 1rem', textAlign: 'center' }}>
                 <h1>Gerenciar Agendamentos</h1>
                 <p style={{ color: '#666', marginTop: '0.5rem' }}>
-                    Total de agendamentos: {agendamentos.length}
+                    Agendamentos pendentes: {agendamentos.length}
                 </p>
             </div>
 

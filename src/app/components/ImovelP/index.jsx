@@ -17,10 +17,15 @@ export default function ImovelP({ imovel }) {
         );
     }
 
+    // 👉 PREÇO FORMATADO PADRÃO BRASILEIRO
+    const precoFormatado = Number(imovel.valor).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+
     return (
         <div className={styles.container_home}>
             <div className={styles.image_container}>
-                {/* Imagem de fundo */}
                 <Image 
                     src={imovel.foto} 
                     alt={imovel.titulo} 
@@ -29,12 +34,8 @@ export default function ImovelP({ imovel }) {
                     sizes="320px"
                 />
                 
-                {/* Gradiente escuro */}
                 <div className={styles.gradient}></div>
-                
-                {/* Título */}
                 <h3>{imovel.titulo}</h3>
-                
             </div>
 
             <div className={styles.info_home}>
@@ -60,7 +61,6 @@ export default function ImovelP({ imovel }) {
                     </div>
                 </div>
 
-                {/*Localização*/}
                 <div className={styles.location}>
                     <Image src={Location} alt='localização' />
                     <div>
@@ -68,9 +68,10 @@ export default function ImovelP({ imovel }) {
                     </div>
                 </div>
 
-                {/*Preço e Ver mais*/}
                 <div className={styles.price}>
-                    <h3>R$ {Number(imovel.valor).toLocaleString('pt-BR')}</h3>
+                    {/* AGORA MOSTRA ASSIM: R$ 2.596.000,00 */}
+                    <h3>{precoFormatado}</h3>
+
                     <Link href={`/imovelCasa/${imovel.id}`}>
                         <button className={styles.more}>Ver mais</button>
                     </Link>

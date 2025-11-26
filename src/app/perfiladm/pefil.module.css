@@ -24,16 +24,21 @@
   align-items: start;
   gap: 30px;
 }
+.botoesContainer {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+}
 
-.botao {
+.botao,
+.botao1 {
   display: flex;
   align-items: center;
   justify-self: center;
   gap: 8px;
- text-decoration: none;
+  text-decoration: none;
   padding: 15px 25px;
   background-color: #fff;
-  /* branco, igual à imagem */
   border: 3px solid var(--azulClaro);
   color: var(--escuro);
   border-radius: 6px;
@@ -44,7 +49,8 @@
   flex-direction: row-reverse;
 }
 
-.botao:hover {
+.botao:hover,
+.botao1:hover {
   border-color: var(--clean);
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
 }

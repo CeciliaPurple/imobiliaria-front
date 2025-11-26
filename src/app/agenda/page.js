@@ -1,4 +1,3 @@
-// ...existing code...
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -6,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAuthStore } from "../../stores/userStore";
 import { showWarningToast, showSuccessToast, showErrorToast } from "../../utils/toast";
 import styles from "./agenda.module.css";
-import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Visitas() {
@@ -29,7 +28,6 @@ export default function Visitas() {
     const [loadingData, setLoadingData] = useState(false);
     const isEdit = !!editId;
 
-    // NOVO: Ref para garantir que o redirecionamento só aconteça uma vez
     const hasRedirected = useRef(false);
 
     useEffect(() => {
@@ -44,7 +42,6 @@ export default function Visitas() {
             return;
         }
 
-        // Carregar dados do usuário APENAS se NÃO for modo edição
         if (user && !editId) {
             setFormData(prev => ({
                 ...prev,
@@ -53,11 +50,10 @@ export default function Visitas() {
             }));
         }
 
-        // Carregar dados da visita se for edição
         if (editId) {
             carregarVisita();
         }
-    }, [editId, user, token]);
+    }, [editId, user, token, router]);
 
     const carregarVisita = async () => {
         setLoadingData(true);
@@ -154,8 +150,10 @@ export default function Visitas() {
                 });
 
                 if (response.ok) {
-                    showSuccessToast("✅ Visita atualizada com sucesso!");
-                    router.push("/visita");
+                    showSuccessToast("Visita atualizada com sucesso!");
+                    setTimeout(() => {
+                        router.push("/visita");
+                    }, 2000);
                 } else {
                     const error = await response.json();
                     showErrorToast("❌ Erro: " + (error.message || "Tente novamente."));
@@ -181,8 +179,10 @@ export default function Visitas() {
                 });
 
                 if (response.ok) {
-                    showSuccessToast("✅ Visita agendada com sucesso!");
-                    router.push("/visita");
+                    showSuccessToast("Visita agendada com sucesso!");
+                    setTimeout(() => {
+                        router.push("/visita");
+                    }, 2000);
                 } else {
                     const error = await response.json();
                     showErrorToast("❌ Erro: " + (error.message || "Tente novamente."));
@@ -199,6 +199,7 @@ export default function Visitas() {
     if (loadingData) {
         return (
             <div className={styles.visita}>
+                <ToastContainer />
                 <div className={styles.container}>
                     <p style={{ textAlign: 'center', padding: '2rem' }}>Carregando dados...</p>
                 </div>
@@ -208,12 +209,21 @@ export default function Visitas() {
 
     return (
         <div className={styles.visita}>
+            <ToastContainer 
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                pauseOnHover
+                theme="light"
+            />
+            
             <div className={styles.container}>
                 <p className={styles.agenda}>
                     {isEdit ? "Editar Visita" : "Agendar Visita"}
                 </p>
 
                 <form className={styles.form} onSubmit={handleSubmit}>
+                    
                     <input
                         className={styles.tamanho1}
                         type="text"
@@ -275,13 +285,20 @@ export default function Visitas() {
                     ></textarea>
 
                     <div style={{ display: 'flex', gap: '1rem' }}>
+                        
                         <button type="submit" disabled={loading}>
                             {loading ? "Processando..." : isEdit ? "Atualizar Visita" : "Agendar Visita"}
                         </button>
                         
+                        {/* 🔥 AGORA QUANDO CANCELA, MOSTRA A MENSAGEM */}
                         <button 
-                            type="button" 
-                            onClick={() => router.push('/visita')}
+                            type="button"
+                            onClick={() => {
+                                showWarningToast("Alteração cancelada!");
+                                setTimeout(() => {
+                                    router.push('/visita');
+                                }, 1500);
+                            }}
                             style={{
                                 backgroundColor: '#6c757d',
                                 cursor: 'pointer'
@@ -290,6 +307,7 @@ export default function Visitas() {
                             Cancelar
                         </button>
                     </div>
+
                 </form>
             </div>
         </div>

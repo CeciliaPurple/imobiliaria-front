@@ -14,7 +14,15 @@ import Casa1 from "/public/img/casaModerna.jpg";
 export default function Imovel({ id, imagemSrc, titulo, area, bed, bath, car, location, city, price }) {
     const [isFavorited, setIsFavorited] = useState(false);
 
-    // Verifica se o imóvel já está nos favoritos quando o componente é montado
+    // 👉 Função para formatar preço no padrão do Brasil
+    const formatarPreco = (valor) => {
+        if (!valor) return "0,00";
+        return Number(valor).toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        });
+    };
+
     useEffect(() => {
         const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
         const jaEhFavorito = favoritos.some(fav => fav.id === id);
@@ -22,8 +30,7 @@ export default function Imovel({ id, imagemSrc, titulo, area, bed, bath, car, lo
     }, [id]);
 
     const handleFavoriteClick = (e) => {
-        // Impede que o clique no coração propague para outros elementos
-        e.stopPropagation(); 
+        e.stopPropagation();
         e.preventDefault();
 
         const favoritosAtuais = JSON.parse(localStorage.getItem('favoritos') || '[]');
@@ -32,11 +39,9 @@ export default function Imovel({ id, imagemSrc, titulo, area, bed, bath, car, lo
         let novosFavoritos;
 
         if (imovelIndex > -1) {
-            // Se já for favorito, remove da lista
             novosFavoritos = favoritosAtuais.filter(fav => fav.id !== id);
             setIsFavorited(false);
         } else {
-            // Se não for, adiciona na lista
             const imovelParaAdicionar = { id, imagemSrc, titulo, area, bed, bath, car, location, city, price };
             novosFavoritos = [...favoritosAtuais, imovelParaAdicionar];
             setIsFavorited(true);
@@ -95,18 +100,17 @@ export default function Imovel({ id, imagemSrc, titulo, area, bed, bath, car, lo
                     </div>
                 </div>
 
-                {/*Localização*/}
                 <div className={styles.location}>
                     <Image src={Location} alt='localização' />
                     <div>
                         <p><b>{location || "Rua João Maetini - barravelha"}</b></p>
                     </div>
                 </div>
-                
-                {/*Preço e Ver mais*/}
+
                 <div className={styles.price}>
-                    <h3>R${price || "2.596.000"}</h3>
-                    {/* IMPORTANTE: Certifique-se de que o id está sendo passado corretamente */}
+                    {/* 👉 Preço agora está formatado como dinheiro brasileiro */}
+                    <h3>{formatarPreco(price || 2596000)}</h3>
+
                     <Link href={`/imovelCasa/${id}`}>
                         <button className={styles.more}>Ver mais</button>
                     </Link>

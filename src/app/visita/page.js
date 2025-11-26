@@ -38,7 +38,7 @@ export default function Visita() {
 
         buscarAgendamentos();
 
-    }, [user, token]);
+    }, [user, token, router]);
 
     const buscarAgendamentos = async () => {
         try {
@@ -69,9 +69,30 @@ export default function Visita() {
                 agendamentosData = [];
             }
 
-            agendamentosData.sort((a, b) => new Date(b.dataVisita) - new Date(a.dataVisita));
+            // 🔥 LÓGICA DE PRIORIZAÇÃO E LIMITAÇÃO A 4 AGENDAMENTOS
+            
+            // Separa por status
+            const pendentes = agendamentosData.filter(ag => ag.status === 'pendente');
+            const outros = agendamentosData.filter(ag => ag.status !== 'pendente');
+            
+            // Ordena cada grupo por data mais recente
+            pendentes.sort((a, b) => new Date(b.dataVisita) - new Date(a.dataVisita));
+            outros.sort((a, b) => new Date(b.dataVisita) - new Date(a.dataVisita));
+            
+            // Monta a lista final: primeiro os pendentes, depois os outros (até completar 4)
+            let agendamentosFinais = [...pendentes];
+            
+            // Se ainda não tiver 4, adiciona dos outros até completar
+            const espacoRestante = 4 - agendamentosFinais.length;
+            if (espacoRestante > 0) {
+                agendamentosFinais = [...agendamentosFinais, ...outros.slice(0, espacoRestante)];
+            } else {
+                // Se já tiver 4 ou mais pendentes, limita a 4
+                agendamentosFinais = agendamentosFinais.slice(0, 4);
+            }
 
-            setAgendamentos(agendamentosData);
+            console.log('✅ Agendamentos finais (máximo 4, pendentes prioritários):', agendamentosFinais);
+            setAgendamentos(agendamentosFinais);
             setLoading(false);
 
         } catch (error) {
@@ -262,7 +283,7 @@ export default function Visita() {
                                     onClick={() => openCancelConfirmation(agendamento.id)}
                                     disabled={!podeEditar(agendamento.status)}
                                     style={{
-                                        backgroundColor: podeEditar(agendamento.status) ? '#f04704' : '#ccc',
+                                        backgroundColor: podeEditar(agendamento.status) ? '#f00404ff' : '#ccc',
                                         cursor: podeEditar(agendamento.status) ? 'pointer' : 'not-allowed',
                                         color: podeEditar(agendamento.status) ? '#fff' : '#666'
                                     }}

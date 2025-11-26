@@ -27,10 +27,8 @@ export default function Favoritos() {
         fetchFavoritos();
 
         // Recarrega favoritos quando o localStorage muda
-        const handleStorageChange = (event) => {
-            if (event.key === 'favoritos') {
-                fetchFavoritos();
-            }
+        const handleStorageChange = () => {
+            fetchFavoritos();
         };
 
         const handleFocus = () => fetchFavoritos();
@@ -56,15 +54,14 @@ export default function Favoritos() {
                         <Imovel 
                             key={imovel.id} 
                             id={imovel.id}
-                            imagemSrc={imovel.imagemSrc}
+                            imagemSrc={imovel.foto || '/img/luxo.jpg'}
                             titulo={imovel.titulo}
-                            area={imovel.area}
-                            bed={imovel.bed}
-                            bath={imovel.bath}
-                            car={imovel.car}
-                            location={imovel.location}
-                            city={imovel.city}
-                            price={imovel.price}
+                            area={imovel.metrosQuadrados}
+                            bed={imovel.quartos}
+                            bath={imovel.banheiros}
+                            car={imovel.garagens}
+                            location={imovel.localizacao}
+                            price={imovel.valor?.toLocaleString('pt-BR')}
                         />
                     ))}
                 </div>

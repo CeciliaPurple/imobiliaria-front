@@ -59,6 +59,13 @@
   padding: 8px;
   font-size: 14px;
   background-color: #fff;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  outline: none !important;
+  box-shadow: none !important;
+  pointer-events: none;
 }
 
 
